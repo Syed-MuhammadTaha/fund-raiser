@@ -22,7 +22,8 @@ export default function Login() {
         else{
           setData({})
           toast.success("Success")
-          navigate('/')
+          localStorage.setItem("user",data)
+          navigate('/dashboard')
         }
         } catch (error) {
           

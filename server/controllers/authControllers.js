@@ -139,26 +139,28 @@ const loginUser = async (req,res)=>{
                 if((!result.length || !await bcrypt.compare(password,result[0].Password)) || !result[0].verified) 
                 return res.json({error:'Incorrect Email or Password'})
                 else{
-                        //cookie token
-                    const token = jwt.sign({FullName:result[0].FullName},process.env.JWT_SECRET,{expiresIn:process.env.JWT_EXPIRES})
-                    const cookiesOptions = {
-                        expiresIn: new Date(Date.now() + process.env.COOKIE_EXPIRES *24*60*60*1000),
-                        httpOnly:true
-                    }
-                    res.cookie('userRegistered',token,cookiesOptions)
-                    return res.json({success:'Successfully Login'})
+                        //cookie token\
+                        jwt.sign({FullName:result[0].FullName},process.env.JWT_SECRET,{expiresIn:process.env.JWT_EXPIRES},(err,token)=>{
+                                    if(err) throw err;
+                                    res.cookie('token',token,{expiresIn: process.env.JWT_EXPIRES * 1000 }).json(result)
+                                })
+                    
+                    //    if (match){
+
+                    //   
+                    //    } 
+                    //    if(!match){
+                    //    res.json({error:'Not match'})
+                    //    }
+                        // const token = jwt.sign({},process.env.JWT_SECRET,{expiresIn:process.env.JWT_EXPIRES})
+                    // const cookiesOptions = {
+                    //     expiresIn: new Date(Date.now() + process.env.COOKIE_EXPIRES *24*60*60*1000),
+                    //     httpOnly:true
+                    // }
+                    // res.cookie('userRegistered',token,cookiesOptions)
+                    // return res.json({success:'Successfully Login'})
                 }
             })
-//    if (match){
-
-//     jwt.sign({email:user.email,id:user._id,name:user.name},process.env.JWT_SECRET,{},(err,token)=>{
-//         if(err) throw err;
-//         res.cookie('token',token).json(user)
-//     })
-//    } 
-//    if(!match){
-//    res.json({error:'Not match'})
-//    }
  } catch (error) {
     console.log(error)
  }

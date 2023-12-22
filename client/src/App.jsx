@@ -9,6 +9,7 @@ import EmailVerify from './pages/EmailVerify'
 import MaybeShowNavbar from './components/MaybeShowNavbar'
 import axios from 'axios'
 import { UserContextProvider } from '../context/userContext'
+import Dashboard from './pages/Dashboard'
 axios.defaults.baseURL = 'http://localhost:8000'
 // connect to local host
 axios.defaults.withCredentials = true
@@ -24,6 +25,7 @@ function App() {
     <Routes>
       <Route path='/' element={<Home/>}/>
       <Route path='/login' element={<Login/>}/>
+      <Route path='/dashboard' element={<Dashboard/>}/>
       <Route path='/register' element={<Register/>}/>
       <Route path='/verify/:id/:expirationTimestamp' element={<EmailVerify/>}/>
     </Routes>
