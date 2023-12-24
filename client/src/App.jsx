@@ -6,6 +6,7 @@ import Home from '../src/pages/Home'
 import Login from '../src/pages/Login'
 import Register from '../src/pages/Register'
 import EmailVerify from './pages/EmailVerify'
+import FundRaiser from './pages/FundRaiser'
 import MaybeShowNavbar from './components/MaybeShowNavbar'
 import axios from 'axios'
 import { UserContextProvider } from '../context/userContext'
@@ -18,7 +19,7 @@ function App() {
   <>
   <UserContextProvider>
     <MaybeShowNavbar>
-  <Navbar />
+  {/* <Navbar /> */}
   </MaybeShowNavbar>
   <Toaster position='bottom-right' toastOptions={{duration: 2000}}/>
     <Routes>
@@ -26,6 +27,7 @@ function App() {
       <Route path='/login' element={<Login/>}/>
       <Route path='/register' element={<Register/>}/>
       <Route path='/verify/:id/:expirationTimestamp' element={<EmailVerify/>}/>
+      <Route path='/fundraiser' element ={<FundRaiser/>} /> 
     </Routes>
     </UserContextProvider>
   </>

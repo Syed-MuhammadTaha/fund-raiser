@@ -19,7 +19,7 @@ router.use(
 
 router.get('/',test)
 router.post('/register', registerUser)
-router.post('/login',loginUser)
+router.post('/login', loginUser)
 router.get('/profile',getProfile)
 router.get('/verify/:id/:expirationTimestamp',verifyMail)
 

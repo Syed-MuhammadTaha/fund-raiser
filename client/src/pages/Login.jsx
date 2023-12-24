@@ -24,7 +24,8 @@ export default function Login() {
           toast.success("Success")
           navigate('/')
         }
-        } catch (error) {
+        } catch (error)
+        {
           
         }
         //
