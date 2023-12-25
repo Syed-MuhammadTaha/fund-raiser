@@ -179,4 +179,61 @@ const getProfile = (req,res)=>{
         res.json(null)
     }
 }
-module.exports= {test,registerUser,loginUser,getProfile,verifyMail}
+const PasswordReset = (req,res)=>{
+    const {email} = req.body
+    connection.query('SELECT * FROM user WHERE EmailAddress =?',[email],async (err,result)=>{
+        if (err) throw err 
+        if(!result.length){
+            return res.json({
+                error:'Email doesnt exists!'
+            })
+        }
+        else {
+            
+            const token = jwt.sign({id:result[0].id},process.env.JWT_SECRET,{expiresIn:"1m"})
+            const id = result[0].id
+            url = `http://localhost:5173/ForgotPassword/${id}/${token}`
+            
+            res.json({
+                success:'Email exists!',
+                redirectUrl: url,
+            })
+        }
+    })
+}
+const NewPassword = (req,res)=>{
+    const {id,token}= req.params
+    const {password} = req.body
+    jwt.verify(token,process.env.JWT_SECRET,async (err,user)=>{
+        if(err) {
+            return res.json({
+                Status:'Session Expired'
+            })
+        }
+        else{
+            if(!password || password.length < 6){
+                return res.json({
+                    error:'Password is required and must be 6 characters long'
+                })
+            }
+            else{
+                const hashedPassword=await hashPassword(password)
+                connection.query(
+                    'UPDATE user SET password = ? WHERE id = ?',
+                    [hashedPassword, id],
+                    (updateErr, updateResult) => {
+                        if (updateErr) {
+                            return res.json({
+                                error: 'Error updating password',
+                            });
+                        }
+                        return res.json({
+                            success: 'Password updated successfully',
+                        });
+                    }
+                );
+            }
+        }
+    })
+}
+module.exports= {test,registerUser,loginUser,getProfile,verifyMail,PasswordReset,NewPassword}

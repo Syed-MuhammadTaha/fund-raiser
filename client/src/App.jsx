@@ -10,6 +10,8 @@ import MaybeShowNavbar from './components/MaybeShowNavbar'
 import axios from 'axios'
 import { UserContextProvider } from '../context/userContext'
 import Dashboard from './pages/Dashboard'
+import ResetPassword from './pages/ResetPassword'
+import { ForgotPassword } from './pages/ForgotPassword'
 axios.defaults.baseURL = 'http://localhost:8000'
 // connect to local host
 axios.defaults.withCredentials = true
@@ -27,6 +29,8 @@ function App() {
       <Route path='/login' element={<Login/>}/>
       <Route path='/dashboard' element={<Dashboard/>}/>
       <Route path='/register' element={<Register/>}/>
+      <Route path='/ResetPassword' element={<ResetPassword/>}/>
+      <Route path='/ForgotPassword/:id/:token' element={<ForgotPassword/>}/>
       <Route path='/verify/:id/:expirationTimestamp' element={<EmailVerify/>}/>
     </Routes>
     </UserContextProvider>
