@@ -134,21 +134,21 @@ const loginUser = async (req,res)=>{
     //checks email and password by user exists
     //const user = await User.findOne({email});
     connection.query('SELECT * FROM user WHERE EmailAddress =?',[email],async (err,result)=>{
-                if (err) throw err 
-                console.log(result)
-                if((!result.length || !await bcrypt.compare(password,result[0].Password)) || !result[0].verified) 
-                return res.json({error:'Incorrect Email or Password'})
-                else{
-                        //cookie token
-                    const token = jwt.sign({FullName:result[0].FullName},process.env.JWT_SECRET,{expiresIn:process.env.JWT_EXPIRES})
-                    const cookiesOptions = {
-                        expiresIn: new Date(Date.now() + process.env.COOKIE_EXPIRES *24*60*60*1000),
-                        httpOnly:true
-                    }
-                    res.cookie('userRegistered',token,cookiesOptions)
-                    return res.json({success:'Successfully Login'})
-                }
-            })
+        if (err) throw err 
+        console.log(result)
+        if((!result.length || !await bcrypt.compare(password,result[0].Password)) || !result[0].verified) 
+        return res.json({error:'Incorrect Email or Password'})
+        else{
+                //cookie token
+            const token = jwt.sign({FullName:result[0].FullName},process.env.JWT_SECRET,{expiresIn:process.env.JWT_EXPIRES})
+            const cookiesOptions = {
+                expiresIn: new Date(Date.now() + process.env.COOKIE_EXPIRES *24*60*60*1000),
+                httpOnly:true
+            }
+            res.cookie('userRegistered',token,cookiesOptions)
+            return res.json({success:'Successfully Login'})
+        }
+    })
 //    if (match){
 
 //     jwt.sign({email:user.email,id:user._id,name:user.name},process.env.JWT_SECRET,{},(err,token)=>{
@@ -177,4 +177,69 @@ const getProfile = (req,res)=>{
         res.json(null)
     }
 }
-module.exports= {test,registerUser,loginUser,getProfile,verifyMail}
+const PasswordReset = (req, res) => {
+    const { email } = req.body
+    connection.query('SELECT * FROM user WHERE EmailAddress =?', [email], async (err, result) => {
+        if (err) throw err
+        if (!result.length) {
+            return res.json({
+                error: 'Email doesnt exists!'
+            })
+        }
+        else {
+
+            const token = jwt.sign({ id: result[0].id }, process.env.JWT_SECRET, { expiresIn: 10 })
+            const id = result[0].id
+            url = `http://localhost:5173/ForgotPassword/${id}/${token}`
+
+            res.json({
+                success: 'Email exists!',
+                redirectUrl: url,
+            })
+        }
+    })
+}
+const NewPassword = (req, res) => {
+    const { id, token } = req.params
+    const { password } = req.body
+    jwt.verify(token, process.env.JWT_SECRET, async (err, user) => {
+        if (err) {
+            return res.json({
+                error: 'Session Expired'
+            })
+        }
+        else {
+            if (!password || password.length < 6) {
+                return res.json({
+                    error: 'Password is required and must be 6 characters long'
+                })
+            }
+            else {
+                const hashedPassword = await hashPassword(password)
+                connection.query(
+                    'UPDATE user SET password = ? WHERE id = ?',
+                    [hashedPassword, id],
+                    (updateErr, updateResult) => {
+                        if (updateErr) {
+                            return res.json({
+                                error: 'Error updating password',
+                            });
+                        }
+                        return res.json({
+                            success: 'Password updated successfully',
+                        });
+                    }
+                );
+            }
+        }
+    })
+}
+
+const createCampaign = async (req,res)=>{
+    const receivedData = req.body;
+    // Process the received data as needed
+    console.log(receivedData);
+    res.json({ message: 'Data received successfully' });
+
+}
+module.exports = { test, registerUser, loginUser, getProfile, verifyMail, PasswordReset, NewPassword, createCampaign }

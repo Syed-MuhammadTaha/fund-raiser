@@ -12,7 +12,7 @@ const FundraiserTypePage = ({ onNext }) => {
                 <option value="For Others">For Others</option>
                 <option value="Charity">Charity</option>
             </select>
-            <button onClick={() =>  onNext(type)}>Next</button>
+            <button onClick={() =>  onNext(type, "fund_type")}>Next</button>
             
     </div>
   );
