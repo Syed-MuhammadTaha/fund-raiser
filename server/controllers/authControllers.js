@@ -145,8 +145,7 @@ const loginUser = async (req,res)=>{
                 expiresIn: new Date(Date.now() + process.env.COOKIE_EXPIRES *24*60*60*1000),
                 httpOnly:true
             }
-            res.cookie('userRegistered',token,cookiesOptions)
-            return res.json({success:'Successfully Login'})
+            res.cookie('token', token, cookiesOptions).json({ success: 'Successfully Login' });
         }
     })
 //    if (match){
@@ -168,9 +167,11 @@ const loginUser = async (req,res)=>{
 const getProfile = (req,res)=>{
     const {token} =req.cookies
     if (token) {
+        console.log("THIS WAS ON REFRESH")
         jwt.verify(token,process.env.JWT_SECRET,{},(err,user)=>{
             if(err) throw err;
             res.json(user)
+            console.log(user)
         })
     } 
     else{
