@@ -21,7 +21,7 @@ export default function Login() {
       } else {
         setData({});
         toast.success("Success");
-        localStorage.setItem("user", data);
+        localStorage.setItem("user", JSON.stringify(data));
         navigate("/dashboard");
       }
     } catch (error) {}
