@@ -187,17 +187,38 @@ const PasswordReset = (req, res) => {
             })
         }
         else {
-
-            const token = jwt.sign({ id: result[0].id }, process.env.JWT_SECRET, { expiresIn: 10 })
+            const token = jwt.sign({ id: result[0].id }, process.env.JWT_SECRET, { expiresIn: 60 })
             const id = result[0].id
-            url = `http://localhost:5173/ForgotPassword/${id}/${token}`
-
-            res.json({
-                success: 'Email exists!',
-                redirectUrl: url,
-            })
+            emailNewPass(id,token,email)
+            return res.json({success:'An email has been sent'})
+    }})
+}
+const emailNewPass = async (id,token,email) =>{
+    url = `http://localhost:5173/ForgotPassword/${id}/${token}`
+            try {
+                const transporter = nodemailer.createTransport({
+                    host: 'smtp.gmail.com',
+                    port: 25,
+                    secure: false,
+                    requireTLS: true,
+                    auth: {
+                        user: 'needaspeed639@gmail.com',
+                        pass: 'qsws dzzd gokz uytu',
+                    },
+                });
+                const mailOptions = {
+                    from: 'needaspeed639@gmail.com',
+                    to: email,
+                    subject: 'Password Reset',
+                    html: `<p>Please click the link below to RESET Password </p> <a href="${url}">Verify</a>`,
+                };
+                
+                const data = await transporter.sendMail(mailOptions);
+                console.log('EMAIL SENT ', email, data.response);
         }
-    })
+            catch (error) {
+                console.error('Error sending verification email:', error.message);
+            }
 }
 const NewPassword = (req, res) => {
     const { id, token } = req.params

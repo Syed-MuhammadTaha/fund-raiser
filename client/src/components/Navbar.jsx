@@ -1,6 +1,7 @@
-import { Link } from "react-router-dom"
+import { Link, Navigate, useNavigate } from "react-router-dom"
 import "bootstrap/dist/css/bootstrap.css";
 export default function navbar() {
+  const Navigate = useNavigate()
   return (
     <nav
       id="mainNav"
@@ -49,7 +50,7 @@ export default function navbar() {
           <a
             className="btn btn-primary shadow"
             role="button"
-            href="signup.html"
+            onClick={()=> Navigate('/register')}
           >
             Sign up
           </a>

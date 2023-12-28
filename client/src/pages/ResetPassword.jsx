@@ -4,7 +4,6 @@ import { toast } from "react-hot-toast";
 import { useNavigate, Link } from "react-router-dom";
 export default function ResetPassword() {
   const navigate = useNavigate();
-  const [redirectUrl, setRedirectUrl] = useState(null);
   const [data, setData] = useState({
     email: "",
   });
@@ -17,18 +16,14 @@ export default function ResetPassword() {
       });
       if (data.error) {
         toast.error(data.error);
-      } else {
+      } 
+      else {
         toast.success(data.success);
-        setRedirectUrl(data.redirectUrl);
+        navigate('/login')
       }
     } catch (error) {}
     //
   };
-  useEffect(() => {
-    if (redirectUrl) {
-      window.location.href = redirectUrl;
-    }
-  }, [redirectUrl]);
   return (
     <div>
       <form onSubmit={ResetPasswordUser}>
