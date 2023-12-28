@@ -1,7 +1,11 @@
 import React from 'react'
-
+import Hero from './Hero'
+import ActiveCampaign from './ActiveCampaign';
 export default function Home() {
   return (
-    <div>Home</div>
-  )
+    <>
+      <Hero />
+      <ActiveCampaign />
+    </>
+  );
 }

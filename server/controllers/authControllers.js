@@ -263,4 +263,9 @@ const createCampaign = async (req,res)=>{
     res.json({ message: 'Data received successfully' });
 
 }
-module.exports = { test, registerUser, loginUser, getProfile, verifyMail, PasswordReset, NewPassword, createCampaign }
+
+const stripeIntegration = async (req,res) => {
+    
+}
+
+module.exports = { test, registerUser, loginUser, getProfile, verifyMail, PasswordReset, NewPassword, createCampaign, stripeIntegration }
