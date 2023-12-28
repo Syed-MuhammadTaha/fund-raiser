@@ -30,7 +30,6 @@ function App() {
             path="/verify/:id/:expirationTimestamp"
             element={<EmailVerify />}
           />
-           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/fundraiser" element={<FundRaiser />} />
           <Route path="/ResetPassword" element={<ResetPassword />} />
           <Route
