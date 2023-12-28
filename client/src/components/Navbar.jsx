@@ -50,7 +50,7 @@ export default function navbar() {
             </li>
           </ul>
           <a
-            className="btn btn-primary shadow"
+            className="btn btn-primary shadow rounded-pill"
             role="button"
             onClick={() => navigate('/login') }
           >
