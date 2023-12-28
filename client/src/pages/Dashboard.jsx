@@ -6,11 +6,15 @@ export default function Dashboard() {
   const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(!!user);
-  
-  useEffect(() => {
-    // Update isLoggedIn when the user context changes
-    setIsLoggedIn(!!user);
-  }, [user]);
+   useEffect(() => {
+    if(!user && localStorage.getItem("user")==null){
+      console.log(localStorage.getItem("user"))
+      setIsLoggedIn(false);
+    }
+    else if (localStorage.getItem("user")!=null){
+      console.log(localStorage.getItem("user"))
+      setIsLoggedIn(!!user);}
+  }, [user,navigate]);
   const logout = () => {
     setUser(null);
     localStorage.removeItem("user");

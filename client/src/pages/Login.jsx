@@ -20,9 +20,9 @@ export default function Login() {
         toast.error(data.error);
       } else {
         setData({});
-        toast.success("Success");
+        toast.success("Welcome Back");
         localStorage.setItem("user", JSON.stringify(data));
-        navigate("/dashboard");
+        navigate("/");
       }
     } catch (error) {}
     //
