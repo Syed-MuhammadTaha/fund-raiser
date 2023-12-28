@@ -31,6 +31,7 @@ export default function Navbar() {
     >
       <div className="container">
         <a className="navbar-brand d-flex align-items-center" href="/">
+
           <img src={logo} style={{ width: "100px" }} alt="Logo"></img>
         </a>
         <button
@@ -80,8 +81,6 @@ export default function Navbar() {
               </a>
             </li>):(<></>)}
           </ul>
-
-
           {isLoggedIn ? (
             <button
               className="btn btn-primary shadow rounded-pill"
