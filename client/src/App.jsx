@@ -1,7 +1,6 @@
 import './App.css'
 import {Toaster} from 'react-hot-toast'
 import {Routes,Route} from 'react-router-dom'
-import Navbar from '../src/components/Navbar'
 import Home from '../src/pages/Home'
 import Login from '../src/pages/Login'
 import Register from '../src/pages/Register'
@@ -31,6 +30,7 @@ function App() {
             path="/verify/:id/:expirationTimestamp"
             element={<EmailVerify />}
           />
+           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/fundraiser" element={<FundRaiser />} />
           <Route path="/ResetPassword" element={<ResetPassword />} />
           <Route
