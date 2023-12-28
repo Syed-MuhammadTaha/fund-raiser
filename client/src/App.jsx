@@ -22,9 +22,6 @@ function App() {
   return (
     <>
       <UserContextProvider>
-        <MaybeShowNavbar>
-          <Navbar />
-        </MaybeShowNavbar>
         <Toaster position="bottom-right" toastOptions={{ duration: 2000 }} />
         <Routes>
           <Route path="/" element={<Home />} />
