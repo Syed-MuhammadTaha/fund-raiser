@@ -15,7 +15,6 @@ const MaybeShowNavbar = ({children}) => {
 },[location])
     return (
     <div>{showNavbar && children}</div>
-    // childeren is the NAvbar
   )
 }
 

@@ -13,6 +13,8 @@ import ForgotPassword from './pages/ForgotPassword'
 import axios from 'axios'
 import { UserContextProvider } from '../context/userContext'
 axios.defaults.baseURL = "http://localhost:8000";
+import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap/dist/js/bootstrap.js";
 // connect to local host
 axios.defaults.withCredentials = true
 function App() {

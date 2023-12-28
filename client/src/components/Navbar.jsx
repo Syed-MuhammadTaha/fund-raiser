@@ -1,7 +1,9 @@
-import { Link, Navigate, useNavigate } from "react-router-dom"
-import "bootstrap/dist/css/bootstrap.css";
+import { useNavigate } from "react-router-dom"
+import "../App.css";
+
+
 export default function navbar() {
-  const Navigate = useNavigate()
+  const navigate = useNavigate()
   return (
     <nav
       id="mainNav"
@@ -9,7 +11,7 @@ export default function navbar() {
     >
       <div className="container">
         <a className="navbar-brand d-flex align-items-center" href="/">
-          <span>Brand</span>
+          <span>Faryaad</span>
         </a>
         <button
           className="navbar-toggler"
@@ -28,31 +30,31 @@ export default function navbar() {
             </li>
             <li className="nav-item">
               <a className="nav-link" href="features.html">
-                Features
+                Active Campaigns
               </a>
             </li>
             <li className="nav-item">
               <a className="nav-link" href="integrations.html">
-                Integrations
+                Past Campaigns
               </a>
             </li>
             <li className="nav-item">
               <a className="nav-link" href="pricing.html">
-                Pricing
+                Raise Now
               </a>
             </li>
             <li className="nav-item">
               <a className="nav-link" href="contacts.html">
-                Contacts
+                About Us
               </a>
             </li>
           </ul>
           <a
             className="btn btn-primary shadow"
             role="button"
-            onClick={()=> Navigate('/register')}
+            onClick={() => navigate('/login') }
           >
-            Sign up
+            Sign In
           </a>
         </div>
       </div>
