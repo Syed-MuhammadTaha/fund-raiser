@@ -1,5 +1,5 @@
 import React from 'react'
-import ActiveCard from './ActiveCard';
+import Card from './Card';
 
 const ActiveCampaign = () => {
   return (
@@ -21,7 +21,7 @@ const ActiveCampaign = () => {
           </button>
           <div className="dropdown-menu">
             <a className="dropdown-item" href="#">
-              General
+              Personal
             </a>
             <a className="dropdown-item" href="#">
               Research Funding
@@ -42,9 +42,9 @@ const ActiveCampaign = () => {
       </div>
 
       <div className="row gy-4 row-cols-1 row-cols-md-2 row-cols-xl-3">
-        <ActiveCard />
-        <ActiveCard />
-        <ActiveCard />
+        <Card />
+        <Card />
+        <Card />
       </div>
     </div>
   );

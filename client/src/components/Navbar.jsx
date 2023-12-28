@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom"
 import "../App.css";
-
+import logo from '../assets/logo.png'
 
 export default function navbar() {
   const navigate = useNavigate()
@@ -11,7 +11,7 @@ export default function navbar() {
     >
       <div className="container">
         <a className="navbar-brand d-flex align-items-center" href="/">
-          <span>Faryaad</span>
+          <img src = {logo} style={{width:"100px"}}></img>
         </a>
         <button
           className="navbar-toggler"
@@ -30,7 +30,7 @@ export default function navbar() {
             </li>
             <li className="nav-item">
               <a className="nav-link" href="features.html">
-                Active Campaigns
+                Donate Now
               </a>
             </li>
             <li className="nav-item">
@@ -39,12 +39,18 @@ export default function navbar() {
               </a>
             </li>
             <li className="nav-item">
+              <a className="nav-link" href="contacts.html">
+                Volunteer
+              </a>
+            </li>
+            
+            <li className="nav-item">
               <a className="nav-link" href="pricing.html">
-                Raise Now
+                Start a fundraiser
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="contacts.html">
+              <a className="nav-link" href="features.html">
                 About Us
               </a>
             </li>
@@ -52,7 +58,7 @@ export default function navbar() {
           <a
             className="btn btn-primary shadow rounded-pill"
             role="button"
-            onClick={() => navigate('/login') }
+            onClick={() => navigate("/login")}
           >
             Sign In
           </a>
