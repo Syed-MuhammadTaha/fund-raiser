@@ -24,7 +24,7 @@ export default function Register() {
           else{
             // empty object reset input field
             setData({})
-            toast.success("Registration Successful")
+            toast.success("Registrationssss Successful")
             navigate('/login')
           }
         } catch (error) {
