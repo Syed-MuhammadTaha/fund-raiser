@@ -12,6 +12,7 @@ import ResetPassword from './pages/ResetPassword'
 import ForgotPassword from './pages/ForgotPassword'
 import axios from 'axios'
 import { UserContextProvider } from '../context/userContext'
+import Donate from './pages/Donate'
 axios.defaults.baseURL = "http://localhost:8000";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.js";
@@ -40,6 +41,7 @@ function App() {
             path="/ForgotPassword/:id/:token"
             element={<ForgotPassword />}
           />
+          <Route path="/donate" element={<Donate />} />
         </Routes>
       </UserContextProvider>
     </>
