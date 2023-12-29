@@ -4,7 +4,6 @@ const bcrypt = require('bcrypt')
 const nodemailer=require('nodemailer')
 const connection = require('../models/db')
 const { renderToString } = require('react-dom/server');
-const emailExistence = require('email-existence')
 //const EmailVerify = require('../../client/src/pages/EmailVerify')
 const test = (req,res) => {
     res.json("test is working")
@@ -83,41 +82,34 @@ const verifyMail = async (req, res) => {
 const registerUser = async (req,res) => {
  try {
     const{name,email,password} = req.body;
-    emailExistence.check(email, function(error, response){
-        console.log('res: '+response);
-    if (!response){
-        return res.json({error:'Email Address doesnt exist'})
+    if(!name){
+        return res.json({
+            error:'name is required'
+        })
     }
-    else{
-        if(!name){
+        if(!password || password.length < 6){
             return res.json({
-                error:'name is required'
+                error:'Password is required and must be 6 characters long'
             })
-        }
-            if(!password || password.length < 6){
-                return res.json({
-                    error:'Password is required and must be 6 characters long'
-                })
-        }
-        const sqlQuery = 'SELECT EmailAddress FROM user WHERE EmailAddress = ? LIMIT 1;';
-        connection.query(sqlQuery, [email], async (err,result) => {
-        if(err) throw err;
-        if(result[0]) return res.json({error:'EMAIL IS TAKEN ALREADY'})
-        else{
-            const hashedPassword=await hashPassword(password)
-            connection.query('INSERT INTO user SET ?;', {FullName:name, EmailAddress:email, Password:hashedPassword,verified:0},(error,re)=>{
-                if(error) throw error;
-                connection.query('SELECT id FROM user WHERE EmailAddress =?',[email],async(errors,resu)=>{
-                if(errors) throw errors;       
-                console.log(resu[0]) 
-                sendVerifyEmail(name,email,resu[0].id)
-                })
-                return res.json({succes:'User has been registered,Please Verify Email to Log in'})
-
-            });
     }
-    
-});}
+    const sqlQuery = 'SELECT EmailAddress FROM user WHERE EmailAddress = ? LIMIT 1;';
+ connection.query(sqlQuery, [email], async (err,result) => {
+    if(err) throw err;
+    if(result[0]) return res.json({error:'EMAIL IS TAKEN ALREADY'})
+    else{
+        const hashedPassword=await hashPassword(password)
+        connection.query('INSERT INTO user SET ?;', {FullName:name, EmailAddress:email, Password:hashedPassword,verified:0},(error,re)=>{
+            if(error) throw error;
+            connection.query('SELECT id FROM user WHERE EmailAddress =?',[email],async(errors,resu)=>{
+            if(errors) throw errors;       
+            console.log(resu[0]) 
+            sendVerifyEmail(name,email,resu[0].id)
+            })
+            return res.json({succes:'User has been registered,Please Verify Email to Log in'})
+
+        });
+}
+});
 // const [rows] = await
     // Check if there are any rows in the result
     // if (rows.length > 0) {
@@ -131,7 +123,7 @@ const registerUser = async (req,res) => {
     // const user = await User.create({
     //     name,email,password:hashedPassword
     // })
-});} catch (error) {
+ } catch (error) {
     console.log(error)
  }
 }
