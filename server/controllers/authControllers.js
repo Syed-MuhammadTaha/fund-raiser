@@ -262,6 +262,10 @@ const createCampaign = async (req,res)=>{
     // Process the received data as needed
     console.log(receivedData);
     res.json({ message: 'Data received successfully' });
+    connection.query('INSERT INTO campaign SET ?;', { fund_type: receivedData.fund_type, goal: receivedData.goal },(error,re)=>{
+        if(error) throw error;
+        console.log(re)
+    });
 
 }
 
