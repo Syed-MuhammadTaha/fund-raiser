@@ -1,3 +1,5 @@
+const stripe = require("stripe")(process.env.STRIPE_SECURITY_KEY)
+
 const {hashPassword,comparePassword} = require('../helpers/auth')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
@@ -274,7 +276,35 @@ const createCampaign = async (req,res)=>{
 }
 
 const stripeIntegration = async (req,res) => {
-    
+    const {products} = req.body;
+    const listItems = products.map((product)=>({
+        price_data:{
+            currency:'pkr',
+            product_data:{
+                name:product.data
+           },
+           unit_amount:Math.round(product.price*100),
+        },
+        quantity:product.quantity
+    }));
+    const session = await stripe.checkout.sessions.create({
+        payment_method_types:["card"],
+        line_items:listItems,
+        mode:"payment",
+        success_url:"http://localhost:/success",
+        cancel_url:"http://localhost:/cancel"
+    })
+    res.json({id:session.id})
 }
 
-module.exports = { test, registerUser, loginUser, getProfile, verifyMail, PasswordReset, NewPassword, createCampaign, stripeIntegration }
+
+const uploadImage = (req,res) => {
+    const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            const response = errors.array();
+            console.log(response[0].msg)
+            return res.status(400).json(response[0].msg);
+        }
+}
+
+module.exports = { test, registerUser, loginUser, getProfile, verifyMail, PasswordReset, NewPassword, createCampaign, stripeIntegration, uploadImage }
