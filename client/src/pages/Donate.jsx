@@ -1,34 +1,35 @@
 import React from 'react'
-import {loadStripe} from '@stripe/stripe-js'
+import { loadStripe } from '@stripe/stripe-js'
+import axios from 'axios'
 
 export default function Donate() {
 
-    const details = ['Abubakar', '20000', 'charity'];
-    // console.log(details)
+  const details = ['Abubakar', '20000', 'charity'];
 
-    const makePayment = async (e) => {
-        const stripe = await loadStripe('pk_test_51OSJKWH0iLLdHZLK0tY0UXpUZXrWcqow7spXeKuuycGKXrpGzueErBDncbMwcPRIxvC80CqwUpm3yoffp4e21LjE000fbzoSCD')
+  const makePayment = async (e) => {
+    try {
+      const stripe = await loadStripe('pk_test_51OSJKWH0iLLdHZLK0tY0UXpUZXrWcqow7spXeKuuycGKXrpGzueErBDncbMwcPRIxvC80CqwUpm3yoffp4e21LjE000fbzoSCD');
 
-        const body = {
-            products:details
-        }
-        const headers = {
-            "Content-Type" : "application/json"
-        }
-        const response = await fetch("https://localhost:8000/donate", {
-            method:"POST",
-            headers:headers,
-            body:JSON.stringify(body)
-        })
-        const session = await response.json()
+      const response = await axios.post('https://localhost:8000/donate', {
+        products: details
+      });
 
-        const result = stripe.redirectToCheckout({
-            sessionId:session.id
-        });
+      const session = response.data; // assuming the session ID is returned in the response
 
+      const result = await stripe.redirectToCheckout({
+        sessionId: session.id
+      });
+
+      if (result.error) {
+        // Handle any errors that occur during the redirect to checkout
+        console.error(result.error.message);
+      }
+    } catch (error) {
+      console.error('Error:', error.message);
     }
+  }
 
-    return (
+  return (
     <div>
       <button onClick={makePayment}>Donate Now</button>
     </div>

@@ -1,13 +1,11 @@
 import './App.css'
 import {Toaster} from 'react-hot-toast'
 import {Routes,Route} from 'react-router-dom'
-import Navbar from '../src/components/Navbar'
 import Home from '../src/pages/Home'
 import Login from '../src/pages/Login'
 import Register from '../src/pages/Register'
 import EmailVerify from './pages/EmailVerify'
 import FundRaiser from './pages/FundRaiser'
-import MaybeShowNavbar from './components/MaybeShowNavbar'
 import ResetPassword from './pages/ResetPassword'
 import ForgotPassword from './pages/ForgotPassword'
 import axios from 'axios'
@@ -23,9 +21,6 @@ function App() {
   return (
     <>
       <UserContextProvider>
-        <MaybeShowNavbar>
-          <Navbar />
-        </MaybeShowNavbar>
         <Toaster position="bottom-right" toastOptions={{ duration: 2000 }} />
         <Routes>
           <Route path="/" element={<Home />} />
