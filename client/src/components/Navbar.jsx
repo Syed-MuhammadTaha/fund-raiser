@@ -3,25 +3,34 @@ import "../App.css";
 import logo from '../assets/logo.png';
 import { UserContext } from "../../context/userContext";
 import React, { useContext, useState, useEffect } from "react";
-
+import axios from "axios";
+import toast from "react-hot-toast";
 export default function Navbar() {
   const navigate = useNavigate();
-  const { user, setUser } = useContext(UserContext);
-  const [isLoggedIn, setIsLoggedIn] = useState(!!user);
-
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [name,setName] = useState('')
+  axios.defaults.withCredentials=true
+  console.log(isLoggedIn)
   useEffect(() => {
-    if (!user && localStorage.getItem("user") == null) {
-      setIsLoggedIn(false);
-    } else if (localStorage.getItem("user") != null) {
-      setIsLoggedIn(!!user);
-    }
-  }, [user]);
-
+    axios.get('http://localhost:8000/profile')
+    .then(res => {
+      if(res.data.Status === "Success"){
+        setIsLoggedIn(true)
+        setName(res.data.name)
+      }
+      else{
+        setIsLoggedIn(false)
+      }
+    })
+  }, [isLoggedIn]);
+  
   const logout = () => {
-    setUser(null);
-    localStorage.removeItem("user");
-    setIsLoggedIn(false);
-    navigate("/");
+    axios.get('http://localhost:8000/logout').then(res=>{
+    if(res.data.Status === "Success"){
+    toast.success('Logged Out')
+    location.reload(true)
+    }
+    }).catch(err=> console.log(err))
   };
 
   return (
@@ -76,7 +85,7 @@ export default function Navbar() {
             </li>
           {isLoggedIn?( <li className="nav-item ">
               <a className="nav-link active" href="features.html">
-                Hello {user?.FullName}!
+                Hello {name}!
               </a>
             </li>):(<></>)}
           </ul>

@@ -153,7 +153,8 @@ const loginUser = async (req,res)=>{
                 expiresIn: new Date(Date.now() + process.env.COOKIE_EXPIRES *24*60*60*1000),
                 httpOnly:true
             }
-            res.cookie('token', token, cookiesOptions).json({ success: 'Successfully Login' });
+            res.cookie('token', token)
+            res.json({ success: 'Successfully Login' });
         }
     })
 //    if (match){
@@ -171,19 +172,24 @@ const loginUser = async (req,res)=>{
  }
 }
 //
-
-const getProfile = (req,res)=>{
-    const {token} =req.cookies
+const logsout= (req,res) => {
+    res.clearCookie('token')
+    return res.json({Status:"Success"})
+}
+const getProfile = (req,res,next)=>{
+    const token =req.cookies.token
     if (token) {
-        console.log("THIS WAS ON REFRESH")
         jwt.verify(token,process.env.JWT_SECRET,{},(err,user)=>{
-            if(err) throw err;
-            res.json(user)
-            console.log(user)
+            if(err){
+                return res.json({Message:"Authentication Error"})
+            } else{
+                req.name = user.FullName
+                next()
+            }
         })
     } 
     else{
-        res.json(null)
+       return res.json(null)
     }
 }
 const PasswordReset = (req, res) => {
@@ -277,4 +283,4 @@ const stripeIntegration = async (req,res) => {
     
 }
 
-module.exports = { test, registerUser, loginUser, getProfile, verifyMail, PasswordReset, NewPassword, createCampaign, stripeIntegration }
+module.exports = { test, registerUser, loginUser, getProfile, verifyMail, PasswordReset, NewPassword, createCampaign, stripeIntegration,logsout }

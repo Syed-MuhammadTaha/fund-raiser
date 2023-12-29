@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState,useContext } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useNavigate, Link } from "react-router-dom";
+
 export default function Login() {
   const navigate = useNavigate();
   const [data, setData] = useState({
@@ -21,7 +22,6 @@ export default function Login() {
       } else {
         setData({});
         toast.success("Welcome Back");
-        localStorage.setItem("user", JSON.stringify(data));
         navigate("/");
       }
     } catch (error) {}
