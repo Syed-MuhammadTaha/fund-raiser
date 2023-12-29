@@ -3,18 +3,20 @@ import "../App.css";
 import logo from '../assets/logo.png';
 import { UserContext } from "../../context/userContext";
 import React, { useContext, useState, useEffect } from "react";
+import Links from "./Links";
 
-export default function Navbar() {
+export default function Navbar({links}) {
   const navigate = useNavigate();
   const { user, setUser } = useContext(UserContext);
+  const [button, setButton] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(!!user);
-
   useEffect(() => {
     if (!user && localStorage.getItem("user") == null) {
       setIsLoggedIn(false);
     } else if (localStorage.getItem("user") != null) {
       setIsLoggedIn(!!user);
     }
+
   }, [user]);
 
   const logout = () => {
@@ -31,7 +33,6 @@ export default function Navbar() {
     >
       <div className="container">
         <a className="navbar-brand d-flex align-items-center" href="/">
-
           <img src={logo} style={{ width: "100px" }} alt="Logo"></img>
         </a>
         <button
@@ -43,43 +44,18 @@ export default function Navbar() {
           <span className="navbar-toggler-icon" />
         </button>
         <div id="navcol-1" className="collapse navbar-collapse">
-        <ul className="navbar-nav mx-auto">
-            <li className="nav-item">
-              <a className="nav-link" href="index.html">
-                Home
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="features.html">
-                Donate Now
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="integrations.html">
-                Past Campaigns
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="contacts.html">
-                Volunteer
-              </a>
-            </li>
-            
-            <li className="nav-item">
-              <a className="nav-link" href="pricing.html">
-                Start a fundraiser
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="features.html">
-                About Us
-              </a>
-            </li>
-          {isLoggedIn?( <li className="nav-item ">
-              <a className="nav-link active" href="features.html">
-                Hello {user?.FullName}!
-              </a>
-            </li>):(<></>)}
+          <ul className="navbar-nav mx-auto">
+            <Links hrefs={links} />
+
+            {isLoggedIn ? (
+              <li className="nav-item ">
+                <a className="nav-link active" href="features.html">
+                  Hello {user?.FullName}!
+                </a>
+              </li>
+            ) : (
+              <></>
+            )}
           </ul>
           {isLoggedIn ? (
             <button
@@ -90,15 +66,18 @@ export default function Navbar() {
               Logout
             </button>
           ) : (
-            <a
+            <button
               className="btn btn-primary shadow rounded-pill"
-              role="button"
-              onClick={() => {
-                navigate("/login");
-              }}
+              onClick={() =>
+                navigate({
+                  pathname: links[links.length - 1].path,
+                  state: { from: window.location.pathname },
+                })
+              }
+              type="button"
             >
-              Sign In
-            </a>
+              {links[links.length - 1].btn_name}
+            </button>
           )}
         </div>
       </div>

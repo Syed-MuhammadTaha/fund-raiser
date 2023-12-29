@@ -34,7 +34,7 @@ const FundRaiser = () => {
       {currentPage === 2 && (
         <FundraiserGoalsPage onNext={handleNext} onPrev={handlePrev} />
       )}
-      {currentPage === 3 && (
+      {currentPage === 5 && (
         <FormSubmissionPage submitData={data} />
       )}
     </div>
