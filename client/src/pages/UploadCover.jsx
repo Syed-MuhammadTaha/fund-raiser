@@ -1,36 +1,36 @@
 import React, { useState } from "react";
-const App = () => {
-  const [image, setImage] = useState("");
-  const [url, setUrl] = useState("");
-  const uploadImage = () => {
-    const data = new FormData();
-    data.append("file", image);
-    data.append("upload_preset", "cover-image");
-    data.append("cloud_name", "ddymgf2hz");
-    fetch("  https://api.cloudinary.com/v1_1/breellz/image/upload", {
-      method: "post",
-      body: data,
-    })
-      .then((resp) => resp.json())
-      .then((data) => {
-        setUrl(data.url);
-      })
-      .catch((err) => console.log(err));
-  };
+import axios from "axios";
+function UploadCover() {
+  const preset_key = "UploadingCoverImage"
+  const cloud_name = "dgz8jg45d"
+  const [image,setImage] = useState()
+  function submitImage(event){
+    const formData = new FormData()
+    formData.append("file",image)
+    formData.append('upload_preset',preset_key)
+    formData.append("cloud_name",cloud_name)
+   fetch(`https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`,{
+    method:"POST",
+    body:formData
+   }).then((res)=>res.json())
+   .then((formData)=>{
+    console.log(formData)
+   }).catch((err)=>{console.log(err)})
+  }
   return (
     <div>
       <div>
         <input
           type="file"
-          onChange={(e) => setImage(e.target.files[0])}
+          name="image"
+          onChange={(e)=> setImage(e.target.files[0])}
         ></input>
-        <button onClick={uploadImage}>Upload</button>
       </div>
+      <button onClick = {submitImage}>Upload Image</button>
       <div>
         <h1>Uploaded image will be displayed here</h1>
-        <img src={url} />
       </div>
     </div>
   );
 };
-export default App;
+export default UploadCover;

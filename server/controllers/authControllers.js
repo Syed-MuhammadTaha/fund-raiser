@@ -4,14 +4,6 @@ const bcrypt = require('bcrypt')
 const nodemailer=require('nodemailer')
 const connection = require('../models/db')
 const { renderToString } = require('react-dom/server');
-const { v2 } = require('cloudinary');
-
-
-v2.config({
-    cloud_name: 'ddymgf2hz',
-    api_key: '732749692138384',
-    api_secret: '9RHmkYvjWapaxzyfhmS9bb12nLo'
-});
 
 //const EmailVerify = require('../../client/src/pages/EmailVerify')
 const test = (req,res) => {
@@ -290,12 +282,7 @@ const createCampaign = async (req,res)=>{
     });
 
 }
-const fetchURL = (req, res) => {
-    v2.uploader.upload("https://upload.wikimedia.org/wikipedia/commons/a/ae/Olympic_flag.jpg",
-        { public_id: "olympic_flag" },
-        function (error, result) { console.log(result); });
-}
 
 const stripeIntegration = async (req, res) => { }
 
-module.exports = { test, registerUser, loginUser, getProfile, verifyMail, PasswordReset, NewPassword, createCampaign, stripeIntegration,logsout, fetchURL}
+module.exports = { test, registerUser, loginUser, getProfile, verifyMail, PasswordReset, NewPassword, createCampaign, stripeIntegration,logsout}
