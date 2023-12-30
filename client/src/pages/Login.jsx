@@ -3,6 +3,8 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useNavigate, Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import login from "../assets/signup.png";
+
 export default function Login() {
   const navigate = useNavigate();
   const [data, setData] = useState({
@@ -34,7 +36,7 @@ export default function Login() {
         <div className="container py-md-5">
           <div className="row">
             <div className="col-md-6 text-center">
-              <img className="img-fluid w-100" src="illustrations/login.svg" />
+              <img className="img-fluid w-100" src={login} />
             </div>
             <div className="col-md-5 col-xl-4 text-center text-md-start">
               <h2 className="display-6 fw-bold mb-5">

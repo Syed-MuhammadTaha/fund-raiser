@@ -4,6 +4,15 @@ const bcrypt = require('bcrypt')
 const nodemailer=require('nodemailer')
 const connection = require('../models/db')
 const { renderToString } = require('react-dom/server');
+const { v2 } = require('cloudinary');
+
+
+v2.config({
+    cloud_name: 'ddymgf2hz',
+    api_key: '732749692138384',
+    api_secret: '9RHmkYvjWapaxzyfhmS9bb12nLo'
+});
+
 //const EmailVerify = require('../../client/src/pages/EmailVerify')
 const test = (req,res) => {
     res.json("test is working")
@@ -138,9 +147,16 @@ const loginUser = async (req,res)=>{
         console.log(result)
         if((!result.length || !await bcrypt.compare(password,result[0].Password)) || !result[0].verified) 
         return res.json({error:'Incorrect Email or Password'})
-        else{
+        else {
+            const fullName = result[0].FullName;
+
+            // Split the full name based on spaces
+            const fullNameArray = fullName.split(' ');
+
+            // Extract the first name (assuming it's the first element after splitting)
+            const firstName = fullNameArray[0];
                 //cookie token
-            const token = jwt.sign({FullName:result[0].FullName},process.env.JWT_SECRET,{expiresIn:process.env.JWT_EXPIRES})
+            const token = jwt.sign({FullName:firstName},process.env.JWT_SECRET,{expiresIn:process.env.JWT_EXPIRES})
             const cookiesOptions = {
                 expiresIn: new Date(Date.now() + process.env.COOKIE_EXPIRES *24*60*60*1000),
                 httpOnly:true
@@ -274,9 +290,12 @@ const createCampaign = async (req,res)=>{
     });
 
 }
-
-const stripeIntegration = async (req,res) => {
-    
+const fetchURL = (req, res) => {
+    v2.uploader.upload("https://upload.wikimedia.org/wikipedia/commons/a/ae/Olympic_flag.jpg",
+        { public_id: "olympic_flag" },
+        function (error, result) { console.log(result); });
 }
 
-module.exports = { test, registerUser, loginUser, getProfile, verifyMail, PasswordReset, NewPassword, createCampaign, stripeIntegration,logsout }
+const stripeIntegration = async (req, res) => { }
+
+module.exports = { test, registerUser, loginUser, getProfile, verifyMail, PasswordReset, NewPassword, createCampaign, stripeIntegration,logsout, fetchURL}

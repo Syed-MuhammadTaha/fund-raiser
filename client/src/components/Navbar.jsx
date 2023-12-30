@@ -1,11 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import "../App.css";
 import logo from '../assets/logo.png';
-import { UserContext } from "../../context/userContext";
-import React, { useContext, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-export default function Navbar() {
+import Links from "./Links";
+
+export default function Navbar({links}) {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [name,setName] = useState('')
@@ -24,14 +25,15 @@ export default function Navbar() {
       }
     })
   }, [isLoggedIn]);
-  
-import Links from "./Links";
+
   
   const logout = () => {
     axios.get('http://localhost:8000/logout').then(res=>{
     if(res.data.Status === "Success"){
-    toast.success('Logged Out')
-    location.reload(true)
+      
+      location.reload(true)
+      toast.success("Succesfully logged out");
+      
     }
     }).catch(err=> console.log(err))
   };
@@ -70,14 +72,16 @@ import Links from "./Links";
             )}
           </ul>
           {isLoggedIn ? (
+            links[links.length - 1].button === true ? (
             <button
               className="btn btn-primary shadow rounded-pill"
               onClick={logout}
               type="button"
             >
               Logout
-            </button>
+            </button>):(<></>)
           ) : (
+              links[links.length - 1].button === true ? (
             <button
               className="btn btn-primary shadow rounded-pill"
               onClick={() =>
@@ -89,7 +93,7 @@ import Links from "./Links";
               type="button"
             >
               {links[links.length - 1].btn_name}
-            </button>
+            </button>):(<></>)
           )}
         </div>
       </div>
