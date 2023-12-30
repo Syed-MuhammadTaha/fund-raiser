@@ -4,6 +4,12 @@ const cors = require('cors')
 const app = express()
 const cookieParser = require('cookie-parser')
 const connection = require("./models/db")
+const corsOptions ={
+    origin:'http://localhost:5173', 
+    credentials:true,            //access-control-allow-credentials:true
+    optionSuccessStatus:200
+}
+app.use(cors(corsOptions))
 //middleware
 app.use(express.json())
 app.use(cookieParser())
