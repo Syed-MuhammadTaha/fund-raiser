@@ -284,18 +284,13 @@ const createCampaign = async (req,res)=>{
     // Process the received data as needed
     console.log(receivedData);
     res.json({ message: 'Data received successfully' });
-    connection.query('INSERT INTO campaign SET ?;', { fund_type: receivedData.fund_type, goal: receivedData.goal },(error,re)=>{
+    connection.query('INSERT INTO campaign SET ?;', { fund_type: receivedData.type, goal: receivedData.goal },(error,re)=>{
         if(error) throw error;
         console.log(re)
     });
 
 }
-const fetchURL = (req, res) => {
-    v2.uploader.upload("https://upload.wikimedia.org/wikipedia/commons/a/ae/Olympic_flag.jpg",
-        { public_id: "olympic_flag" },
-        function (error, result) { console.log(result); });
-}
 
 const stripeIntegration = async (req, res) => { }
 
-module.exports = { test, registerUser, loginUser, getProfile, verifyMail, PasswordReset, NewPassword, createCampaign, stripeIntegration,logsout, fetchURL}
+module.exports = { test, registerUser, loginUser, getProfile, verifyMail, PasswordReset, NewPassword, createCampaign, stripeIntegration,logsout}

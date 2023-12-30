@@ -28,7 +28,6 @@ router.post('/ResetPassword', PasswordReset)
 router.post('/ForgotPassword/:id/:token', NewPassword)
 router.post('/fundraiser', createCampaign)
 router.post('/donate', stripeIntegration)
-router.get('/image/:img_link', fetchURL)
 
 
 module.exports = router

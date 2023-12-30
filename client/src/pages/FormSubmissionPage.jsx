@@ -1,18 +1,16 @@
 import React from 'react'
 import axios from 'axios';
+import { useEffect } from 'react';
 const FormSubmissionPage = ({ submitData }) => {
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    await axios.post("/fundraiser", submitData)
+    await axios.post("/fundraiser", e)
     .then((res) => console.log(res))
     .catch((err) => console.log(err));
       
   };
+  useEffect(() => { handleSubmit(submitData)},[submitData])
   return (
-    <div>
-      <form onSubmit={ handleSubmit}><button type ="submit">Submit</button></form>
-      
-    </div>
+    <></>
   )
 }
 

@@ -70,12 +70,14 @@ const FundraiserTypePage = ({ onNext }) => {
         </div>
         <div className="nav-item">
           <button
+
             className="btn btn-primary rounded-pill shadow"
             type="button"
-            onClick={() => onNext(type, "type")}
+            onClick={() => onNext(["type",type])}
           >
             Continue
           </button>
+          
         </div>
       </footer>
     </>
