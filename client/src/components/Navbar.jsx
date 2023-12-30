@@ -25,6 +25,8 @@ export default function Navbar() {
     })
   }, [isLoggedIn]);
   
+import Links from "./Links";
+  
   const logout = () => {
     axios.get('http://localhost:8000/logout').then(res=>{
     if(res.data.Status === "Success"){
@@ -52,46 +54,21 @@ export default function Navbar() {
           <span className="navbar-toggler-icon" />
         </button>
         <div id="navcol-1" className="collapse navbar-collapse">
-        <ul className="navbar-nav mx-auto">
-            <li className="nav-item">
-              <a className="nav-link" href="index.html">
-                Home
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="features.html">
-                Donate Now
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="integrations.html">
-                Past Campaigns
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="contacts.html">
-                Volunteer
-              </a>
-            </li>
-            
-            <li className="nav-item">
-              <a className="nav-link" href="pricing.html">
-                Start a fundraiser
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="features.html">
-                About Us
-              </a>
-            </li>
-          {isLoggedIn?( <li className="nav-item ">
-              <a className="nav-link active" href="features.html">
-                Hello {name}!
-              </a>
-            </li>):(<></>)}
+
+          <ul className="navbar-nav mx-auto">
+            <Links hrefs={links} />
+
+
+            {isLoggedIn ? (
+              <li className="nav-item ">
+                <a className="nav-link active" href="features.html">
+                  Hello {name}!
+                </a>
+              </li>
+            ) : (
+              <></>
+            )}
           </ul>
-
-
           {isLoggedIn ? (
             <button
               className="btn btn-primary shadow rounded-pill"
@@ -101,15 +78,18 @@ export default function Navbar() {
               Logout
             </button>
           ) : (
-            <a
+            <button
               className="btn btn-primary shadow rounded-pill"
-              role="button"
-              onClick={() => {
-                navigate("/login");
-              }}
+              onClick={() =>
+                navigate({
+                  pathname: links[links.length - 1].path,
+                  state: { from: window.location.pathname },
+                })
+              }
+              type="button"
             >
-              Sign In
-            </a>
+              {links[links.length - 1].btn_name}
+            </button>
           )}
         </div>
       </div>

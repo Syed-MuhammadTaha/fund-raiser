@@ -10,7 +10,17 @@ import Footer from './Footer';
 export default function Home() {
   return (
     <>
-      <Navbar />
+      <Navbar
+        links={[
+          { href: "/", name: "Home" },
+          { href: "/", name: "Donate Now" },
+          { href: "/", name: "Past Campaigns" },
+          { href: "/", name: "Volunteer" },
+          { href: "/", name: "Start a fundraiser" },
+          { href: "/", name: "About Us" },
+          {button: true, path: "/login", btn_name: "Login"}
+        ]}
+      />
       <Hero />
       <ActiveCampaign />
       <PastCampaign />

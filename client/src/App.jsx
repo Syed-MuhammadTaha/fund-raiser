@@ -6,8 +6,6 @@ import Login from '../src/pages/Login'
 import Register from '../src/pages/Register'
 import EmailVerify from './pages/EmailVerify'
 import FundRaiser from './pages/FundRaiser'
-
-import Dashboard from './pages/Dashboard'
 import ResetPassword from './pages/ResetPassword'
 import ForgotPassword from './pages/ForgotPassword'
 import axios from 'axios'
@@ -32,7 +30,6 @@ function App() {
             path="/verify/:id/:expirationTimestamp"
             element={<EmailVerify />}
           />
-           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/fundraiser" element={<FundRaiser />} />
           <Route path="/ResetPassword" element={<ResetPassword />} />
           <Route
