@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import FundraiserTypePage from "./FundraiserTypePage";
 import FundraiserGoalsPage from "./FundraiserGoalsPage";
 import FormSubmissionPage from "./FormSubmissionPage";
+import UploadCover from "./UploadCover";
 
 const FundRaiser = () => {
   const [data, setData] = useState({});
@@ -34,9 +35,10 @@ const FundRaiser = () => {
       {currentPage === 2 && (
         <FundraiserGoalsPage onNext={handleNext} onPrev={handlePrev} />
       )}
-      {currentPage === 5 && (
-        <FormSubmissionPage submitData={data} />
+      {currentPage === 3 && (
+        <UploadCover onNext={handleNext} onPrev={handlePrev} />
       )}
+      {currentPage === 5 && <FormSubmissionPage submitData={data} />}
     </div>
   );
 };

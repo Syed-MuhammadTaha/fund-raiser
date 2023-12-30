@@ -17,7 +17,6 @@ export default function Home() {
           { href: "/", name: "Past Campaigns" },
           { href: "/", name: "Volunteer" },
           { href: "/", name: "Start a fundraiser" },
-          { href: "/", name: "About Us" },
           {button: true, path: "/login", btn_name: "Login"}
         ]}
       />
