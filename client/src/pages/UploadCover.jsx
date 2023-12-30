@@ -9,29 +9,30 @@ function UploadCover({ onNext }) {
   const [urlImage,setURL] = useState("")
   const [coverPreview, setCoverPreview] = useState(null);
 
-  function submitImage(event) {
-    const formData = new FormData();
-    formData.append("file", image);
-    formData.append("upload_preset", preset_key);
-    formData.append("cloud_name", cloud_name);
-    console.log(coverPreview);
-    fetch(`https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`, {
-      method: "POST",
-      body: formData,
-    })
-      .then((res) => res.json())
-      .then((formData) => {
-        setCoverPreview(null);
-        toast.success("Image Uploaded Successfully");
-        setURL(formData.url);
-      })
-      .then(() => {
-        console.log(urlImage);
-      })
-      .catch((err) => {
-        console.log(err);
+  async function submitImage(event) {
+    try {
+      const formData = new FormData();
+      formData.append("file", image);
+      formData.append("upload_preset", preset_key);
+      formData.append("cloud_name", cloud_name);
+  
+      const res = await fetch(`https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`, {
+        method: "POST",
+        body: formData,
       });
+  
+      const data = await res.json();
+  
+      setCoverPreview(null);
+      toast.success("Image Uploaded Successfully");
+      setURL(data.url);
+      console.log(data.url); // Log the URL here to ensure it's correct
+    } catch (err) {
+      console.error(err);
+    }
   }
+  
+  
 
   return (
     <div>
