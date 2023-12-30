@@ -2,7 +2,7 @@
 import React from "react";
 import { ArrowLeft } from "react-bootstrap-icons";
 import Navbar from "../components/Navbar";
-
+import { toast } from "react-hot-toast";
 const FundraiserGoalsPage = ({ onNext, onPrev}) => {
     const [fundraisingGoals, setFundraisingGoals] = React.useState("");
   return (
@@ -42,12 +42,18 @@ const FundraiserGoalsPage = ({ onNext, onPrev}) => {
         </div>
         <div className="nav-item">
           <button
+
             className="btn btn-primary rounded-pill shadow"
             type="button"
-            onClick={() => onNext(fundraisingGoals, "goal")}
+            onClick={() => {
+              fundraisingGoals === ""
+                ? toast.error("Please enter an amount")
+                : onNext(["goal", parseInt(fundraisingGoals)]);
+            }}
           >
             Continue
           </button>
+          
         </div>
       </footer>
     </>
