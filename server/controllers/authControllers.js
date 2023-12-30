@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt')
 const nodemailer=require('nodemailer')
 const connection = require('../models/db')
 const { renderToString } = require('react-dom/server');
-const stripe = require('stripe')('sk_test_51OT909JvFBCqm5cO3mOWVLKvR5cdT6eDnK05rYu0tGuuwfNa6xRHNsa0Mfny4NQPSe2Z0S57SXIqrNISCl7oDJ5M00b178UuU5')
+
 //const EmailVerify = require('../../client/src/pages/EmailVerify')
 const test = (req,res) => {
     res.json("test is working")
@@ -276,33 +276,29 @@ const createCampaign = async (req,res)=>{
     // Process the received data as needed
     console.log(receivedData);
     res.json({ message: 'Data received successfully' });
-    connection.query('INSERT INTO campaign SET ?;', { fund_type: receivedData.type, goal: receivedData.goal },(error,re)=>{
+    connection.query('INSERT INTO fundraise SET ?;', { title: receivedData.title, description: receivedData.description, startDate: new Date(),goalAmount: receivedData.goal, currentAmount: 0, active:true  },(error,re)=>{
         if(error) throw error;
         console.log(re)
     });
 
 }
 
-const stripeIntegration = async (req, res) => { 
-//     const session = await stripe.checkout.sessions.create({
-//     line_items: [
-//       {
-//         price_data: {
-//           currency: 'usd',
-//           product_data: {
-//             name: 'T-shirt',
-//           },
-//           unit_amount: 2000,
-//         },
-//         quantity: 1,
-//       },
-//     ],
-//     // mode: 'payment',
-//     // success_url: 'http://localhost:4242/success',
-//     // cancel_url: 'http://localhost:4242/cancel',
-//   });
+const fetchFundraise = async (req, res) => { 
 
-//   res.redirect(303, session.url);
+    const { isActive } = req.params;
+    console.log(isActive)
+    const sqlQuery = 'SELECT * FROM fundraise WHERE active = ?;';
+    connection.query(sqlQuery, [isActive=="true"? 1:0 ], (err, result) => {
+        if (err) {
+            console.error('Error fetching fundraise:', err);
+            res.status(500).send({ message: 'Internal Server Error' });
+        } else {
+            res.status(200).send({ message: 'Fundraise fetched successfully', data: result });
+        }
+        console.log(result[0])
+    });
 }
 
-module.exports = { test, registerUser, loginUser, getProfile, verifyMail, PasswordReset, NewPassword, createCampaign, stripeIntegration,logsout}
+const stripeIntegration = async (req, res) => { }
+
+module.exports = { test, registerUser, loginUser, getProfile, verifyMail, PasswordReset, NewPassword, createCampaign, stripeIntegration,logsout, fetchFundraise}
