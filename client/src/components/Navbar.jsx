@@ -9,6 +9,7 @@ export default function Navbar() {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [name,setName] = useState('')
+  //logic for sign in
   axios.defaults.withCredentials=true
   console.log(isLoggedIn)
   useEffect(() => {
