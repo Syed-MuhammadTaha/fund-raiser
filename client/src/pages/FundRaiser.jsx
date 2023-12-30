@@ -4,16 +4,17 @@ import FundraiserTypePage from "./FundraiserTypePage";
 import FundraiserGoalsPage from "./FundraiserGoalsPage";
 import FormSubmissionPage from "./FormSubmissionPage";
 import UploadCover from "./UploadCover";
+import FundraiserDesc from "./FundraiserDesc";
 
 const FundRaiser = () => {
   const [data, setData] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
 
-  const handleNext = (data, key) => {
-    setData(prevData => ({
+  const handleNext = (...keyValuePairs) => {
+    setData((prevData) => ({
       ...prevData,
-      [key]: data
-    }))
+      ...Object.fromEntries(keyValuePairs),
+    }));
   
     setCurrentPage(currentPage + 1);
 
@@ -38,7 +39,13 @@ const FundRaiser = () => {
       {currentPage === 3 && (
         <UploadCover onNext={handleNext} onPrev={handlePrev} />
       )}
-      {currentPage === 5 && <FormSubmissionPage submitData={data} />}
+      {currentPage === 4 && (
+        <FundraiserDesc
+          onNext={handleNext}
+          onPrev={handlePrev}
+          submitData={data}
+        />
+      )}
     </div>
   );
 };
