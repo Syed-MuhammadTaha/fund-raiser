@@ -4,6 +4,14 @@ const bcrypt = require('bcrypt')
 const nodemailer=require('nodemailer')
 const connection = require('../models/db')
 const { renderToString } = require('react-dom/server');
+const { v2 } = require('cloudinary');
+
+
+v2.config({
+    cloud_name: 'ddymgf2hz',
+    api_key: '732749692138384',
+    api_secret: '9RHmkYvjWapaxzyfhmS9bb12nLo'
+});
 
 //const EmailVerify = require('../../client/src/pages/EmailVerify')
 const test = (req,res) => {
@@ -276,13 +284,29 @@ const createCampaign = async (req,res)=>{
     // Process the received data as needed
     console.log(receivedData);
     res.json({ message: 'Data received successfully' });
-    connection.query('INSERT INTO campaign SET ?;', { fund_type: receivedData.type, goal: receivedData.goal },(error,re)=>{
+    connection.query('INSERT INTO fundraise SET ?;', { title: receivedData.title, description: receivedData.description, startDate: new Date(),goalAmount: receivedData.goal, currentAmount: 0, active:true  },(error,re)=>{
         if(error) throw error;
         console.log(re)
     });
 
 }
 
+const fetchFundraise = async (req, res) => { 
+
+    const { isActive } = req.params;
+    console.log(isActive)
+    const sqlQuery = 'SELECT * FROM fundraise WHERE active = ?;';
+    connection.query(sqlQuery, [isActive=="true"? 1:0 ], (err, result) => {
+        if (err) {
+            console.error('Error fetching fundraise:', err);
+            res.status(500).send({ message: 'Internal Server Error' });
+        } else {
+            res.status(200).send({ message: 'Fundraise fetched successfully', data: result });
+        }
+        console.log(result[0])
+    });
+}
+
 const stripeIntegration = async (req, res) => { }
 
-module.exports = { test, registerUser, loginUser, getProfile, verifyMail, PasswordReset, NewPassword, createCampaign, stripeIntegration,logsout}
+module.exports = { test, registerUser, loginUser, getProfile, verifyMail, PasswordReset, NewPassword, createCampaign, stripeIntegration,logsout, fetchFundraise}
