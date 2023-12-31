@@ -1,4 +1,5 @@
 
+import Navbar from '../components/Navbar';
 import React, {useState,useEffect } from 'react'
 import { useParams, Link } from "react-router-dom";
 import {loadStripe} from '@stripe/stripe-js'
@@ -45,6 +46,7 @@ export default function Donate() {
     }
     return (
     <div>
+      <Navbar links={[{}]}/>
     <input
                     className="shadow-sm form-control"
                     type="text"

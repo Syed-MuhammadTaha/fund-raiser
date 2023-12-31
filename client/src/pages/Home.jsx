@@ -6,6 +6,7 @@ import PastCampaign from './PastCampaign';
 import Impact from './Impact'
 import Volunteer from './Volunteer'
 import StartFundraiser from './StartFundraiser';
+import ActiveDrive from './ActiveDrive';
 import Footer from './Footer';
 import { useEffect,useState } from 'react';
 import axios from 'axios';
@@ -29,11 +30,12 @@ export default function Home() {
       />
       <Hero />
       <ActiveCampaign />
-      <PastCampaign />
+      <ActiveDrive />
       <Impact />
       <Volunteer />
       
       <StartFundraiser loginDetail={isLoggedIn}  />
+      <PastCampaign />
       <Footer />
     </>
   );
