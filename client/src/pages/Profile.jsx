@@ -79,7 +79,9 @@ export default function Profile() {
           setID(userResponse.data.id);
   
           // Fetch payment details using the user ID
-          const paymentResponse = await fetch(`http://localhost:8000/getPaymentDetails?id=${userResponse.data.id}`);
+          const paymentResponse = await axios.get(`http://localhost:8000/getPaymentDetails/${id}`);
+          // const paymentResponse = await fetch('ttp://localhost:8000/getPaymentDetails' + userResponse.data.id);
+
           const paymentData = await paymentResponse.json();
   
           if (paymentResponse.status === 200) {
@@ -95,13 +97,34 @@ export default function Profile() {
         }
       } catch (error) {
         console.error('Error fetching data:', error);
-        setIsLoggedIn(false);
+        setIsLoggedIn(false); 
       }
     };
   
     fetchData();
 
   }, [isLoggedIn]);
+
+  // return (
+  //   <div>
+  //     {isLoggedIn ? (
+  //       <div>
+  //         <h2>User Details</h2>
+  //         <p>Name: {name}</p>
+  //         <p>ID: {id}</p>
+  //         <p>Email: {email}</p>
+
+  //         <h2>Payment Details</h2>
+  //         <p>Amount: {amount}</p>
+  //         <p>Payment Date: {paymentDate}</p>
+  //         <p>Title: {title}</p>
+  //         <p>Fundraise ID: {fid}</p>
+  //       </div>
+  //     ) : (
+  //       <p>User not logged in or data fetch failed.</p>
+  //     )}
+  //   </div>
+  // );
 
   return (
     <div>
@@ -142,10 +165,10 @@ export default function Profile() {
                     <MDBCardBody>
                       <MDBRow>
                         <MDBCol sm="4">
-                          <MDBCardText>Full Name</MDBCardText>
+                          <MDBCardText>Name</MDBCardText>
                         </MDBCol>
                         <MDBCol sm="8">
-                          <MDBCardText className="text-muted">{name}</MDBCardText>
+                          <MDBCardText className="text-muted">{paymentDate}</MDBCardText>
                         </MDBCol>
                       </MDBRow>
                       <hr />
