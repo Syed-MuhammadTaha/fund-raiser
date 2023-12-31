@@ -4,14 +4,33 @@ import Navbar from "../components/Navbar";
 import { toast } from "react-hot-toast";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const DriveDesc = ({ onNext, onPrev, submitData }) => {
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
-
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [id,setID] = useState()
+  
+  
+  axios.defaults.withCredentials=true
+  useEffect(() => {
+    axios.get('http://localhost:8000/profile')
+    .then(res => {
+      if(res.data.Status === "Success"){
+        setIsLoggedIn(true)
+        setID(res.data.id)
+        console.log(id)
+      }
+      else{
+        setIsLoggedIn(false)
+      }
+    })
+  }, [isLoggedIn]);
   const handleSubmit = async (e) => {
+    e.id = id
     await axios
       .post("/drive", e)
       .then((res) => console.log(res))

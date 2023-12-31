@@ -31,8 +31,7 @@ export default function Home() {
       <ActiveCampaign />
       <ActiveDrive />
       <Impact />
-      <Volunteer />
-      
+      <Volunteer loginDetail={isLoggedIn}/>
       <StartFundraiser loginDetail={isLoggedIn}  />
       <PastCampaign />
       <Footer />

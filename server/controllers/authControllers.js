@@ -375,7 +375,7 @@ const createDrive = async (req, res) => {
     // Process the received data as needed
     console.log(receivedData);
     res.json({ message: 'Data received successfully' });
-    connection.query('INSERT INTO drive SET ?;', { title: receivedData.title, description: receivedData.description, location: receivedData.location,  imgUrl: receivedData.imgUrl, type: receivedData.type, endDate: receivedData.endDate},(error,re)=>{
+    connection.query('INSERT INTO drive SET ?;', { title: receivedData.title, description: receivedData.description, location: receivedData.location,  imgUrl: receivedData.imgUrl, endDate: receivedData.endDate,createdBy:receivedData.id, type: receivedData.type},(error,re)=>{
         if(error) throw error;
         console.log(re)
     });

@@ -4,10 +4,30 @@ import FundraiserTypePage from "./FundraiserTypePage";
 import FundraiserGoalsPage from "./FundraiserGoalsPage";
 import UploadCover from "./UploadCover";
 import FundraiserDesc from "./FundraiserDesc";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import toast from "react-hot-toast";
 const FundRaiser = () => {
   const [data, setData] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
-  
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+  axios.defaults.withCredentials=true
+  useEffect(() => {
+    axios.get('http://localhost:8000/profile')
+    .then(res => {
+      if(res.data.Status === "Success"){
+        setIsLoggedIn(true)
+      }
+      else{
+        setIsLoggedIn(false)
+      }
+    }).catch(error => {
+      toast.error("Login Please"); 
+      // Redirect to login page
+      navigate('/login'); // Adjust the route as per your application setup
+    });
+}, [isLoggedIn]);
   const handleNext = (...keyValuePairs) => {
     setData((prevData) => ({
       ...prevData,
