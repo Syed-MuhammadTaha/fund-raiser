@@ -56,6 +56,7 @@ const PastCampaign = () => {
         {fundraisers &&
           fundraisers.map((fundraiser, idx) => (
             <Card
+              campaign={true}
               key={idx}
               title={fundraiser.title}
               description={fundraiser.description}
@@ -63,6 +64,7 @@ const PastCampaign = () => {
               amount={fundraiser.goalAmount}
               raised={fundraiser.currentAmount}
               category={fundraiser.type}
+              ended={true}
             />
           ))}
 
@@ -76,6 +78,7 @@ const PastCampaign = () => {
               image={drive.imgUrl}
               category={drive.type}
               idx={drive.driveId}
+              ended={true}
             />
           ))}
       </div>
