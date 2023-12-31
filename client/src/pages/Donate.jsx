@@ -1,6 +1,10 @@
 import React from 'react'
+import Navbar from '../components/Navbar';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
 export default function Donate() {
+    const [name, setName] = useState('');
 
     const details = ['Abubakar', '20000', 'charity'];
     // console.log(details)
@@ -28,8 +32,9 @@ export default function Donate() {
     }
 
     return (
-    <div>
-      <button onClick={makePayment}>Donate Now</button>
-    </div>
-  )
+      <div>
+            <Navbar links={[{}]}/>
+        <button onClick={makePayment}>Donate Now</button>
+      </div>
+    );
 }

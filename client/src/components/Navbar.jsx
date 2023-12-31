@@ -6,10 +6,11 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import Links from "./Links";
 
-export default function Navbar({links}) {
+export default function Navbar({ links}) {
+  
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [name,setName] = useState('')
+  const [name, setName] = useState('')
   //logic for sign in
   axios.defaults.withCredentials=true
   console.log(isLoggedIn)

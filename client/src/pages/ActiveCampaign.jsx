@@ -17,13 +17,13 @@ const ActiveCampaign = () => {
     };
 
     fetchData();
-  }, []); // T
+  }, []);
 
   return (
     <div className="container py-4 py-xl-5">
       <div className="row mb-5">
         <div className="mx-auto">
-          <h3>Explore Our Active Campaigns and Be a Catalyst for Good!</h3>
+          <h3>Explore Our <span className="underline">Active Fundraisers</span> and Be a Catalyst for Good!</h3>
         </div>
       </div>
       <div className="row mb-5 d-flex justify-content-between">
