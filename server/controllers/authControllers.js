@@ -4,7 +4,8 @@ const bcrypt = require('bcrypt')
 const nodemailer=require('nodemailer')
 const connection = require('../models/db')
 const { renderToString } = require('react-dom/server');
-const stripe = require('stripe')('sk_test_51OT909JvFBCqm5cO3mOWVLKvR5cdT6eDnK05rYu0tGuuwfNa6xRHNsa0Mfny4NQPSe2Z0S57SXIqrNISCl7oDJ5M00b178UuU5')
+const Stripe = require('stripe')
+const stripe = Stripe('sk_test_51OT909JvFBCqm5cO3mOWVLKvR5cdT6eDnK05rYu0tGuuwfNa6xRHNsa0Mfny4NQPSe2Z0S57SXIqrNISCl7oDJ5M00b178UuU5')
 //const EmailVerify = require('../../client/src/pages/EmailVerify')
 const test = (req,res) => {
     res.json("test is working")
@@ -141,14 +142,15 @@ const loginUser = async (req,res)=>{
         return res.json({error:'Incorrect Email or Password'})
         else {
             const fullName = result[0].FullName;
-
+            const user_id = result[0].id
+            console.log(user_id)
             // Split the full name based on spaces
             const fullNameArray = fullName.split(' ');
 
             // Extract the first name (assuming it's the first element after splitting)
             const firstName = fullNameArray[0];
                 //cookie token
-            const token = jwt.sign({FullName:firstName},process.env.JWT_SECRET,{expiresIn:process.env.JWT_EXPIRES})
+            const token = jwt.sign({users: { FullName: firstName, id: user_id }},process.env.JWT_SECRET,{expiresIn:process.env.JWT_EXPIRES})
             const cookiesOptions = {
                 expiresIn: new Date(Date.now() + process.env.COOKIE_EXPIRES *24*60*60*1000),
                 httpOnly:true
@@ -183,7 +185,8 @@ const getProfile = (req,res,next)=>{
             if(err){
                 return res.json({Message:"Authentication Error"})
             } else{
-                req.name = user.FullName
+                req.name=user.users.FullName
+                req.id=user.users.id
                 next()
             }
         })
@@ -283,26 +286,34 @@ const createCampaign = async (req,res)=>{
 
 }
 
-const stripeIntegration = async (req, res) => { 
-//     const session = await stripe.checkout.sessions.create({
-//     line_items: [
-//       {
-//         price_data: {
-//           currency: 'usd',
-//           product_data: {
-//             name: 'T-shirt',
-//           },
-//           unit_amount: 2000,
-//         },
-//         quantity: 1,
-//       },
-//     ],
-//     // mode: 'payment',
-//     // success_url: 'http://localhost:4242/success',
-//     // cancel_url: 'http://localhost:4242/cancel',
-//   });
+const stripeIntegration = async (req, res) => {
+    const {amount,id} = req.body
+    const customer = await stripe.customers.create({
+        metadata:{
+            userID:id,
+            Amount:amount
+        }
+    })
+    const session = await stripe.checkout.sessions.create({
+    line_items: [
+      {
+        price_data: {
+          currency: 'usd',
+          product_data: {
+            name: 'Donation',
+          },
+          unit_amount: amount*100,
+        },
+        quantity: 1,
+      },
+    ],
+    customer : customer.id,
+    mode: 'payment',
+    success_url: 'http://localhost:5173/checkout-success',
+    cancel_url: 'http://localhost:5173/donate',
+  });
 
-//   res.redirect(303, session.url);
+  res.send({url:session.url});
 }
 
 module.exports = { test, registerUser, loginUser, getProfile, verifyMail, PasswordReset, NewPassword, createCampaign, stripeIntegration,logsout}

@@ -14,6 +14,7 @@ import Donate from './pages/Donate'
 axios.defaults.baseURL = "http://localhost:8000";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.js";
+import CheckoutSuccess from './pages/CheckoutSuccess'
 // connect to local host
 axios.defaults.withCredentials = true
 function App() {
@@ -37,6 +38,7 @@ function App() {
             element={<ForgotPassword />}
           />
           <Route path="/donate" element={<Donate />} />
+          <Route path="/checkout-success" element={<CheckoutSuccess />} />
         </Routes>
       </UserContextProvider>
     </>
