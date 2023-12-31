@@ -1,7 +1,18 @@
 import React from 'react'
 import { useEffect } from 'react';
-
+import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 const StartFundraiser = ({loginDetail}) => {
+  const navigate =useNavigate()
+  const handleClick= ()=>{
+    if(loginDetail){
+        navigate("/fundraiser")
+    }
+    else{
+      toast.error('Please Log in')
+      navigate('/login')
+    }
+  }
   return (
     <div className="container py-4 py-xl-5">
       <div className="row mb-5">
@@ -27,7 +38,7 @@ const StartFundraiser = ({loginDetail}) => {
                 accelerates progress, turning curiosity into solutions that
                 shape a better future for all.
               </p>
-              <a className="btn btn-primary" role="button" href="/fundraiser">
+              <a className="btn btn-primary" role="button" onClick={handleClick}>
                  Create Now
               </a>
             </div>
@@ -48,7 +59,7 @@ const StartFundraiser = ({loginDetail}) => {
                 Support, Will Create Ripples of Positive Change. Together, Let's
                 Build a Brighter Tomorrow!
               </p>
-              <a className="btn btn-warning" role="button" href="/fundraiser">
+              <a className="btn btn-warning" role="button" onClick={handleClick}>
                 Create Now
               </a>
             </div>
@@ -65,7 +76,7 @@ const StartFundraiser = ({loginDetail}) => {
                 Doors to Education. Your Support Fuels Ambitions, Turning Dreams
                 into Achievements. 
               </p>
-              <a className="btn btn-primary" role="button" href="/fundraiser">
+              <a className="btn btn-primary" role="button"  onClick={handleClick}>
                 Create Now
               </a>
             </div>

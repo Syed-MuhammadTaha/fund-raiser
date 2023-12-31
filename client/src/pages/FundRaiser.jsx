@@ -7,7 +7,7 @@ import FundraiserDesc from "./FundraiserDesc";
 const FundRaiser = () => {
   const [data, setData] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
-
+  
   const handleNext = (...keyValuePairs) => {
     setData((prevData) => ({
       ...prevData,

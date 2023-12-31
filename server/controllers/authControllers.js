@@ -102,10 +102,13 @@ const registerUser = async (req,res) => {
     else{
         const hashedPassword=await hashPassword(password)
         email_existence.check(email, function(error, response){
+            console.log(response)
+            if(!response){
             return res.json({
                 error:'Email Doesnt Exist'
             })
-        
+            }
+            else{
         connection.query('INSERT INTO user SET ?;', {FullName:name, EmailAddress:email, Password:hashedPassword,verified:0},(error,re)=>{
             if(error) throw error;
             connection.query('SELECT id FROM user WHERE EmailAddress =?',[email],async(errors,resu)=>{
@@ -116,7 +119,7 @@ const registerUser = async (req,res) => {
             return res.json({succes:'User has been registered,Please Verify Email to Log in'})
 
         });
-    });}
+     } });}
 });
 // const [rows] = await
     // Check if there are any rows in the result
@@ -193,6 +196,7 @@ const getProfile = (req,res,next)=>{
             } else{
                 req.name=user.users.FullName
                 req.id=user.users.id
+
                 next()
             }
         })
@@ -284,9 +288,10 @@ const createCampaign = async (req, res) => {
     console.log('Received data:', req.body);
     const receivedData = req.body;
     // Process the received data as needed
-    console.log(receivedData);
+    console.log(receivedData.id);
     res.json({ message: 'Data received successfully' });
-    connection.query('INSERT INTO fundraise SET ?;', { title: receivedData.title, description: receivedData.description,goalAmount: receivedData.goal, imgUrl: receivedData.imgUrl, type: receivedData.type },(error,re)=>{
+    connection.query('INSERT INTO fundraise SET ?;', { title: receivedData.title, description: receivedData.description,goalAmount: receivedData.goal, imgUrl: receivedData.imgUrl, type: receivedData.type, createdBy:receivedData.id},(error,re)=>{
+
         if(error) throw error;
         console.log(re)
     });
@@ -389,6 +394,33 @@ const fetchDrive = async (req, res) => {
         }
     });
 }
+const filterCards = (req,res) =>{
+    const {type} = req.params
+    const sqlquery = 'SELECT * FROM fundraise WHERE type = ?;'
+    connection.query(sqlquery,[type],(error,result)=>{
+        if (error) {
+            console.error('Error fetching fundraise:', err);
+            res.status(500).send({ message: 'Internal Server Error' });
+        } else {
+            res.status(200).send({ message: 'Fundraise Type fetched successfully', data: result });
+        }
+    })
+}
+const PaymentDetails = async (req,res) => {
+    const {id} = req.params;
+    console.log(id)
+    const sqlQuery = `select title, fundraiseId, amount, paymentDate from payment natural join fundraise where id = ?`;
+    connection.query(sqlQuery, [id], (err, result) => {
+        if (err) {
+            console.error('Error fetching payment details:', err);
+            res.status(500).json({ message: 'Internal Server Error' });
+        } else {
+            console.log(result)
+            res.status(200).json({ message: 'Success', data: result });
+        }
+    })
+}
+module.exports = { test, registerUser, loginUser, getProfile, verifyMail, PasswordReset, NewPassword, createCampaign, stripeIntegration,logsout, fetchFundraise,filterCards,donatePage,PaymentDetails, createDrive, fetchDrive}
 
 
-module.exports = { test, registerUser, loginUser, getProfile, verifyMail, PasswordReset, NewPassword, createCampaign, stripeIntegration,logsout, fetchFundraise, donatePage, createDrive, fetchDrive}
+

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { ArrowLeft } from "react-bootstrap-icons";
 import Navbar from "../components/Navbar";
 import { toast } from "react-hot-toast";
@@ -9,9 +9,24 @@ const FundRaiseTitle = ({ onNext, onPrev, submitData }) => {
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [id,setID] = useState()
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
-
+  axios.defaults.withCredentials=true
+  useEffect(() => {
+    axios.get('http://localhost:8000/profile')
+    .then(res => {
+      if(res.data.Status === "Success"){
+        setIsLoggedIn(true)
+        setID(res.data.id)
+      }
+      else{
+        setIsLoggedIn(false)
+      }
+    })
+  }, [isLoggedIn]);
   const handleSubmit = async (e) => {
+    e.id = id
     await axios
       .post("/fundraiser", e)
       .then((res) => console.log(res))
