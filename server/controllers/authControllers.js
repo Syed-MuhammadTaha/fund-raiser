@@ -420,7 +420,43 @@ const PaymentDetails = async (req,res) => {
         }
     })
 }
-module.exports = { test, registerUser, loginUser, getProfile, verifyMail, PasswordReset, NewPassword, createCampaign, stripeIntegration,logsout, fetchFundraise,filterCards,donatePage,PaymentDetails, createDrive, fetchDrive}
+const drivePage = (req,res) => {
+    const { did } = req.params;
+    const sqlQuery = 'SELECT * FROM drive WHERE driveId = ?;' 
+
+
+    connection.query(sqlQuery, [did], (err, result) => {
+
+        if (err) {
+            console.error('Error fetching fundraise:', err);
+            res.status(500).send({ message: 'Internal Server Error' });
+        } else {
+            if (result.length > 0) {
+                res.status(200).send({
+                    
+                    message: 'Fundraise fetched successfully',
+                    data: result[0]
+                });
+            } else {
+                res.status(404).send({ message: 'Fundraise not found' });
+            }
+        }
+    });
+}
+const enrollVolunteer = (req, res) => {
+    const { id, did } = req.body;
+    const sqlQuery = 'INSERT INTO volunteer VALUES (?, ?);';
+    connection.query(sqlQuery, [id, did], (err, result) => {
+        if (err) {
+            console.error('Error enrolling volunteer:', err);
+            res.status(500).send({ message: 'Internal Server Error' });
+        } else {
+            res.status(200).send({ message: 'Success' });
+        }
+    });
+}
+
+module.exports = { test, registerUser, loginUser, getProfile, verifyMail, PasswordReset, NewPassword, createCampaign, stripeIntegration,logsout, fetchFundraise,filterCards,donatePage,PaymentDetails, createDrive, fetchDrive,drivePage, enrollVolunteer}
 
 
 

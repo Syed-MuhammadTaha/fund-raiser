@@ -3,7 +3,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
-const Card = ({ title, description, image, amount, raised, category, idx, campaign }) => {
+const Card = ({ title, description, image, amount, raised, category, idx, campaign, ended }) => {
   const [isHovered, setIsHovered] = useState(false);
   const navigate = useNavigate();
   const handleHover = () => {
@@ -11,7 +11,13 @@ const Card = ({ title, description, image, amount, raised, category, idx, campai
   };
   return (
     <div
-      onClick={() => navigate(`/fundraiser/donate/${idx}`)}
+      onClick={() => {
+        navigate(
+          `/${campaign ? "fundraiser" : "drive"}/${
+            campaign ? "donate" : "volunteer"
+          }/${idx }`
+        );
+      }}
       className="col"
       style={{ cursor: "pointer" }}
     >
