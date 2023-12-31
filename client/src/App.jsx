@@ -16,6 +16,7 @@ axios.defaults.baseURL = "http://localhost:8000";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.js";
 import CheckoutSuccess from './pages/CheckoutSuccess'
+import Profile from './pages/Profile'
 
 // connect to local host
 axios.defaults.withCredentials = true
@@ -39,6 +40,7 @@ function App() {
             path="/ForgotPassword/:id/:token"
             element={<ForgotPassword />}
           />
+          <Route path='/profile' element={<Profile/>}/>
 
           <Route path="/fundraiser/donate/:fid" element={<Donate />} />
           

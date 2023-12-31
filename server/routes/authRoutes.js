@@ -2,7 +2,7 @@ const express = require("express")
 const router = express.Router()
 const cors = require('cors')
 const connection = require('../models/db')
-const {test,loginUser,getProfile,registerUser,verifyMail, createCampaign,PasswordReset,NewPassword, stripeIntegration,logsout,fetchFundraise,donatePage} = require('../controllers/authControllers')
+const {test,loginUser,getProfile,registerUser,verifyMail, createCampaign,PasswordReset,NewPassword, stripeIntegration,logsout,fetchFundraise,donatePage, PaymentDetails} = require('../controllers/authControllers')
 
 const {hashPassword,comparePassword} = require('../helpers/auth')
 const jwt = require('jsonwebtoken')
@@ -24,7 +24,7 @@ router.post('/register', registerUser)
 router.post('/login', loginUser)
 router.get('/profile',getProfile,(req,res)=>{
     return res.json({Status:"Success",name: req.name,
-    id: req.id})
+    id: req.id})})
 router.get('/verify/:id/:expirationTimestamp', verifyMail)
 router.get('/logout',logsout)
 router.post('/ResetPassword', PasswordReset)
@@ -32,5 +32,7 @@ router.post('/ForgotPassword/:id/:token', NewPassword)
 router.post('/fundraiser', createCampaign)
 router.get('/fundraise/:isActive', fetchFundraise)
 router.post('/create-checkout-session', stripeIntegration)
+router.get('/getPaymentDetails', PaymentDetails)
+// router.get('/getActiveCampaignDetails', CampaginDetails)
 
-module.exports = router
+module.exports = router;

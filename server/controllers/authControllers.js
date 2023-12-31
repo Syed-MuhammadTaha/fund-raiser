@@ -156,7 +156,7 @@ const loginUser = async (req,res)=>{
             // Extract the first name (assuming it's the first element after splitting)
             const firstName = fullNameArray[0];
                 //cookie token
-            const token = jwt.sign({users: { FullName: firstName, id: user_id }},process.env.JWT_SECRET,{expiresIn:process.env.JWT_EXPIRES})
+            const token = jwt.sign({users: { FullName: firstName, id: user_id}},process.env.JWT_SECRET,{expiresIn:process.env.JWT_EXPIRES})
             const cookiesOptions = {
                 expiresIn: new Date(Date.now() + process.env.COOKIE_EXPIRES *24*60*60*1000),
                 httpOnly:true
@@ -193,7 +193,6 @@ const getProfile = (req,res,next)=>{
             } else{
                 req.name=user.users.FullName
                 req.id=user.users.id
-
                 next()
             }
         })
@@ -352,5 +351,21 @@ const donatePage = async (req, res) => {
     });
 }
 
+const PaymentDetails = async (req,res) => {
+    const {id} = req.query;
+    const sqlQuery = `select title, fundraiseId, amount, paymentDate from payment natural join fundraise  where id = ${id}`;
+    connection.query(sqlQuery, (err, result) => {
+        if (err) {
+            console.error('Error fetching payment details:', err);
+            res.status(500).json({ message: 'Internal Server Error' });
+        } else {
+            res.status(200).json({ message: 'Success', data: result });
+        }
+    })
+}
 
-module.exports = { test, registerUser, loginUser, getProfile, verifyMail, PasswordReset, NewPassword, createCampaign, stripeIntegration,logsout, fetchFundraise}
+// const CampaginDetails = async () => {
+
+// }
+
+module.exports = { test, registerUser, loginUser, getProfile, verifyMail, PasswordReset, NewPassword, createCampaign, stripeIntegration,logsout, fetchFundraise, PaymentDetails}
