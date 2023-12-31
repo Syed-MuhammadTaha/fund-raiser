@@ -8,11 +8,14 @@ import Volunteer from './Volunteer'
 import StartFundraiser from './StartFundraiser';
 import ActiveDrive from './ActiveDrive';
 import Footer from './Footer';
-import { useEffect } from 'react';
+import { useEffect,useState } from 'react';
 import axios from 'axios';
 
 export default function Home() {
-  
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  useEffect(()=>{
+    console.log(isLoggedIn+' extracting')
+  })
   return (
     <>
       <Navbar
@@ -23,15 +26,16 @@ export default function Home() {
           { href: "/", name: "Volunteer" },
           { href: "/", name: "Start a fundraiser" },
           {button: true, path: "/login", btn_name: "Login"}
-        ]}
+        ]} getLoggedIn={setIsLoggedIn}
       />
       <Hero />
       <ActiveCampaign />
       <ActiveDrive />
       <Impact />
       <Volunteer />
+      
+      <StartFundraiser loginDetail={isLoggedIn}  />
       <PastCampaign />
-      <StartFundraiser />
       <Footer />
     </>
   );
