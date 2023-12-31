@@ -301,12 +301,14 @@ const fetchFundraise = async (req, res) => {
             res.status(200).send({ message: 'Fundraise fetched successfully', data: result });
         }
     });
+}
 const stripeIntegration = async (req, res) => {
-    const {amount,id} = req.body
+    const {amount,id,fid} = req.body
     const customer = await stripe.customers.create({
         metadata:{
             userID:id,
-            Amount:amount
+            Amount:amount,
+            fundID:fid
         }
     })
     const session = await stripe.checkout.sessions.create({
@@ -342,7 +344,5 @@ const donatePage = async (req, res) => {
         }
     });
 }
-
-const stripeIntegration = async (req, res) => { }
 
 module.exports = { test, registerUser, loginUser, getProfile, verifyMail, PasswordReset, NewPassword, createCampaign, stripeIntegration,logsout, fetchFundraise}
