@@ -3,12 +3,13 @@ import Card from "./Card";
 import axios from "axios";
 import { useEffect } from "react";
 
+
 const ActiveDrive = () => {
   const [fundraisers, setFundraisers] = React.useState();
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("fundraise/true");
+        const response = await axios.get("drive/true");
         setFundraisers(response.data.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -57,12 +58,11 @@ const ActiveDrive = () => {
         {fundraisers &&
           fundraisers.map((fundraiser, idx) => (
             <Card
+              campaign={false}
               key={idx}
               title={fundraiser.title}
               description={fundraiser.description}
               image={fundraiser.imgUrl}
-              amount={fundraiser.goalAmount}
-              raised={fundraiser.currentAmount}
               category={fundraiser.type}
               idx={fundraiser.fundraiseId}
             />

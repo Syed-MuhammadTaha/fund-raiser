@@ -21,14 +21,7 @@ const Volunteer = () => {
                     and be the change!
                   </p>
                   <div className="my-3">
-                    <a
-                      className="btn btn-secondary me-2 mt-2 rounded-pill"
-                      role="button"
-                      href="#"
-                    >
-                      View Drives
-                    </a>
-                    <a className="btn btn-light mt-2 rounded-pill" role="button" href="#">
+                    <a className="btn btn-secondary mt-2 rounded-pill" role="button" href="/createvolunteer">
                       Create a Drive
                     </a>
                   </div>

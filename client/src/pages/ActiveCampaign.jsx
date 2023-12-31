@@ -54,6 +54,7 @@ const ActiveCampaign = () => {
         {fundraisers && fundraisers.map((fundraiser,idx) => (
           <Card
             
+            campaign={true}
             key={idx}
             title={fundraiser.title}
             description={fundraiser.description}

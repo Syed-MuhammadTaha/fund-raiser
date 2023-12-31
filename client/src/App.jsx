@@ -9,6 +9,7 @@ import FundRaiser from './pages/FundRaiser'
 import ResetPassword from './pages/ResetPassword'
 import ForgotPassword from './pages/ForgotPassword'
 import NotFound from './pages/NotFound'
+import CreateVolunteer from './pages/CreateVolunteer'
 import axios from 'axios'
 import { UserContextProvider } from '../context/userContext'
 import Donate from './pages/Donate'
@@ -42,6 +43,7 @@ function App() {
           <Route path="/fundraiser/donate/:fid" element={<Donate />} />
           
           <Route path="/checkout-success" element={<CheckoutSuccess />} />
+          <Route path="/createvolunteer" element={<CreateVolunteer />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </UserContextProvider>

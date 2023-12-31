@@ -286,7 +286,7 @@ const createCampaign = async (req, res) => {
     // Process the received data as needed
     console.log(receivedData);
     res.json({ message: 'Data received successfully' });
-    connection.query('INSERT INTO fundraise SET ?;', { title: receivedData.title, description: receivedData.description,goalAmount: receivedData.goal, active:true, imgUrl: receivedData.imgUrl, type: receivedData.type },(error,re)=>{
+    connection.query('INSERT INTO fundraise SET ?;', { title: receivedData.title, description: receivedData.description,goalAmount: receivedData.goal, imgUrl: receivedData.imgUrl, type: receivedData.type },(error,re)=>{
         if(error) throw error;
         console.log(re)
     });
@@ -339,9 +339,48 @@ const stripeIntegration = async (req, res) => {
   res.send({url:session.url});
 }
 const donatePage = async (req, res) => {
-    const { id } = req.params;
-    const sqlQuery = 'SELECT * FROM fundraise WHERE id = ?;';
-    connection.query(sqlQuery, [id], (err, result) => {
+    const { fid } = req.params;
+    const sqlQuery = 'SELECT fundraise.*, user.*, COUNT(*) AS count FROM fundraise ' +
+        'NATURAL JOIN payment INNER JOIN user ON createdBy = user.id ' +
+        'WHERE fundraiseId = ? GROUP BY fundraiseId, user.id';
+
+
+    connection.query(sqlQuery, [fid], (err, result) => {
+        if (err) {
+            console.error('Error fetching fundraise:', err);
+            res.status(500).send({ message: 'Internal Server Error' });
+        } else {
+            console.log(fid);
+            if (result.length > 0) {
+                const fundraiseData = result[0];
+                const paymentCount = fundraiseData.donationCount;
+                res.status(200).send({
+                    message: 'Fundraise fetched successfully',
+                    data: fundraiseData,
+                });
+            } else {
+                res.status(404).send({ message: 'Fundraise not found' });
+            }
+        }
+    });
+}
+const createDrive = async (req, res) => {
+    console.log('Received data:', req.body);
+    const receivedData = req.body;
+    // Process the received data as needed
+    console.log(receivedData);
+    res.json({ message: 'Data received successfully' });
+    connection.query('INSERT INTO drive SET ?;', { title: receivedData.title, description: receivedData.description, location: receivedData.location,  imgUrl: receivedData.imgUrl, type: receivedData.type, endDate: receivedData.endDate},(error,re)=>{
+        if(error) throw error;
+        console.log(re)
+    });
+}
+
+const fetchDrive = async (req, res) => {
+    const { isActive } = req.params;
+    console.log(isActive)
+    const sqlQuery = 'SELECT * FROM drive WHERE active = ?;';
+    connection.query(sqlQuery, [isActive == "true" ? 1 : 0], (err, result) => {
         if (err) {
             console.error('Error fetching fundraise:', err);
             res.status(500).send({ message: 'Internal Server Error' });
@@ -351,4 +390,5 @@ const donatePage = async (req, res) => {
     });
 }
 
-module.exports = { test, registerUser, loginUser, getProfile, verifyMail, PasswordReset, NewPassword, createCampaign, stripeIntegration,logsout, fetchFundraise}
+
+module.exports = { test, registerUser, loginUser, getProfile, verifyMail, PasswordReset, NewPassword, createCampaign, stripeIntegration,logsout, fetchFundraise, donatePage, createDrive, fetchDrive}

@@ -13,7 +13,7 @@ router.post('/webhook', express.raw({type: 'application/json'}), (request, respo
     let data;
     let eventType;
   if(endpointSecret){
-    let event;
+    let event; 
 
     try {
         event = stripe.webhooks.constructEvent(request.body, sig, endpointSecret);
