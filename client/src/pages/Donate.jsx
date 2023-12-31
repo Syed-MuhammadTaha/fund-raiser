@@ -1,15 +1,21 @@
 
-import React, { useState,useEffect } from 'react'
+import React, {useState,useEffect } from 'react'
+import { useParams, Link } from "react-router-dom";
 import {loadStripe} from '@stripe/stripe-js'
+import { useNavigate } from "react-router-dom";
+import toast from 'react-hot-toast';
 import axios from 'axios';
 export default function Donate() {
     const [amount,setAmount]=useState(null)
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [name,setName] = useState('')
     const [id,setID] = useState()
-  //logic for sign in
+    const {fid} = useParams();
+    const navigate = useNavigate()
+  //logic for sign in 
   axios.defaults.withCredentials=true
   console.log(isLoggedIn)
+  console.log(fid)
   useEffect(() => {
     axios.get('http://localhost:8000/profile')
     .then(res => {
@@ -23,14 +29,19 @@ export default function Donate() {
       }
     })
   }, [isLoggedIn]);
-
     const handlePayment =()=>{
+      if(isLoggedIn){
         axios.post("/donate/create-checkout-session",
-        {amount,id}).then((res)=>{
+        {amount,id,fid}).then((res)=>{
             if(res.data.url){
                 window.location.href=res.data.url
             }
         }).catch((err)=>console.log(err.message))
+      }
+      else{
+        toast.error("Please Log In")
+        navigate("/login")
+      }
     }
     return (
     <div>

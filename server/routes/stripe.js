@@ -3,7 +3,7 @@ const router = express.Router()
 const Stripe = require('stripe')
 const stripe = Stripe('sk_test_51OT909JvFBCqm5cO3mOWVLKvR5cdT6eDnK05rYu0tGuuwfNa6xRHNsa0Mfny4NQPSe2Z0S57SXIqrNISCl7oDJ5M00b178UuU5')
 const {stripeIntegration}=require('../controllers/authControllers')
-
+const connection = require('../models/db')
 router.post('/create-checkout-session', stripeIntegration)
 
 let endpointSecret;
@@ -32,16 +32,44 @@ else{
 }
 
   // Handle the event
-  if(eventType === "checkout.session.completed"){
+  if (eventType === "checkout.session.completed") {
     stripe.customers
-    .retrieve(data.customer)
-    .then(
-        (customer)=>{
-    console.log(customer)
-    console.log(customer.metadata.userID)
-    console.log("data:",data)
-    }).catch(err=> console.log(err.message))
-  }
+        .retrieve(data.customer)
+        .then((customer) => {
+            const userId = customer.metadata.userID;
+            const fundId = customer.metadata.fundID;
+            const amount = customer.metadata.Amount;
+
+            // Insert payment information into the payments table
+            const insertPaymentQuery = `
+                INSERT INTO payment (amount, paymentDate, id, fundraiseId)
+                VALUES (?, NOW(), ?, ?)
+            `;
+
+            connection.query(insertPaymentQuery, [amount,userId,fundId], (err, results) => {
+                if (err) {
+                    console.error('Error inserting payment:', err);
+                } else {
+                    console.log('Payment inserted successfully:', results);
+                    const updateFundraiseQuery = `
+                    UPDATE fundraise
+                    SET currentAmount = currentAmount + ?
+                    WHERE fundraiseId = ?
+                `;
+
+                connection.query(updateFundraiseQuery, [amount, fundId], (updateErr, updateResults) =>{
+                    if (updateErr) {
+                        console.error('Error updating fundraise table:', updateErr);
+                    } else {
+                        console.log('Fundraise table updated successfully:', updateResults);
+                    }
+                })
+                }
+            });
+        })
+        .catch(err => console.log(err.message));
+}
+
   // Return a 200 response to acknowledge receipt of the event
   response.send().end();
 });

@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt')
 const nodemailer=require('nodemailer')
 const connection = require('../models/db')
 const { renderToString } = require('react-dom/server');
+const email_existence = require('email-existence')
 const Stripe = require('stripe')
 const stripe = Stripe('sk_test_51OT909JvFBCqm5cO3mOWVLKvR5cdT6eDnK05rYu0tGuuwfNa6xRHNsa0Mfny4NQPSe2Z0S57SXIqrNISCl7oDJ5M00b178UuU5')
 //const EmailVerify = require('../../client/src/pages/EmailVerify')
@@ -100,6 +101,11 @@ const registerUser = async (req,res) => {
     if(result[0]) return res.json({error:'EMAIL IS TAKEN ALREADY'})
     else{
         const hashedPassword=await hashPassword(password)
+        email_existence.check(email, function(error, response){
+            return res.json({
+                error:'Email Doesnt Exist'
+            })
+        
         connection.query('INSERT INTO user SET ?;', {FullName:name, EmailAddress:email, Password:hashedPassword,verified:0},(error,re)=>{
             if(error) throw error;
             connection.query('SELECT id FROM user WHERE EmailAddress =?',[email],async(errors,resu)=>{
@@ -110,7 +116,7 @@ const registerUser = async (req,res) => {
             return res.json({succes:'User has been registered,Please Verify Email to Log in'})
 
         });
-}
+    });}
 });
 // const [rows] = await
     // Check if there are any rows in the result
@@ -301,12 +307,14 @@ const fetchFundraise = async (req, res) => {
             res.status(200).send({ message: 'Fundraise fetched successfully', data: result });
         }
     });
+}
 const stripeIntegration = async (req, res) => {
-    const {amount,id} = req.body
+    const {amount,id,fid} = req.body
     const customer = await stripe.customers.create({
         metadata:{
             userID:id,
-            Amount:amount
+            Amount:amount,
+            fundID:fid
         }
     })
     const session = await stripe.checkout.sessions.create({
@@ -342,7 +350,5 @@ const donatePage = async (req, res) => {
         }
     });
 }
-
-const stripeIntegration = async (req, res) => { }
 
 module.exports = { test, registerUser, loginUser, getProfile, verifyMail, PasswordReset, NewPassword, createCampaign, stripeIntegration,logsout, fetchFundraise}

@@ -6,7 +6,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import Links from "./Links";
 
-export default function Navbar({links}) {
+export default function Navbar({links,getLoggedIn  }) {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [name,setName] = useState('')
@@ -21,6 +21,7 @@ export default function Navbar({links}) {
         setIsLoggedIn(true)
         setName(res.data.name)
         setID(res.data.id)
+        getLoggedIn(true)
       }
       else{
         setIsLoggedIn(false)

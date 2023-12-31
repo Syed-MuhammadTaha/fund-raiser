@@ -39,7 +39,7 @@ function App() {
             element={<ForgotPassword />}
           />
 
-          <Route path="/fundraiser/donate/:id" element={<Donate />} />
+          <Route path="/fundraiser/donate/:fid" element={<Donate />} />
           
           <Route path="/checkout-success" element={<CheckoutSuccess />} />
           <Route path="*" element={<NotFound />} />
