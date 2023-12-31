@@ -271,12 +271,13 @@ const NewPassword = (req, res) => {
     })
 }
 
-const createCampaign = async (req,res)=>{
+const createCampaign = async (req, res) => {
+    console.log('Received data:', req.body);
     const receivedData = req.body;
     // Process the received data as needed
     console.log(receivedData);
     res.json({ message: 'Data received successfully' });
-    connection.query('INSERT INTO fundraise SET ?;', { title: receivedData.title, description: receivedData.description, startDate: new Date(),goalAmount: receivedData.goal, currentAmount: 0, active:true  },(error,re)=>{
+    connection.query('INSERT INTO fundraise SET ?;', { title: receivedData.title, description: receivedData.description, startDate: new Date(),goalAmount: receivedData.goal, currentAmount: 0, active:true, imgUrl: receivedData.imgUrl, type: receivedData.type },(error,re)=>{
         if(error) throw error;
         console.log(re)
     });
@@ -295,7 +296,6 @@ const fetchFundraise = async (req, res) => {
         } else {
             res.status(200).send({ message: 'Fundraise fetched successfully', data: result });
         }
-        console.log(result[0])
     });
 }
 

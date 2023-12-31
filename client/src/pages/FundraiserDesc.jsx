@@ -29,13 +29,18 @@ const FundRaiseTitle = ({ onNext, onPrev, submitData }) => {
 
   const confirmCreateFundraiser = () => {
     // Perform the actual fundraiser creation logic here
-    onNext(["title", title], ["description", description]);
-    handleSubmit(submitData)
+    
+    submitData.title = title;
+    submitData.description = description;
 
+    handleSubmit(submitData);
     // After successful creation, close the modal and enable scrolling
     setShowConfirmationModal(false);
     document.body.style.overflow = "visible";
+
+    
     navigate("/")
+    toast.success("Fundraiser created successfully");
   };
 
   return (

@@ -1,7 +1,24 @@
 import React from 'react'
 import Card from './Card';
+import axios from 'axios';
+import { useEffect } from 'react';
+
 
 const ActiveCampaign = () => {
+  const [fundraisers, setFundraisers] = React.useState();
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("fundraise/true");
+        setFundraisers(response.data.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []); // T
+
   return (
     <div className="container py-4 py-xl-5">
       <div className="row mb-5">
@@ -31,20 +48,21 @@ const ActiveCampaign = () => {
             </a>
           </div>
         </div>
-        <div className="w-50 d-flex justify-content-end">
-          <button
-            className="btn btn-outline-primary rounded-pill"
-            type="submit"
-          >
-            See More
-          </button>
-        </div>
       </div>
 
       <div className="row gy-4 row-cols-1 row-cols-md-2 row-cols-xl-3">
-        <Card />
-        <Card />
-        <Card />
+        {fundraisers && fundraisers.map((fundraiser,idx) => (
+          <Card
+            key={idx}
+            title={fundraiser.title}
+            description={fundraiser.description}
+            image={fundraiser.imgUrl}
+            amount={fundraiser.goalAmount}
+            raised={fundraiser.currentAmount}
+            category={fundraiser.type}
+          />
+        ))
+        }
       </div>
     </div>
   );

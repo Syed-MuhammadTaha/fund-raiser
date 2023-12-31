@@ -8,6 +8,7 @@ import EmailVerify from './pages/EmailVerify'
 import FundRaiser from './pages/FundRaiser'
 import ResetPassword from './pages/ResetPassword'
 import ForgotPassword from './pages/ForgotPassword'
+import NotFound from './pages/NotFound'
 import axios from 'axios'
 import { UserContextProvider } from '../context/userContext'
 import Donate from './pages/Donate'
@@ -37,6 +38,7 @@ function App() {
             element={<ForgotPassword />}
           />
           <Route path="/donate" element={<Donate />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </UserContextProvider>
     </>

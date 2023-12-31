@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from "react";
 import FundraiserTypePage from "./FundraiserTypePage";
 import FundraiserGoalsPage from "./FundraiserGoalsPage";
-import FormSubmissionPage from "./FormSubmissionPage";
 import UploadCover from "./UploadCover";
 import FundraiserDesc from "./FundraiserDesc";
 

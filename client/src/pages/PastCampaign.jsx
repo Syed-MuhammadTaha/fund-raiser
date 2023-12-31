@@ -30,14 +30,6 @@ const PastCampaign = () => {
                 </a>
             </div>
             </div>
-            <div className="w-50 d-flex justify-content-end ">
-            <button
-                className="btn btn-outline-primary rounded-pill"
-                type="submit"
-            >
-                See More
-            </button>
-            </div>
         </div>
 
         <div className="row gy-4 row-cols-1 row-cols-md-2 row-cols-xl-3">

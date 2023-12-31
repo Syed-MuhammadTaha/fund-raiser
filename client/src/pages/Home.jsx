@@ -7,7 +7,11 @@ import Impact from './Impact'
 import Volunteer from './Volunteer'
 import StartFundraiser from './StartFundraiser';
 import Footer from './Footer';
+import { useEffect } from 'react';
+import axios from 'axios';
+
 export default function Home() {
+  
   return (
     <>
       <Navbar
@@ -25,6 +29,7 @@ export default function Home() {
       <PastCampaign />
       <Impact />
       <Volunteer />
+      
       <StartFundraiser />
       <Footer />
     </>
