@@ -1,13 +1,14 @@
-import React from 'react'
-import Card from './Card';
+import React from "react";
+import Card from "./Card";
 import axios from "axios";
 import { useEffect } from "react";
-const PastCampaign = () => {
+
+const ActiveDrive = () => {
   const [fundraisers, setFundraisers] = React.useState();
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("fundraise/false");
+        const response = await axios.get("fundraise/true");
         setFundraisers(response.data.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -15,13 +16,15 @@ const PastCampaign = () => {
     };
 
     fetchData();
-  }, []); // T
+  }, []);
+
   return (
     <div className="container py-4 py-xl-5">
       <div className="row mb-5">
         <div className="mx-auto">
           <h3>
-            Rewind Through Our Past Campaigns and Celebrate the Difference Made
+            View Our
+            <span className="underline"> Active Drives</span> and Witness Impact
             Together!
           </h3>
         </div>
@@ -38,10 +41,13 @@ const PastCampaign = () => {
           </button>
           <div className="dropdown-menu">
             <a className="dropdown-item" href="#">
-              Drives
+              Blood Drives
             </a>
             <a className="dropdown-item" href="#">
-              Fundraiser
+              Clothing Drives
+            </a>
+            <a className="dropdown-item" href="#">
+              Plantation Drives
             </a>
           </div>
         </div>
@@ -58,11 +64,12 @@ const PastCampaign = () => {
               amount={fundraiser.goalAmount}
               raised={fundraiser.currentAmount}
               category={fundraiser.type}
+              idx={fundraiser.fundraiseId}
             />
           ))}
       </div>
     </div>
   );
-}
+};
 
-export default PastCampaign
+export default ActiveDrive;

@@ -286,7 +286,7 @@ const createCampaign = async (req, res) => {
     // Process the received data as needed
     console.log(receivedData);
     res.json({ message: 'Data received successfully' });
-    connection.query('INSERT INTO fundraise SET ?;', { title: receivedData.title, description: receivedData.description, startDate: new Date(),goalAmount: receivedData.goal, currentAmount: 0, active:true, imgUrl: receivedData.imgUrl, type: receivedData.type },(error,re)=>{
+    connection.query('INSERT INTO fundraise SET ?;', { title: receivedData.title, description: receivedData.description,goalAmount: receivedData.goal, active:true, imgUrl: receivedData.imgUrl, type: receivedData.type },(error,re)=>{
         if(error) throw error;
         console.log(re)
     });
