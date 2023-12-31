@@ -14,8 +14,8 @@ export default function Donate() {
     const [id,setID] = useState()
     const {fid} = useParams();
     const navigate = useNavigate()
-    const [donateInfo, setDonateInfo] = useState();
-    const [daysPassed, setDaysPassed] = useState(null);
+  const [donateInfo, setDonateInfo] = useState();
+  const [active, setActive] = useState(false);
   //logic for sign in 
   axios.defaults.withCredentials=true
   console.log(isLoggedIn)
@@ -26,7 +26,8 @@ export default function Donate() {
         try {
           const response = await axios.get("donate/"+fid);
             setDonateInfo(response.data.data);
-            console.log(response.data.data)
+          console.log(response.data.data)
+          setActive(response.data.data.active)
         } catch (error) {
           console.error("Error fetching data:", error);
         }
@@ -138,13 +139,24 @@ export default function Donate() {
                       />
                     </div>
                     <div className="mb-2">
-                      <button
-                        className="btn btn-primary shadow w-100"
-                        type="submit"
-                        onClick={handlePayment}
-                      >
-                        Donate Now
-                      </button>
+                      {active ? (
+                        <button
+                          className="btn btn-primary shadow w-100"
+                          type="submit"
+                          onClick={handlePayment}
+                        >
+                          Donate Now
+                        </button>
+                      ) : (
+                        <button
+                          className="btn btn-primary shadow w-100"
+                          type="submit"
+                          onClick={handlePayment}
+                          disabled
+                        >
+                          Donation Ended
+                        </button>
+                      )}
                     </div>
                   </div>
                 </div>
