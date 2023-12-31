@@ -285,4 +285,16 @@ const createCampaign = async (req,res)=>{
 
 const stripeIntegration = async (req, res) => { }
 
-module.exports = { test, registerUser, loginUser, getProfile, verifyMail, PasswordReset, NewPassword, createCampaign, stripeIntegration,logsout}
+const CampaignDetails = async (req, res, fundraiseId) => {
+    const query = `select title, imgUrl, type, goalAmount from fundraise where fundraiseId = 6 && active = 1`;
+    connection.query(query, (error, result) => {
+        if (error) {
+            console.error('Error getting campaign details:', error);
+            res.status(500).send('Error getting campaign details');
+        } else {
+            res.status(200).send(result);
+        }
+    });
+}
+
+module.exports = { test, registerUser, loginUser, getProfile, verifyMail, PasswordReset, NewPassword, createCampaign, stripeIntegration,logsout, CampaignDetails}

@@ -1,18 +1,39 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
+import axios from 'axios'
 
-const Card = () => {
+const Card = (fundraiserId) => {
+
+  const [data, setData] = useState({
+    title: "",
+    imgUrl: "",
+    type: "",
+    goalAmount: "",
+  });
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const response = await axios.get("/fundraiserInfo");
+          setData(response.data[0]);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      };
+  
+      fetchData();
+    }, []);
+
   return (
-    <div onClick={() => console.log("Clicked")}>
+    <div>
       <div className="col">
         <img
           className="flex-shrink-0 fit-cover"
           width="100%"
           height="100%"
-          src="https://cdn.bootstrapstudio.io/placeholders/1400x800.png"
+          src={data.imgUrl}
         />
-        <h5 className="mt-3">Lorem libero donec</h5>
+        <h5 className="mt-3">{data.title}</h5>
         <span className="badge rounded-pill bg-primary mb-2">
-          Scholarship Fund
+          {data.type}
         </span>
 
         <div className="progress mt-2 " style={{ height: "5px" }}>
@@ -24,7 +45,7 @@ const Card = () => {
             aria-valuemax="100"
           ></div>
         </div>
-        <p className="text-muted mb-0">$40,000 raised</p>
+        <p className="text-muted mb-0">$ {data.goalAmount} raised</p>
       </div>
     </div>
   );
