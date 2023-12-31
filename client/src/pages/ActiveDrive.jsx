@@ -5,12 +5,12 @@ import { useEffect } from "react";
 
 
 const ActiveDrive = () => {
-  const [fundraisers, setFundraisers] = React.useState();
+  const [drives, setDrives] = React.useState();
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get("drive/true");
-        setFundraisers(response.data.data);
+        setDrives(response.data.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -55,16 +55,16 @@ const ActiveDrive = () => {
       </div>
 
       <div className="row gy-4 row-cols-1 row-cols-md-2 row-cols-xl-3">
-        {fundraisers &&
-          fundraisers.map((fundraiser, idx) => (
+        {drives &&
+          drives.map((drive, idx) => (
             <Card
               campaign={false}
               key={idx}
-              title={fundraiser.title}
-              description={fundraiser.description}
-              image={fundraiser.imgUrl}
-              category={fundraiser.type}
-              idx={fundraiser.fundraiseId}
+              title={drive.title}
+              description={drive.description}
+              image={drive.imgUrl}
+              category={drive.type}
+              idx={drive.driveId}
             />
           ))}
       </div>

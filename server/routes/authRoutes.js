@@ -2,7 +2,7 @@ const express = require("express")
 const router = express.Router()
 const cors = require('cors')
 const connection = require('../models/db')
-const {test,loginUser,getProfile,registerUser,verifyMail, createCampaign,PasswordReset,NewPassword, stripeIntegration,logsout,fetchFundraise,donatePage,filterCards,createDrive,fetchDrive} = require('../controllers/authControllers')
+const {test,loginUser,getProfile,registerUser,verifyMail, createCampaign,PasswordReset,NewPassword, stripeIntegration,logsout,fetchFundraise,donatePage,filterCards,createDrive,fetchDrive, drivePage, enrollVolunteer} = require('../controllers/authControllers')
 
 const {hashPassword,comparePassword} = require('../helpers/auth')
 const jwt = require('jsonwebtoken')
@@ -34,8 +34,11 @@ router.post('/fundraiser', createCampaign)
 router.get('/fundraise/:isActive', fetchFundraise)
 router.get('/drive/:isActive', fetchDrive)
 router.post('/create-checkout-session', stripeIntegration)
-router.get('/fundraise/type/:type',filterCards)
+router.get('/fundraise/type/:type', filterCards)
+
 router.get('/donate/:fid', donatePage)
 router.post('/drive', createDrive)
+router.get('/drive/did/:did', drivePage)
+router.post('/drive/volunteer', enrollVolunteer)
 
 module.exports = router

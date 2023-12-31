@@ -4,18 +4,23 @@ import axios from "axios";
 import { useEffect } from "react";
 const PastCampaign = () => {
   const [fundraisers, setFundraisers] = React.useState();
+  const [drives, setDrives] = React.useState();
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("fundraise/false");
-        setFundraisers(response.data.data);
+        const response1 = await axios.get("fundraise/false");
+        setFundraisers(response1.data.data);
+
+        const response2 = await axios.get("drive/false");
+        setDrives(response2.data.data);
+
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
     fetchData();
-  }, []); // T
+  }, []); 
   return (
     <div className="container py-4 py-xl-5">
       <div className="row mb-5">
@@ -58,6 +63,19 @@ const PastCampaign = () => {
               amount={fundraiser.goalAmount}
               raised={fundraiser.currentAmount}
               category={fundraiser.type}
+            />
+          ))}
+
+        {drives &&
+          drives.map((drive, idx) => (
+            <Card
+              campaign={false}
+              key={idx}
+              title={drive.title}
+              description={drive.description}
+              image={drive.imgUrl}
+              category={drive.type}
+              idx={drive.driveId}
             />
           ))}
       </div>

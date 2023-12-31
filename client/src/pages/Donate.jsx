@@ -15,7 +15,6 @@ export default function Donate() {
     const {fid} = useParams();
     const navigate = useNavigate()
     const [donateInfo, setDonateInfo] = useState();
-    const [daysPassed, setDaysPassed] = useState(null);
   //logic for sign in 
   axios.defaults.withCredentials=true
   console.log(isLoggedIn)

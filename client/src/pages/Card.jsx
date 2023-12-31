@@ -11,7 +11,13 @@ const Card = ({ title, description, image, amount, raised, category, idx, campai
   };
   return (
     <div
-      onClick={() => navigate(`/fundraiser/donate/${idx}`)}
+      onClick={() => {
+        navigate(
+          `/${campaign ? "fundraiser" : "drive"}/${
+            campaign ? "donate" : "volunteer"
+          }/${idx }`
+        );
+      }}
       className="col"
       style={{ cursor: "pointer" }}
     >

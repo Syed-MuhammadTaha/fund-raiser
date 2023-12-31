@@ -10,6 +10,7 @@ import ResetPassword from './pages/ResetPassword'
 import ForgotPassword from './pages/ForgotPassword'
 import NotFound from './pages/NotFound'
 import CreateVolunteer from './pages/CreateVolunteer'
+import VolunteerPage from './pages/VolunteerPage'
 import axios from 'axios'
 import { UserContextProvider } from '../context/userContext'
 import Donate from './pages/Donate'
@@ -45,6 +46,7 @@ function App() {
           
           <Route path="/checkout-success" element={<CheckoutSuccess />} />
           <Route path="/createvolunteer" element={<CreateVolunteer />} />
+          <Route path="/drive/volunteer/:did" element={<VolunteerPage />} />
           <Route path="*" element={<NotFound />} />
 
         </Routes>
