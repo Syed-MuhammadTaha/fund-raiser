@@ -350,7 +350,7 @@ const donatePage = async (req, res) => {
             console.error('Error fetching fundraise:', err);
             res.status(500).send({ message: 'Internal Server Error' });
         } else {
-            res.status(200).send({ message: 'Fundraise fetched successfully', data: result[0] });
+            res.status(200).send({ message: 'Fundraise fetched successfully', data: result });
         }
     });
 }
@@ -362,12 +362,9 @@ const filterCards = (req,res) =>{
             console.error('Error fetching fundraise:', err);
             res.status(500).send({ message: 'Internal Server Error' });
         } else {
-            res.status(200).send({ message: 'Fundraise Type fetched successfully', data: result[0] });
+            res.status(200).send({ message: 'Fundraise Type fetched successfully', data: result });
         }
     })
 }
 
 module.exports = { test, registerUser, loginUser, getProfile, verifyMail, PasswordReset, NewPassword, createCampaign, stripeIntegration,logsout, fetchFundraise,filterCards,donatePage}
-
-
-module.exports = { test, registerUser, loginUser, getProfile, verifyMail, PasswordReset, NewPassword, createCampaign, stripeIntegration,logsout, fetchFundraise}
