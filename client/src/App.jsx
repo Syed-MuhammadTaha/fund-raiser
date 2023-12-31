@@ -8,13 +8,15 @@ import EmailVerify from './pages/EmailVerify'
 import FundRaiser from './pages/FundRaiser'
 import ResetPassword from './pages/ResetPassword'
 import ForgotPassword from './pages/ForgotPassword'
+import NotFound from './pages/NotFound'
 import axios from 'axios'
 import { UserContextProvider } from '../context/userContext'
 import Donate from './pages/Donate'
 axios.defaults.baseURL = "http://localhost:8000";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.js";
-import Profile from './pages/Profile'
+import CheckoutSuccess from './pages/CheckoutSuccess'
+
 // connect to local host
 axios.defaults.withCredentials = true
 function App() {
@@ -37,8 +39,12 @@ function App() {
             path="/ForgotPassword/:id/:token"
             element={<ForgotPassword />}
           />
-          <Route path="/donate" element={<Donate />} />
-          <Route path="/profile" element={<Profile/>} />
+
+          <Route path="/fundraiser/donate/:fid" element={<Donate />} />
+          
+          <Route path="/checkout-success" element={<CheckoutSuccess />} />
+          <Route path="*" element={<NotFound />} />
+
         </Routes>
       </UserContextProvider>
     </>

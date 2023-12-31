@@ -2,10 +2,9 @@
 import React, { useState, useEffect } from "react";
 import FundraiserTypePage from "./FundraiserTypePage";
 import FundraiserGoalsPage from "./FundraiserGoalsPage";
-import FormSubmissionPage from "./FormSubmissionPage";
 import UploadCover from "./UploadCover";
 import FundraiserDesc from "./FundraiserDesc";
-
+import { useNavigate } from "react-router-dom"
 const FundRaiser = () => {
   const [data, setData] = useState({});
   const [currentPage, setCurrentPage] = useState(1);

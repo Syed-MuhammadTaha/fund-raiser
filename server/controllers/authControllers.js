@@ -4,7 +4,9 @@ const bcrypt = require('bcrypt')
 const nodemailer=require('nodemailer')
 const connection = require('../models/db')
 const { renderToString } = require('react-dom/server');
-
+const email_existence = require('email-existence')
+const Stripe = require('stripe')
+const stripe = Stripe('sk_test_51OT909JvFBCqm5cO3mOWVLKvR5cdT6eDnK05rYu0tGuuwfNa6xRHNsa0Mfny4NQPSe2Z0S57SXIqrNISCl7oDJ5M00b178UuU5')
 //const EmailVerify = require('../../client/src/pages/EmailVerify')
 const test = (req,res) => {
     res.json("test is working")
@@ -99,6 +101,11 @@ const registerUser = async (req,res) => {
     if(result[0]) return res.json({error:'EMAIL IS TAKEN ALREADY'})
     else{
         const hashedPassword=await hashPassword(password)
+        email_existence.check(email, function(error, response){
+            return res.json({
+                error:'Email Doesnt Exist'
+            })
+        
         connection.query('INSERT INTO user SET ?;', {FullName:name, EmailAddress:email, Password:hashedPassword,verified:0},(error,re)=>{
             if(error) throw error;
             connection.query('SELECT id FROM user WHERE EmailAddress =?',[email],async(errors,resu)=>{
@@ -109,7 +116,7 @@ const registerUser = async (req,res) => {
             return res.json({succes:'User has been registered,Please Verify Email to Log in'})
 
         });
-}
+    });}
 });
 // const [rows] = await
     // Check if there are any rows in the result
@@ -141,14 +148,15 @@ const loginUser = async (req,res)=>{
         return res.json({error:'Incorrect Email or Password'})
         else {
             const fullName = result[0].FullName;
-
+            const user_id = result[0].id
+            console.log(user_id)
             // Split the full name based on spaces
             const fullNameArray = fullName.split(' ');
 
             // Extract the first name (assuming it's the first element after splitting)
             const firstName = fullNameArray[0];
                 //cookie token
-            const token = jwt.sign({FullName:firstName},process.env.JWT_SECRET,{expiresIn:process.env.JWT_EXPIRES})
+            const token = jwt.sign({users: { FullName: firstName, id: user_id }},process.env.JWT_SECRET,{expiresIn:process.env.JWT_EXPIRES})
             const cookiesOptions = {
                 expiresIn: new Date(Date.now() + process.env.COOKIE_EXPIRES *24*60*60*1000),
                 httpOnly:true
@@ -183,9 +191,9 @@ const getProfile = (req,res,next)=>{
             if(err){
                 return res.json({Message:"Authentication Error"})
             } else{
-                req.name = user.FullName,
-                req.email = user.EmailAddress,
-                req.id = user.id
+                req.name=user.users.FullName
+                req.id=user.users.id
+
                 next()
             }
         })
@@ -273,17 +281,19 @@ const NewPassword = (req, res) => {
     })
 }
 
-const createCampaign = async (req,res)=>{
+const createCampaign = async (req, res) => {
+    console.log('Received data:', req.body);
     const receivedData = req.body;
     // Process the received data as needed
     console.log(receivedData);
     res.json({ message: 'Data received successfully' });
-    connection.query('INSERT INTO fundraise SET ?;', { title: receivedData.title, description: receivedData.description, startDate: new Date(),goalAmount: receivedData.goal, currentAmount: 0, active:true  },(error,re)=>{
+    connection.query('INSERT INTO fundraise SET ?;', { title: receivedData.title, description: receivedData.description,goalAmount: receivedData.goal, active:true, imgUrl: receivedData.imgUrl, type: receivedData.type },(error,re)=>{
         if(error) throw error;
         console.log(re)
     });
 
 }
+
 
 const fetchFundraise = async (req, res) => { 
 
@@ -297,11 +307,50 @@ const fetchFundraise = async (req, res) => {
         } else {
             res.status(200).send({ message: 'Fundraise fetched successfully', data: result });
         }
-        console.log(result[0])
     });
 }
+const stripeIntegration = async (req, res) => {
+    const {amount,id,fid} = req.body
+    const customer = await stripe.customers.create({
+        metadata:{
+            userID:id,
+            Amount:amount,
+            fundID:fid
+        }
+    })
+    const session = await stripe.checkout.sessions.create({
+    line_items: [
+      {
+        price_data: {
+          currency: 'usd',
+          product_data: {
+            name: 'Donation',
+          },
+          unit_amount: amount*100,
+        },
+        quantity: 1,
+      },
+    ],
+    customer : customer.id,
+    mode: 'payment',
+    success_url: 'http://localhost:5173/checkout-success',
+    cancel_url: 'http://localhost:5173/donate',
+  });
 
-const stripeIntegration = async (req, res) => { }
+  res.send({url:session.url});
+}
+const donatePage = async (req, res) => {
+    const { id } = req.params;
+    const sqlQuery = 'SELECT * FROM fundraise WHERE id = ?;';
+    connection.query(sqlQuery, [id], (err, result) => {
+        if (err) {
+            console.error('Error fetching fundraise:', err);
+            res.status(500).send({ message: 'Internal Server Error' });
+        } else {
+            res.status(200).send({ message: 'Fundraise fetched successfully', data: result });
+        }
+    });
+}
 
 
 module.exports = { test, registerUser, loginUser, getProfile, verifyMail, PasswordReset, NewPassword, createCampaign, stripeIntegration,logsout, fetchFundraise}

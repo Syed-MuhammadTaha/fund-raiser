@@ -4,11 +4,12 @@ const connection = mysql.createConnection({
 host:'localhost',
 database:'dbs',
 user:'root',
-password:'1055'
+password:'moeez.200317'
+
 })
 // moeez
 // host:'localhost',
-// database:'users',
+// database:'dbs',
 // user:'root',
 // password:'moeez.200317'
 
