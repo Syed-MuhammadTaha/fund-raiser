@@ -288,9 +288,9 @@ const createCampaign = async (req, res) => {
     console.log('Received data:', req.body);
     const receivedData = req.body;
     // Process the received data as needed
-    console.log(receivedData);
+    console.log(receivedData.id);
     res.json({ message: 'Data received successfully' });
-    connection.query('INSERT INTO fundraise SET ?;', { title: receivedData.title, description: receivedData.description,goalAmount: receivedData.goal, active:true, imgUrl: receivedData.imgUrl, type: receivedData.type },(error,re)=>{
+    connection.query('INSERT INTO fundraise SET ?;', { title: receivedData.title, description: receivedData.description,goalAmount: receivedData.goal, active:true, imgUrl: receivedData.imgUrl, type: receivedData.type ,createdBy:receivedData.id},(error,re)=>{
         if(error) throw error;
         console.log(re)
     });
@@ -366,5 +366,18 @@ const filterCards = (req,res) =>{
         }
     })
 }
-
-module.exports = { test, registerUser, loginUser, getProfile, verifyMail, PasswordReset, NewPassword, createCampaign, stripeIntegration,logsout, fetchFundraise,filterCards,donatePage}
+const PaymentDetails = async (req,res) => {
+    const {id} = req.params;
+    console.log(id)
+    const sqlQuery = `select title, fundraiseId, amount, paymentDate from payment natural join fundraise where id = ?`;
+    connection.query(sqlQuery, [id], (err, result) => {
+        if (err) {
+            console.error('Error fetching payment details:', err);
+            res.status(500).json({ message: 'Internal Server Error' });
+        } else {
+            console.log(result)
+            res.status(200).json({ message: 'Success', data: result });
+        }
+    })
+}
+module.exports = { test, registerUser, loginUser, getProfile, verifyMail, PasswordReset, NewPassword, createCampaign, stripeIntegration,logsout, fetchFundraise,filterCards,donatePage,PaymentDetails}

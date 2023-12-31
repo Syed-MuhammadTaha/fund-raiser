@@ -24,7 +24,7 @@ const FundraiserGoalsPage = ({ onNext, onPrev}) => {
               <div className="mb-3 w-50 m-auto mt-5">
                 <input
                   className="shadow-sm form-control"
-                  type="text"
+                  type="number"
                   name="name"
                   placeholder="Your Fundraiser Goal"
                   onChange={(e) => setFundraisingGoals(e.target.value)}

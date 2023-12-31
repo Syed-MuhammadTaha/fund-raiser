@@ -45,7 +45,7 @@ function UploadCover({ onNext }) {
             <div className="row row-cols-1 d-flex justify-content-center align-items-center">
               <div className="col text-center">
                 <h2 className="display-3 fw-bold mb-4">
-                  A picture paints a thousand&nbsp;
+                  A picture speaks a thousand&nbsp;
                   <span className="underline">Words</span>
                 </h2>
                 <p className="fs-4 text-muted">

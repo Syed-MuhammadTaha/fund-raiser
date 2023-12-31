@@ -4,11 +4,10 @@ import FundraiserTypePage from "./FundraiserTypePage";
 import FundraiserGoalsPage from "./FundraiserGoalsPage";
 import UploadCover from "./UploadCover";
 import FundraiserDesc from "./FundraiserDesc";
-import { useNavigate } from "react-router-dom"
 const FundRaiser = () => {
   const [data, setData] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
-
+  
   const handleNext = (...keyValuePairs) => {
     setData((prevData) => ({
       ...prevData,
