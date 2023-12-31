@@ -193,6 +193,7 @@ const getProfile = (req,res,next)=>{
             } else{
                 req.name=user.users.FullName
                 req.id=user.users.id
+
                 next()
             }
         })
@@ -350,5 +351,6 @@ const donatePage = async (req, res) => {
         }
     });
 }
+
 
 module.exports = { test, registerUser, loginUser, getProfile, verifyMail, PasswordReset, NewPassword, createCampaign, stripeIntegration,logsout, fetchFundraise}

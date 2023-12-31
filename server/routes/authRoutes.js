@@ -3,6 +3,7 @@ const router = express.Router()
 const cors = require('cors')
 const connection = require('../models/db')
 const {test,loginUser,getProfile,registerUser,verifyMail, createCampaign,PasswordReset,NewPassword, stripeIntegration,logsout,fetchFundraise,donatePage} = require('../controllers/authControllers')
+
 const {hashPassword,comparePassword} = require('../helpers/auth')
 const jwt = require('jsonwebtoken')
 const cookieParser = require('cookie-parser')
@@ -24,7 +25,6 @@ router.post('/login', loginUser)
 router.get('/profile',getProfile,(req,res)=>{
     return res.json({Status:"Success",name: req.name,
     id: req.id})
-})
 router.get('/verify/:id/:expirationTimestamp', verifyMail)
 router.get('/logout',logsout)
 router.post('/ResetPassword', PasswordReset)
