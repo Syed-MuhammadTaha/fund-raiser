@@ -1,5 +1,7 @@
 {
   "dependencies": {
-    "email-existence": "^0.1.6"
+    "email-existence": "^0.1.6",
+    "react-bootstrap-date-picker": "^5.1.0",
+    "react-datepicker": "^4.25.0"
   }
 }

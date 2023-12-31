@@ -2,7 +2,8 @@ const express = require("express")
 const router = express.Router()
 const cors = require('cors')
 const connection = require('../models/db')
-const {test,loginUser,getProfile,registerUser,verifyMail, createCampaign,PasswordReset,NewPassword, stripeIntegration,logsout,fetchFundraise,donatePage,filterCards} = require('../controllers/authControllers')
+const {test,loginUser,getProfile,registerUser,verifyMail, createCampaign,PasswordReset,NewPassword, stripeIntegration,logsout,fetchFundraise,donatePage,filterCards,createDrive,fetchDrive} = require('../controllers/authControllers')
+
 const {hashPassword,comparePassword} = require('../helpers/auth')
 const jwt = require('jsonwebtoken')
 const cookieParser = require('cookie-parser')
@@ -17,7 +18,7 @@ router.use(
         origin:'http://localhost:5173'
     })
 )
-// route to actual route we want
+// route to actual route we want 
 router.get('/',test)
 router.post('/register', registerUser)
 router.post('/login', loginUser)
@@ -31,6 +32,10 @@ router.post('/ResetPassword', PasswordReset)
 router.post('/ForgotPassword/:id/:token', NewPassword)
 router.post('/fundraiser', createCampaign)
 router.get('/fundraise/:isActive', fetchFundraise)
+router.get('/drive/:isActive', fetchDrive)
 router.post('/create-checkout-session', stripeIntegration)
 router.get('/fundraise/type/:type',filterCards)
+router.get('/donate/:fid', donatePage)
+router.post('/drive', createDrive)
+
 module.exports = router
