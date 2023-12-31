@@ -1,6 +1,7 @@
 import React from 'react'
+import { useEffect } from 'react';
 
-const StartFundraiser = () => {
+const StartFundraiser = ({loginDetail}) => {
   return (
     <div className="container py-4 py-xl-5">
       <div className="row mb-5">
@@ -27,7 +28,7 @@ const StartFundraiser = () => {
                 shape a better future for all.
               </p>
               <a className="btn btn-primary" role="button" href="/fundraiser">
-                Create Now
+                 Create Now
               </a>
             </div>
           </div>
