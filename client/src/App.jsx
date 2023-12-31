@@ -37,7 +37,7 @@ function App() {
             path="/ForgotPassword/:id/:token"
             element={<ForgotPassword />}
           />
-          <Route path="/donate" element={<Donate />} />
+          <Route path="/fundraiser/donate/:id" element={<Donate />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </UserContextProvider>

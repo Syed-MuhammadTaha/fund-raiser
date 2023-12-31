@@ -53,6 +53,7 @@ const ActiveCampaign = () => {
       <div className="row gy-4 row-cols-1 row-cols-md-2 row-cols-xl-3">
         {fundraisers && fundraisers.map((fundraiser,idx) => (
           <Card
+            
             key={idx}
             title={fundraiser.title}
             description={fundraiser.description}
@@ -60,6 +61,7 @@ const ActiveCampaign = () => {
             amount={fundraiser.goalAmount}
             raised={fundraiser.currentAmount}
             category={fundraiser.type}
+            idx={fundraiser.fundraiseId}
           />
         ))
         }

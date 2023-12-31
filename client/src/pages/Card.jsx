@@ -1,8 +1,16 @@
+import axios from 'axios';
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
 
-const Card = ({title, description,image,amount,raised,category}) => {
+const Card = ({ title, description, image, amount, raised, category, idx }) => {
+  const navigate = useNavigate();
   return (
-    <div onClick={() => console.log("Clicked")}>
+    <div onClick={() =>
+      navigate(`/fundraiser/donate/${idx}`)}
+      className="col"
+      style={{ cursor: "pointer" }}
+      
+    >
       <div className="col">
         <img
           className="flex-shrink-0 fit-cover"

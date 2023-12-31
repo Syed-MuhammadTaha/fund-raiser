@@ -298,6 +298,18 @@ const fetchFundraise = async (req, res) => {
         }
     });
 }
+const donatePage = async (req, res) => {
+    const { id } = req.params;
+    const sqlQuery = 'SELECT * FROM fundraise WHERE id = ?;';
+    connection.query(sqlQuery, [id], (err, result) => {
+        if (err) {
+            console.error('Error fetching fundraise:', err);
+            res.status(500).send({ message: 'Internal Server Error' });
+        } else {
+            res.status(200).send({ message: 'Fundraise fetched successfully', data: result });
+        }
+    });
+}
 
 const stripeIntegration = async (req, res) => { }
 
