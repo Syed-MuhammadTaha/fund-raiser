@@ -24,7 +24,6 @@ router.post('/login', loginUser)
 router.get('/profile',getProfile,(req,res)=>{
     return res.json({Status:"Success",name: req.name,
     id: req.id})
-})
 router.get('/verify/:id/:expirationTimestamp', verifyMail)
 router.get('/logout',logsout)
 router.post('/ResetPassword', PasswordReset)

@@ -196,6 +196,7 @@ const getProfile = (req,res,next)=>{
             } else{
                 req.name=user.users.FullName
                 req.id=user.users.id
+
                 next()
             }
         })
@@ -367,3 +368,6 @@ const filterCards = (req,res) =>{
 }
 
 module.exports = { test, registerUser, loginUser, getProfile, verifyMail, PasswordReset, NewPassword, createCampaign, stripeIntegration,logsout, fetchFundraise,filterCards,donatePage}
+
+
+module.exports = { test, registerUser, loginUser, getProfile, verifyMail, PasswordReset, NewPassword, createCampaign, stripeIntegration,logsout, fetchFundraise}
