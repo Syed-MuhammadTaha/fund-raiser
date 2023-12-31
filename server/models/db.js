@@ -8,7 +8,7 @@ password:'root'
 })
 // moeez
 // host:'localhost',
-// database:'users',
+// database:'dbs',
 // user:'root',
 // password:'moeez.200317'
 

@@ -10,6 +10,7 @@ export default function Navbar({links}) {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [name,setName] = useState('')
+  const [id,setID] = useState()
   //logic for sign in
   axios.defaults.withCredentials=true
   console.log(isLoggedIn)
@@ -19,6 +20,7 @@ export default function Navbar({links}) {
       if(res.data.Status === "Success"){
         setIsLoggedIn(true)
         setName(res.data.name)
+        setID(res.data.id)
       }
       else{
         setIsLoggedIn(false)
