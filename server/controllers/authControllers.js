@@ -102,10 +102,13 @@ const registerUser = async (req,res) => {
     else{
         const hashedPassword=await hashPassword(password)
         email_existence.check(email, function(error, response){
+            console.log(response)
+            if(!response){
             return res.json({
                 error:'Email Doesnt Exist'
             })
-        
+            }
+            else{
         connection.query('INSERT INTO user SET ?;', {FullName:name, EmailAddress:email, Password:hashedPassword,verified:0},(error,re)=>{
             if(error) throw error;
             connection.query('SELECT id FROM user WHERE EmailAddress =?',[email],async(errors,resu)=>{
@@ -116,7 +119,7 @@ const registerUser = async (req,res) => {
             return res.json({succes:'User has been registered,Please Verify Email to Log in'})
 
         });
-    });}
+     } });}
 });
 // const [rows] = await
     // Check if there are any rows in the result
@@ -346,9 +349,21 @@ const donatePage = async (req, res) => {
             console.error('Error fetching fundraise:', err);
             res.status(500).send({ message: 'Internal Server Error' });
         } else {
-            res.status(200).send({ message: 'Fundraise fetched successfully', data: result });
+            res.status(200).send({ message: 'Fundraise fetched successfully', data: result[0] });
         }
     });
 }
+const filterCards = (req,res) =>{
+    const {type} = req.params
+    const sqlquery = 'SELECT * FROM fundraise WHERE type = ?;'
+    connection.query(sqlquery,[type],(error,result)=>{
+        if (error) {
+            console.error('Error fetching fundraise:', err);
+            res.status(500).send({ message: 'Internal Server Error' });
+        } else {
+            res.status(200).send({ message: 'Fundraise Type fetched successfully', data: result[0] });
+        }
+    })
+}
 
-module.exports = { test, registerUser, loginUser, getProfile, verifyMail, PasswordReset, NewPassword, createCampaign, stripeIntegration,logsout, fetchFundraise}
+module.exports = { test, registerUser, loginUser, getProfile, verifyMail, PasswordReset, NewPassword, createCampaign, stripeIntegration,logsout, fetchFundraise,filterCards,donatePage}
