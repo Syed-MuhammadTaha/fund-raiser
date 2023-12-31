@@ -4,7 +4,7 @@ const connection = mysql.createConnection({
 host:'localhost',
 database:'dbs',
 user:'root',
-password:'root'
+password:'1055'
 })
 // moeez
 // host:'localhost',

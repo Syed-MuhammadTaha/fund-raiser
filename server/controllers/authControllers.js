@@ -183,7 +183,9 @@ const getProfile = (req,res,next)=>{
             if(err){
                 return res.json({Message:"Authentication Error"})
             } else{
-                req.name = user.FullName
+                req.name = user.FullName,
+                req.email = user.EmailAddress,
+                req.id = user.id
                 next()
             }
         })
@@ -300,5 +302,6 @@ const fetchFundraise = async (req, res) => {
 }
 
 const stripeIntegration = async (req, res) => { }
+
 
 module.exports = { test, registerUser, loginUser, getProfile, verifyMail, PasswordReset, NewPassword, createCampaign, stripeIntegration,logsout, fetchFundraise}
