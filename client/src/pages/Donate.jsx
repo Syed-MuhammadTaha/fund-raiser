@@ -82,14 +82,20 @@ export default function Donate() {
                       </div>
                       <div className="justify-content-center align-items-center">
                         <p>
-                          {donateInfo?.FullName} is organizing this event
-                          for {donateInfo?.type}
+                          {donateInfo?.FullName} is organizing this event for{" "}
+                          {donateInfo?.type}
                         </p>
                       </div>
                     </div>
                   </div>
                   <hr />
-                                <p>Created 3 days ago</p>
+                  <p>
+                    Created on{" "}
+                    {new Date(donateInfo?.startDate).toLocaleString("en-US", {
+                      timeZoneName: "short",
+                    })}
+                  </p>
+
                   <hr />
                   <p className="w-100 text-start">{donateInfo?.description}</p>
                 </div>
@@ -99,7 +105,6 @@ export default function Donate() {
                       ${" "}
                       <span className="fw-bold">
                         {donateInfo?.currentAmount}
-                        
                       </span>{" "}
                       raised of {donateInfo?.goalAmount}
                     </p>
@@ -119,9 +124,7 @@ export default function Donate() {
                         aria-valuemax={donateInfo?.goalAmount}
                       ></div>
                     </div>
-                    <p className="text-muted">
-                      {donateInfo?.count} donations
-                    </p>
+                    <p className="text-muted">{donateInfo?.count} donations</p>
                     <p className="text-muted fw-bold mt-4">
                       Amount should not exceed 1,000,000
                     </p>
