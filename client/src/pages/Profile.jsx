@@ -18,56 +18,16 @@ import Navbar from '../components/Navbar';
 export default function Profile() {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [name, setName] = useState('')
-  const [id, setID] = useState()
-  const [email, setEmail] = useState('')
-  const [amount, setAmount] = useState()
-  const [paymentDate, setPaymentDate] = useState()
-  const [title, setTitle] = useState('')
-  const [fid, setFid] = useState()
+  const [name, setName] = useState('');
+  const [id, setID] = useState();
+  const [paymentData, setPaymentData] = useState([])
 
   //logic for sign in
   axios.defaults.withCredentials = true
   console.log(isLoggedIn)
   let ID = id
   useEffect(() => {
-    // axios.get('http://localhost:8000/profile')
-    // .then(res => {
-    //     if (res.data.Status === "Success") {
-    //       setIsLoggedIn(true)
-    //       setName(res.data.name)
-    //       setID(res.data.id)
-    //       ID = res.data.id
-    //       setEmail()
-    //       setIsLoggedIn(true)
-    //     }
-    //     else {
-    //       setIsLoggedIn(false)
-    //     }
-    //   })
-    // fetch(`http://localhost:8000/getPaymentDetails?id=${ID}`)
-    //   .then(res => {
-    //     if (res.status === 200) {
-    //       setIsLoggedIn(true)
-    //       setAmount(res.data.amount)
-    //       setPaymentDate(res.data.paymentDate)
-    //       setTitle(res.data.title)
-    //       setFid(res.data.fundraiseId)
-    //     }
-    //     else {
-    //       setIsLoggedIn(false)
-    //     }
-    //   })
-    //   // fetch(`http://localhost:8000/getActiveCampaignDetails?id=${ID}`)
-    //   // .then(res => {
-    //   //   if (res.status === 200) {
-    //   //     setIsLoggedIn(true)
-          
-    //   //   }
-    //   //   else {
-    //   //     setIsLoggedIn(false)
-    //   //   }
-    //   // })
+  
 
     const fetchData = async () => {
       try {
@@ -79,24 +39,22 @@ export default function Profile() {
           setID(userResponse.data.id);
   
           // Fetch payment details using the user ID
-          const paymentResponse = await axios.get(`http://localhost:8000/getPaymentDetails/${id}`);
+          const paymentResponse = await fetch(`http://localhost:8000/getPaymentDetails/${userResponse.data.id}`);
           // const paymentResponse = await fetch('ttp://localhost:8000/getPaymentDetails' + userResponse.data.id);
 
           const paymentData = await paymentResponse.json();
-  
+          
           if (paymentResponse.status === 200) {
-            setAmount(paymentData.data.amount);
-            setPaymentDate(paymentData.data.paymentDate);
-            setTitle(paymentData.data.title);
-            setFid(paymentData.data.fundraiseId);
+            setPaymentData(paymentData.data);
           } else {
             setIsLoggedIn(false);
           }
         } else {
+          setPaymentData([])
           setIsLoggedIn(false);
         }
       } catch (error) {
-        console.error('Error fetching data:', error);
+        // console.error('Error fetching data:', error);
         setIsLoggedIn(false); 
       }
     };
@@ -115,10 +73,24 @@ export default function Profile() {
   //         <p>Email: {email}</p>
 
   //         <h2>Payment Details</h2>
-  //         <p>Amount: {amount}</p>
-  //         <p>Payment Date: {paymentDate}</p>
-  //         <p>Title: {title}</p>
-  //         <p>Fundraise ID: {fid}</p>
+  //         {paymentData.length > 0 && 
+  //         paymentData.map(data =>
+  //           <>
+  //         <div>
+  //         <span>Amount: </span>
+  //         <span>Payment Date: </span>
+  //         <span>Title: </span>
+  //         <span>Fundraise ID:</span>
+  //         </div>
+  //         <div>
+  //         <span>Amount: {data.amount}</span>
+  //         <span>Payment Date: {data.paymentDate}</span>
+  //         <span>Title: {data.title}</span>
+  //         <span>Fundraise ID: {data.fid}</span>
+  //         </div>
+  //         </>
+  //         )
+  //         }
   //       </div>
   //     ) : (
   //       <p>User not logged in or data fetch failed.</p>
@@ -131,18 +103,13 @@ export default function Profile() {
       {isLoggedIn ? (
         <div>
           <Navbar links={[{ button: true, path: "/", btn_name: "Logout" }]} />
-          <section style={{ backgroundColor: '#eee' }}>
+          <section style={{ backgroundColor: 'white' }}>
             <MDBContainer className="py-5">
-              <MDBRow>
+              <MDBRow >
                 <MDBCol>
-                  <MDBBreadcrumb className="bg-light rounded-3 p-3 mb-4 mt-5">
-                    <MDBBreadcrumbItem>
-                      <a href='#'>Home</a>
-                    </MDBBreadcrumbItem>
-                    <MDBBreadcrumbItem>
-                      <a href="#">User</a>
-                    </MDBBreadcrumbItem>
-                    <MDBBreadcrumbItem active>User Profile</MDBBreadcrumbItem>
+                  <MDBBreadcrumb className="rounded-3 p-3 mb-4 mt-5" style={{textAlign:'center', background:"#24285b", padding:'5px', color:'white'}}>
+                    {/* <MDBBreadcrumbItem active>User Profile</MDBBreadcrumbItem> */}
+                    <h2 >User Profile</h2>
                   </MDBBreadcrumb>
                 </MDBCol>
               </MDBRow>
@@ -157,7 +124,7 @@ export default function Profile() {
                         className="rounded-circle"
                         style={{ width: '200px', height: '200px', margin: '15px' }}
                         fluid />
-                      <p className="text-muted mb-1">Profile Picture</p>
+                      <p className="mb-1" style={{textAlign:'center', background:"#24285b", padding:'5px', color:'white'}}>Profile Picture</p>
                     </MDBCardBody>
                   </MDBCard>
 
@@ -168,16 +135,7 @@ export default function Profile() {
                           <MDBCardText>Name</MDBCardText>
                         </MDBCol>
                         <MDBCol sm="8">
-                          <MDBCardText className="text-muted">{paymentDate}</MDBCardText>
-                        </MDBCol>
-                      </MDBRow>
-                      <hr />
-                      <MDBRow>
-                        <MDBCol sm="4">
-                          <MDBCardText>Email</MDBCardText>
-                        </MDBCol>
-                        <MDBCol sm="8">
-                          <MDBCardText className="text-muted">{email}</MDBCardText>
+                          <MDBCardText className="text-muted">{name}</MDBCardText>
                         </MDBCol>
                       </MDBRow>
                       <hr />
@@ -194,27 +152,33 @@ export default function Profile() {
                 </MDBCol>
 
                 <MDBCol lg="8">
-                  <MDBRow style={{ marginBottom: '15px' }}>
+                  <MDBRow style={{ marginBottom: '15px', maxHeight: '300px', minHeight:'210px' }}>
                     <MDBCol md="12">
                       <MDBCard className="mb-4 mb-md-0">
                         <MDBCardBody>
-                          <MDBCardText className="mb-4">Payment History</MDBCardText>
-                          <MDBCardText className="mb-1" style={{ fontSize: '.77rem' }}>{title}</MDBCardText>
+                          <MDBCardText className="mb-4" style={{textAlign:'center', background:"#24285b", padding:'5px', color:'white'}}>Payment History</MDBCardText>
+
+                          <MDBCardText className="mb-1" style={{ fontSize: '.77rem'}}><span style={{padding:'7%'}}>Fundraise Id</span><span style={{padding:'7%'}}>Title</span><span style={{padding:'7%'}}>Amount</span><span style={{padding:'9%'}}>Date</span></MDBCardText>
+                          {paymentData.length > 0 && paymentData.map(data =>
+                            <MDBCardText className="mb-1" style={{ fontSize: '.77rem'}}><span style={{padding:'10%'}}>{data.fundraiseId}</span><span style={{padding:'9%'}}>{data.title}</span><span style={{padding:'4%'}}>{data.amount}</span><span style={{padding:'5%'}}>{data.paymentDate}</span></MDBCardText>
+                          )}
+                          
                         </MDBCardBody>
                       </MDBCard>
                     </MDBCol>
 
                   </MDBRow>
 
-                  <MDBRow>
+                  <MDBRow style={{ marginBottom: '2px', maxHeight: '250px' }}>
                     <MDBCol md="12">
                       <MDBCard className="mb-4 mb-md-0">
                         <MDBCardBody >
-                          <MDBCardText className="mb-4">Campaigns Created</MDBCardText>
-                          <MDBCardText className="mb-1" style={{ fontSize: '.77rem' }}>{amount}</MDBCardText>
-                          <MDBCardText className="mb-1" style={{ fontSize: '.77rem' }}>{fid}</MDBCardText>
-                          <MDBCardText className="mb-1" style={{ fontSize: '.77rem' }}>{title}</MDBCardText>
-                          <MDBCardText className="mb-1" style={{ fontSize: '.77rem' }}>{paymentDate}</MDBCardText>
+                          <MDBCardText className="mb-4" style={{textAlign:'center', background:"#24285b", padding:'5px', color:'white'}}>Campaigns Created</MDBCardText>
+
+                          <MDBCardText className="mb-1" style={{ fontSize: '.77rem'}}><span style={{padding:'1%'}}>Fundraise Id</span><span style={{padding:'5%'}}>Title</span><span style={{padding:'5%'}}>Type</span><span style={{padding:'2%'}}>Goal Amount</span><span style={{padding:'7%'}}>Starting Date</span></MDBCardText>
+                          {paymentData.length > 0 && paymentData.map(data =>
+                            <MDBCardText className="mb-1" style={{ fontSize: '.77rem'}}><span style={{padding:'5%'}}>{data.fundraiseId}</span><span style={{padding:'5%'}}>{data.title}</span><span style={{padding:'5%'}}>{data.type}</span><span style={{padding:'5%'}}>{data.goalAmount}</span><span style={{padding:'5%'}}>{data.startDate}</span></MDBCardText>
+                          )}
 
                         </MDBCardBody>
                       </MDBCard>

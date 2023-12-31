@@ -354,13 +354,13 @@ const donatePage = async (req, res) => {
 const PaymentDetails = async (req,res) => {
     const {id} = req.params;
     console.log(id)
-    const sqlQuery = `select title, fundraiseId, amount, paymentDate from payment natural join fundraise where id = ?`;
-    connection.query(sqlQuery, [id], (err, result) => {
+    const sqlQuery = `select title, fundraiseId, amount, paymentDate, startDate, goalAmount, type from payment natural join fundraise where id = ?`;
+    connection.query(sqlQuery,[id], (err, result) => {
         if (err) {
             console.error('Error fetching payment details:', err);
             res.status(500).json({ message: 'Internal Server Error' });
         } else {
-            console.log(result)
+            console.log("RESULT IS:", result)
             res.status(200).json({ message: 'Success', data: result });
         }
     })

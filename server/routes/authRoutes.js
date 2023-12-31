@@ -32,7 +32,7 @@ router.post('/ForgotPassword/:id/:token', NewPassword)
 router.post('/fundraiser', createCampaign)
 router.get('/fundraise/:isActive', fetchFundraise)
 router.post('/create-checkout-session', stripeIntegration)
-router.get('/getPaymentDetails', PaymentDetails)
+router.get('/getPaymentDetails/:id', PaymentDetails)
 // router.get('/getActiveCampaignDetails', CampaginDetails)
 
 module.exports = router;
