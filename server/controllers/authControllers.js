@@ -274,18 +274,33 @@ const NewPassword = (req, res) => {
     })
 }
 
-const createCampaign = async (req,res)=>{
+const createCampaign = async (req, res) => {
+    console.log('Received data:', req.body);
     const receivedData = req.body;
     // Process the received data as needed
     console.log(receivedData);
     res.json({ message: 'Data received successfully' });
-    connection.query('INSERT INTO campaign SET ?;', { fund_type: receivedData.type, goal: receivedData.goal },(error,re)=>{
+    connection.query('INSERT INTO fundraise SET ?;', { title: receivedData.title, description: receivedData.description, startDate: new Date(),goalAmount: receivedData.goal, currentAmount: 0, active:true, imgUrl: receivedData.imgUrl, type: receivedData.type },(error,re)=>{
         if(error) throw error;
         console.log(re)
     });
 
 }
 
+
+const fetchFundraise = async (req, res) => { 
+
+    const { isActive } = req.params;
+    console.log(isActive)
+    const sqlQuery = 'SELECT * FROM fundraise WHERE active = ?;';
+    connection.query(sqlQuery, [isActive=="true"? 1:0 ], (err, result) => {
+        if (err) {
+            console.error('Error fetching fundraise:', err);
+            res.status(500).send({ message: 'Internal Server Error' });
+        } else {
+            res.status(200).send({ message: 'Fundraise fetched successfully', data: result });
+        }
+    });
 const stripeIntegration = async (req, res) => {
     const {amount,id} = req.body
     const customer = await stripe.customers.create({
@@ -315,5 +330,19 @@ const stripeIntegration = async (req, res) => {
 
   res.send({url:session.url});
 }
+const donatePage = async (req, res) => {
+    const { id } = req.params;
+    const sqlQuery = 'SELECT * FROM fundraise WHERE id = ?;';
+    connection.query(sqlQuery, [id], (err, result) => {
+        if (err) {
+            console.error('Error fetching fundraise:', err);
+            res.status(500).send({ message: 'Internal Server Error' });
+        } else {
+            res.status(200).send({ message: 'Fundraise fetched successfully', data: result });
+        }
+    });
+}
 
-module.exports = { test, registerUser, loginUser, getProfile, verifyMail, PasswordReset, NewPassword, createCampaign, stripeIntegration,logsout}
+const stripeIntegration = async (req, res) => { }
+
+module.exports = { test, registerUser, loginUser, getProfile, verifyMail, PasswordReset, NewPassword, createCampaign, stripeIntegration,logsout, fetchFundraise}

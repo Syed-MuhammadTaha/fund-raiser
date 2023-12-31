@@ -2,7 +2,7 @@ const express = require("express")
 const router = express.Router()
 const cors = require('cors')
 const connection = require('../models/db')
-const {test,loginUser,getProfile,registerUser,verifyMail, createCampaign,PasswordReset,NewPassword, stripeIntegration,logsout} = require('../controllers/authControllers')
+const {test,loginUser,getProfile,registerUser,verifyMail, createCampaign,PasswordReset,NewPassword, stripeIntegration,logsout,fetchFundraise,donatePage} = require('../controllers/authControllers')
 const {hashPassword,comparePassword} = require('../helpers/auth')
 const jwt = require('jsonwebtoken')
 const cookieParser = require('cookie-parser')
@@ -30,8 +30,7 @@ router.get('/logout',logsout)
 router.post('/ResetPassword', PasswordReset)
 router.post('/ForgotPassword/:id/:token', NewPassword)
 router.post('/fundraiser', createCampaign)
+router.get('/fundraise/:isActive', fetchFundraise)
 router.post('/create-checkout-session', stripeIntegration)
-
-
 
 module.exports = router

@@ -26,7 +26,7 @@ const StartFundraiser = () => {
                 accelerates progress, turning curiosity into solutions that
                 shape a better future for all.
               </p>
-              <a className="btn btn-primary" role="button" href="#">
+              <a className="btn btn-primary" role="button" href="/fundraiser">
                 Create Now
               </a>
             </div>
@@ -47,7 +47,7 @@ const StartFundraiser = () => {
                 Support, Will Create Ripples of Positive Change. Together, Let's
                 Build a Brighter Tomorrow!
               </p>
-              <a className="btn btn-warning" role="button" href="#">
+              <a className="btn btn-warning" role="button" href="/fundraiser">
                 Create Now
               </a>
             </div>
@@ -64,7 +64,7 @@ const StartFundraiser = () => {
                 Doors to Education. Your Support Fuels Ambitions, Turning Dreams
                 into Achievements. 
               </p>
-              <a className="btn btn-primary" role="button" href="#">
+              <a className="btn btn-primary" role="button" href="/fundraiser">
                 Create Now
               </a>
             </div>
