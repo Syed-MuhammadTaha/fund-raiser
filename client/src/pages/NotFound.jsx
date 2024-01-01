@@ -1,4 +1,5 @@
 import React from 'react'
+import error from '../assets/404.png'
 
 const NotFound = () => {
   return (
@@ -6,12 +7,14 @@ const NotFound = () => {
       <div className="container">
         <div className="row row-cols-1 d-flex justify-content-center align-items-center">
           <div className="col-md-10 text-center">
-            <img className="img-fluid w-100" src="illustrations/404.svg" />
+            <img className="img-fluid w-50" src={error} />
           </div>
           <div className="col text-center">
-            <h2 className="display-3 fw-bold mb-4">Page Not Found</h2>
+            <h2 className="display-4 fw-bold mb-4">Page Not Found</h2>
             <p className="fs-4 text-muted">
-              Fusce adipiscing sit, torquent porta pulvinar.
+              Page not found. Looks like it pulled a disappearing act. We're on
+              it, but in the meantime, consider it our website's way of playing
+              hide and seek!
             </p>
           </div>
         </div>

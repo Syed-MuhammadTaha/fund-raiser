@@ -14,7 +14,7 @@ const StartFundraiser = ({loginDetail}) => {
     }
   }
   return (
-    <div className="container py-4 py-xl-5">
+    <div className="container py-4 py-xl-5" id="start">
       <div className="row mb-5">
         <div className="col-md-8 col-xl-10 text-center mx-auto">
           <h2 className="display-6 fw-bold mb-4">

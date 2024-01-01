@@ -15,7 +15,7 @@ export default function Donate() {
     const {fid} = useParams();
     const navigate = useNavigate()
   const [donateInfo, setDonateInfo] = useState();
-  const [active, setActive] = useState(false);
+  const [active, setActive] = useState(true);
   //logic for sign in 
   axios.defaults.withCredentials=true
   console.log(isLoggedIn)
@@ -28,7 +28,6 @@ export default function Donate() {
             setDonateInfo(response.data.data);
           console.log(response.data.data)
           setActive(response.data.data.active)
-          console.log(response.data.data.active+" my active")
         } catch (error) {
           console.error("Error fetching data:", error);
         }
@@ -75,7 +74,7 @@ export default function Donate() {
                 <img
                     className="img-fluid w-100 mb-4"
                     src={donateInfo?.imgUrl}
-                    style={{ objectFit: "cover", height: "350px" }}
+                    style={{ maxHeight: "350px", objectFit: "cover" }}
                   />
                   <div>
                     <div className="d-flex align-items-center align-items-md-start align-items-xl-center">
