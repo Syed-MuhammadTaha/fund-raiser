@@ -444,26 +444,33 @@ const PaymentDetails = async (req,res) => {
 }
 const drivePage = (req,res) => {
     const { did } = req.params;
-    const sqlQuery = 'SELECT * FROM drive WHERE driveId = ?;' 
-
-
-    connection.query(sqlQuery, [did], (err, result) => {
-
-        if (err) {
-            console.error('Error fetching fundraise:', err);
-            res.status(500).send({ message: 'Internal Server Error' });
-        } else {
-            if (result.length > 0) {
-                res.status(200).send({
-                    
-                    message: 'Fundraise fetched successfully',
-                    data: result[0]
-                });
-            } else {
-                res.status(404).send({ message: 'Fundraise not found' });
+    const driveQuery = `select * from user,drive where user.id=drive.createdBY and drive.driveid=?; `;
+  
+    // Query to count donations for the specified drive id
+    const volunteerQuery = `
+    select Count(*) as count from drive,volunteer where drive.driveId=? and drive.driveId=volunteer.driveid Group BY drive.driveId
+    `;
+        connection.query(driveQuery, [did], (err, result) => {
+            if (err) {
+                console.error('Error querying payment details:', err);
+                res.status(500).send({ message: 'Internal Server Error' });
             }
-        }
-    });
+            else{
+                connection.query(volunteerQuery, [did], (err1, result1) => {
+                    if (err1) {
+                        console.error('Error querying drive details:', err1);
+                        res.status(500).send({ message: 'Internal Server Error' });
+                    } else {
+                        res.json({
+                            message: 'Success',
+                            info: result,
+                            number: result1,
+                        });
+                    }
+                })
+            }
+        });
+    
 }
 const enrollVolunteer = (req, res) => {
     const { id, did } = req.body;
