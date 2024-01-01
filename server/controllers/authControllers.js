@@ -345,30 +345,41 @@ const stripeIntegration = async (req, res) => {
 }
 const donatePage = async (req, res) => {
     const { fid } = req.params;
-    const sqlQuery = 'SELECT fundraise.*, user.*, COUNT(*) AS count FROM fundraise ' +
-        'NATURAL JOIN payment INNER JOIN user ON createdBy = user.id ' +
-        'WHERE fundraiseId = ? GROUP BY fundraiseId, user.id';
 
+    // Query to fetch fundraise details
+    const fundraiseQuery = `
+      select * from user,fundraise where user.id=fundraise.createdBY and fundraise.fundraiseid=?;;
+    `;
 
-    connection.query(sqlQuery, [fid], (err, result) => {
+    // Query to count donations for the specified fundraise id
+    const donationCountQuery = `
+      SELECT COUNT(*) AS count
+      FROM fundraise
+      JOIN payment ON fundraise.fundraiseid = payment.fundraiseid
+      WHERE fundraise.fundraiseid = ?;
+    `;
+    connection.query(fundraiseQuery, [fid], (err, result) => {
         if (err) {
-            console.error('Error fetching fundraise:', err);
+            console.error('Error querying payment details:', err);
             res.status(500).send({ message: 'Internal Server Error' });
-        } else {
-            console.log("data is :"+result);
-            if (result.length > 0) {
-                const fundraiseData = result[0];
-                const paymentCount = fundraiseData.donationCount;
-                res.status(200).send({
-                    message: 'Fundraise fetched successfully',
-                    data: fundraiseData,
-                });
-            } else {
-                res.status(404).send({ message: 'Fundraise not found' });
-            }
+        }
+        else {
+            connection.query(donationCountQuery, [fid], (err1, result1) => {
+                if (err1) {
+                    console.error('Error querying fundraise details:', err1);
+                    res.status(500).send({ message: 'Internal Server Error' });
+                } else {
+                    res.json({
+                        message: 'Success',
+                        info: result,
+                        number: result1,
+                    });
+                }
+            })
         }
     });
-}
+
+};
 const createDrive = async (req, res) => {
     console.log('Received data:', req.body);
     const receivedData = req.body;
@@ -432,30 +443,35 @@ const PaymentDetails = async (req,res) => {
         }
     })
 }
-const drivePage = (req,res) => {
+const drivePage = (req, res) => {
     const { did } = req.params;
-    const sqlQuery = 'SELECT drive.*, user.*, COUNT(*) AS count FROM drive ' +
-        'NATURAL JOIN volunteer INNER JOIN user ON createdBy = user.id ' +
-        'WHERE driveId = ? GROUP BY driveId, user.id'; 
+    const driveQuery = `select * from user,drive where user.id=drive.createdBY and drive.driveid=?; `;
 
-
-    connection.query(sqlQuery, [did], (err, result) => {
-
+    // Query to count donations for the specified drive id
+    const volunteerQuery = `
+    select Count(*) as count from drive,volunteer where drive.driveId=? and drive.driveId=volunteer.driveid Group BY drive.driveId
+    `;
+    connection.query(driveQuery, [did], (err, result) => {
         if (err) {
-            console.error('Error fetching fundraise:', err);
+            console.error('Error querying payment details:', err);
             res.status(500).send({ message: 'Internal Server Error' });
-        } else {
-            if (result.length > 0) {
-                res.status(200).send({
-                    
-                    message: 'Fundraise fetched successfully',
-                    data: result[0]
-                });
-            } else {
-                res.status(404).send({ message: 'Fundraise not found' });
-            }
+        }
+        else {
+            connection.query(volunteerQuery, [did], (err1, result1) => {
+                if (err1) {
+                    console.error('Error querying drive details:', err1);
+                    res.status(500).send({ message: 'Internal Server Error' });
+                } else {
+                    res.json({
+                        message: 'Success',
+                        info: result,
+                        number: result1,
+                    });
+                }
+            })
         }
     });
+
 }
 const enrollVolunteer = (req, res) => {
     const { id, did } = req.body;
