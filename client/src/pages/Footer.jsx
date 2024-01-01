@@ -7,19 +7,19 @@ const Footer = () => {
         <ul className="list-inline">
           <li className="list-inline-item me-4">
             <a
-              className="link-secondary"
+              className="link-primary"
               href="https://github.com/Syed-MuhammadTaha"
             >
               Taha
             </a>
           </li>
           <li className="list-inline-item me-4">
-            <a className="link-secondary" href="https://github.com/AMoeez1910">
+            <a className="link-primary" href="https://github.com/AMoeez1910">
               Moeez
             </a>
           </li>
           <li className="list-inline-item">
-            <a className="link-secondary" href="#">
+            <a className="link-primary" href="#">
               Abu Bakar
             </a>
           </li>

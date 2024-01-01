@@ -16,25 +16,28 @@ const VolunteerPage = () => {
     const navigate = useNavigate();
     const [active, setActive] = useState(false);
     const [volunteerInfo, setVolunteerInfo] = useState();
+    const [iscount, setCount] = useState(0);
     //logic for sign in
     axios.defaults.withCredentials = true;
     console.log(isLoggedIn);
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get("drive/did/" + did);
-                setVolunteerInfo(response.data.data);
-                console.log(response.data.data);
-                setActive(response.data.data.active)
-                console.log(response.data.data.active+" my active")
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
-        };
+      const fetchData = async () => {
+        try {
+          const response = await axios.get("drive/did/" + did);
 
-        fetchData();
-    }, []);
+          console.log(response);
+          setVolunteerInfo(response.data.info[0]);
+          setCount(response.data.number[0].count);
+          setActive(response.data.info[0].active);
+          console.log(response.data.number[0].count + "is goooood");
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      };
+
+      fetchData();
+    }, [did]);
     const handleVolunteer = () => {
 
         if (isLoggedIn) {
@@ -121,7 +124,7 @@ const VolunteerPage = () => {
                           )}
                         </p>
                         <p className="text-muted mb-2 lead">
-                          {volunteerInfo?.count} participants
+                          {iscount} participants
                         </p>
                         <p className="text-muted fw-bold mt-4">
                           <GeoAltFill /> {volunteerInfo?.location}
