@@ -53,13 +53,13 @@ const ActiveDrive = () => {
             Filter By{" "}
           </button>
           <div className="dropdown-menu">
-            <a className="dropdown-item" onClick={()=>{handleClick("Blood")}}>
+            <a className="dropdown-item" onClick={()=>{handleClick("Blood")}} style={{ cursor: 'pointer' }}>
               Blood Drives
             </a>
-            <a className="dropdown-item" onClick={()=>{handleClick("Clothing")}}>
+            <a className="dropdown-item" onClick={()=>{handleClick("Clothing")}} style={{ cursor: 'pointer' }}>
               Clothing Drives
             </a>
-            <a className="dropdown-item" onClick={()=>{handleClick("Plantation")}}>
+            <a className="dropdown-item" onClick={()=>{handleClick("Plantation")}} style={{ cursor: 'pointer' }}>
               Plantation Drives
             </a>
           </div>

@@ -48,13 +48,13 @@ const ActiveCampaign = () => {
             Filter By{" "}
           </button>
           <div className="dropdown-menu">
-            <a className="dropdown-item" onClick={()=>{handleClick("Personal")}}>
+            <a className="dropdown-item" onClick={()=>{handleClick("Personal")}} style={{ cursor: 'pointer' }}>
               Personal
             </a>
-            <a className="dropdown-item" onClick={()=>{handleClick("Research")}}>
+            <a className="dropdown-item" onClick={()=>{handleClick("Research")}} style={{ cursor: 'pointer' }}>
               Research Funding
             </a>
-            <a className="dropdown-item" onClick={()=>{handleClick("Scholarship")}}>
+            <a className="dropdown-item" onClick={()=>{handleClick("Scholarship")}} style={{ cursor: 'pointer' }}>
               Scholarship Funding
             </a>
           </div>

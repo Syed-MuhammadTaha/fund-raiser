@@ -70,10 +70,10 @@ const PastCampaign = () => {
             Filter By{" "}
           </button>
           <div className="dropdown-menu">
-            <a className="dropdown-item" onClick={()=>{handleClick("Drives")}}>
+            <a className="dropdown-item" onClick={()=>{handleClick("Drives")}} style={{ cursor: 'pointer' }}>
               Drives
             </a>
-            <a className="dropdown-item" onClick={()=>{handleClick("Fundraiser")}}>
+            <a className="dropdown-item" onClick={()=>{handleClick("Fundraiser")}} style={{ cursor: 'pointer' }}>
               Fundraiser
             </a>
           </div>
