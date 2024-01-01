@@ -30,7 +30,7 @@ export default function Profile() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`/getUserInfo/type/${id}`);
+        const response = await axios.get(`/getUserInfo/${id}`);
         setPayment(response.data.payment);
         setfundraise(response.data.createdFundraise);
         setdrive(response.data.createdDrive);

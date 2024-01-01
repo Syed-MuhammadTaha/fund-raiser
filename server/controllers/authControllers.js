@@ -471,7 +471,6 @@ const drivePage = (req, res) => {
             })
         }
     });
-
 }
 const enrollVolunteer = (req, res) => {
     const { id, did } = req.body;
