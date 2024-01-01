@@ -22,7 +22,7 @@ const PastCampaign = () => {
     fetchData();
   }, []); 
   return (
-    <div className="container py-4 py-xl-5">
+    <div className="container py-4 py-xl-5" id ="past">
       <div className="row mb-5">
         <div className="mx-auto">
           <h3>
@@ -63,6 +63,7 @@ const PastCampaign = () => {
               image={fundraiser.imgUrl}
               amount={fundraiser.goalAmount}
               raised={fundraiser.currentAmount}
+              idx={fundraiser.fundraiseId}
               category={fundraiser.type}
               ended={true}
             />

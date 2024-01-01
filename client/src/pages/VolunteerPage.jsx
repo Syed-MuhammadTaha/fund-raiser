@@ -62,78 +62,88 @@ const VolunteerPage = () => {
         }, [isLoggedIn]);
   
         return (
-            <>
-                <Navbar links={[{}]} />
-                <div>
-                    <section className="py-4 py-md-5 mt-5">
-                        <div className="container py-md-5">
-                            <h2 className="display-6 fw-bold mb-4">{volunteerInfo?.title}</h2>
-                            <div className="row d-flex">
-                                <div className="col-md-7 text-center">
-                                    <img
-                                        className="img-fluid w-100 mb-4"
-                                        src={volunteerInfo?.imgUrl}
-                                        width="100%"
-                                    />
-                                    <div>
-                                        <div className="d-flex align-items-center align-items-md-start align-items-xl-center">
-                                            <div className="bs-icon-md bs-icon-circle bs-icon-primary d-flex flex-shrink-0 justify-content-center align-items-center me-2 d-inline-block bs-icon">
-                                                <PersonFill />
-                                            </div>
-                                            <div className="justify-content-center align-items-center">
-                                                <p>
-                                                    {volunteerInfo?.FullName} is organizing this event for{" "}
-                                                    {volunteerInfo?.type}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <hr />
-                                    <p>
-                                        Created on{" "}
-                                        {new Date(volunteerInfo?.startDate).toLocaleString("en-US", {
-                                            timeZoneName: "short",
-                                        })}
-                                    </p>
-
-                                    <hr />
-                                    <p className="w-100 text-start">{volunteerInfo?.description}</p>
-                                </div>
-                                <div className="col-md-5 col-xl-4 text-center text-md-start mx-4 px-3 py-4 shadow h-100">
-                                    <div>
-                                        <p>
-                                            Ends on{" "}
-                                            {new Date(volunteerInfo?.endDate).toLocaleString("en-US", {
-                                                timeZoneName: "short",
-                                            })}
-                                        </p>
-                                        <p className="text-muted mb-2 lead">
-                                            {volunteerInfo?.count}x participants
-                                        </p>
-                                        <p className="text-muted fw-bold mt-4">
-                                            <GeoAltFill /> {volunteerInfo?.location}
-                                        </p>
-                                        <div>
-                                            <span className="badge rounded-pill text-dark bg-secondary mb-4">
-                                                {volunteerInfo?.type} Drive
-                                            </span>
-                                        </div>
-                                        <div className="mb-2">
-                                            <button
-                                                className="btn btn-primary shadow w-100"
-                                                type="submit"
-                                                onClick={handleVolunteer}
-                                            >
-                                                Volunteer Now
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+          <>
+            <Navbar links={[{}]} />
+            <div>
+              <section className="py-4 py-md-5 mt-5">
+                <div className="container py-md-5">
+                  <h2 className="display-6 fw-bold mb-4">
+                    {volunteerInfo?.title}
+                  </h2>
+                  <div className="row d-flex">
+                    <div className="col-md-7 text-center">
+                      <img
+                        className="img-fluid w-100 mb-4"
+                        src={volunteerInfo?.imgUrl}
+                        style={{ maxHeight: "350px", objectFit: "cover" }}
+                        alt="Volunteer Image"
+                      />
+                      <div>
+                        <div className="d-flex align-items-center align-items-md-start align-items-xl-center">
+                          <div className="bs-icon-md bs-icon-circle bs-icon-primary d-flex flex-shrink-0 justify-content-center align-items-center me-2 d-inline-block bs-icon">
+                            <PersonFill />
+                          </div>
+                          <div className="justify-content-center align-items-center">
+                            <p>
+                              {volunteerInfo?.FullName} is organizing this  {volunteerInfo?.type} Drive
+                            </p>
+                          </div>
                         </div>
-                    </section>
+                      </div>
+                      <hr />
+                      <p>
+                        Created on{" "}
+                        {new Date(volunteerInfo?.startDate).toLocaleString(
+                          "en-US",
+                          {
+                            timeZoneName: "short",
+                          }
+                        )}
+                      </p>
+
+                      <hr />
+                      <p className="w-100 text-start">
+                        {volunteerInfo?.description}
+                      </p>
+                    </div>
+                    <div className="col-md-5 col-xl-4 text-center text-md-start mx-4 px-3 py-4 shadow h-100">
+                      <div>
+                        <p>
+                          Ends on{" "}
+                          {new Date(volunteerInfo?.endDate).toLocaleString(
+                            "en-US",
+                            {
+                              timeZoneName: "short",
+                            }
+                          )}
+                        </p>
+                        <p className="text-muted mb-2 lead">
+                          {volunteerInfo?.count} participants
+                        </p>
+                        <p className="text-muted fw-bold mt-4">
+                          <GeoAltFill /> {volunteerInfo?.location}
+                        </p>
+                        <div>
+                          <span className="badge rounded-pill text-dark bg-secondary mb-4">
+                            {volunteerInfo?.type} Drive
+                          </span>
+                        </div>
+                        <div className="mb-2">
+                          <button
+                            className="btn btn-primary shadow w-100"
+                            type="submit"
+                            onClick={handleVolunteer}
+                          >
+                            Volunteer Now
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-            </>
+              </section>
+            </div>
+          </>
         );
     };
 

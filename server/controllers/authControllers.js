@@ -422,7 +422,9 @@ const PaymentDetails = async (req,res) => {
 }
 const drivePage = (req,res) => {
     const { did } = req.params;
-    const sqlQuery = 'SELECT * FROM drive WHERE driveId = ?;' 
+    const sqlQuery = 'SELECT drive.*, user.*, COUNT(*) AS count FROM drive ' +
+        'NATURAL JOIN volunteer INNER JOIN user ON createdBy = user.id ' +
+        'WHERE driveId = ? GROUP BY driveId, user.id'; 
 
 
     connection.query(sqlQuery, [did], (err, result) => {
