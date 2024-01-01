@@ -15,27 +15,31 @@ export default function Donate() {
     const {fid} = useParams();
     const navigate = useNavigate()
   const [donateInfo, setDonateInfo] = useState();
-  const [active, setActive] = useState(false);
+  const [iscount, setCount] = useState(0);
+  const [active, setActive] = useState(true);
   //logic for sign in 
   axios.defaults.withCredentials=true
   console.log(isLoggedIn)
     console.log(fid+" this is")
     
-    useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const response = await axios.get("donate/"+fid);
-            setDonateInfo(response.data.data);
-          console.log(response.data.data)
-          setActive(response.data.data.active)
-          console.log(response.data.data.active+" my active")
-        } catch (error) {
-          console.error("Error fetching data:", error);
-        }
-      };
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("donate/" + fid);
+        
+        console.log(response);
+        setDonateInfo(response.data.info[0]);
+        setCount(response.data.number[0].count);
+        setActive(response.data.info[0].active);
+        console.log(response.data.number[0].count + "is goooood")
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
 
-      fetchData();
-    }, []);
+    fetchData();
+  }, [fid]);
   useEffect(() => {
     axios.get('http://localhost:8000/profile')
     .then(res => {
@@ -75,7 +79,7 @@ export default function Donate() {
                 <img
                     className="img-fluid w-100 mb-4"
                     src={donateInfo?.imgUrl}
-                    style={{ objectFit: "cover", height: "350px" }}
+                    style={{ maxHeight: "350px", objectFit: "cover" }}
                   />
                   <div>
                     <div className="d-flex align-items-center align-items-md-start align-items-xl-center">
@@ -126,7 +130,7 @@ export default function Donate() {
                         aria-valuemax={donateInfo?.goalAmount}
                       ></div>
                     </div>
-                    <p className="text-muted">{donateInfo?.count} donations</p>
+                    <p className="text-muted">{iscount} donations</p>
                     <p className="text-muted fw-bold mt-4">
                       Amount should not exceed 1,000,000
                     </p>

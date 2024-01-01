@@ -345,10 +345,12 @@ const stripeIntegration = async (req, res) => {
 }
 const donatePage = async (req, res) => {
     const { fid } = req.params;
-  
+
     // Query to fetch fundraise details
-    const fundraiseQuery = `select * from user,fundraise where user.id=fundraise.createdBY and fundraise.fundraiseid=?; `;
-  
+    const fundraiseQuery = `
+      select * from user,fundraise where user.id=fundraise.createdBY and fundraise.fundraiseid=?;;
+    `;
+
     // Query to count donations for the specified fundraise id
     const donationCountQuery = `
       SELECT COUNT(*) AS count
@@ -356,29 +358,28 @@ const donatePage = async (req, res) => {
       JOIN payment ON fundraise.fundraiseid = payment.fundraiseid
       WHERE fundraise.fundraiseid = ?;
     `;
-        connection.query(fundraiseQuery, [fid], (err, result) => {
-            if (err) {
-                console.error('Error querying payment details:', err);
-                res.status(500).send({ message: 'Internal Server Error' });
-            }
-            else{
-                connection.query(donationCountQuery, [fid], (err1, result1) => {
-                    if (err1) {
-                        console.error('Error querying fundraise details:', err1);
-                        res.status(500).send({ message: 'Internal Server Error' });
-                    } else {
-                        res.json({
-                            message: 'Success',
-                            info: result,
-                            number: result1,
-                        });
-                    }
-                })
-            }
-        });
-    
-  };
-  
+    connection.query(fundraiseQuery, [fid], (err, result) => {
+        if (err) {
+            console.error('Error querying payment details:', err);
+            res.status(500).send({ message: 'Internal Server Error' });
+        }
+        else {
+            connection.query(donationCountQuery, [fid], (err1, result1) => {
+                if (err1) {
+                    console.error('Error querying fundraise details:', err1);
+                    res.status(500).send({ message: 'Internal Server Error' });
+                } else {
+                    res.json({
+                        message: 'Success',
+                        info: result,
+                        number: result1,
+                    });
+                }
+            })
+        }
+    });
+
+};
 const createDrive = async (req, res) => {
     console.log('Received data:', req.body);
     const receivedData = req.body;
@@ -442,35 +443,34 @@ const PaymentDetails = async (req,res) => {
         }
     })
 }
-const drivePage = (req,res) => {
+const drivePage = (req, res) => {
     const { did } = req.params;
     const driveQuery = `select * from user,drive where user.id=drive.createdBY and drive.driveid=?; `;
-  
+
     // Query to count donations for the specified drive id
     const volunteerQuery = `
     select Count(*) as count from drive,volunteer where drive.driveId=? and drive.driveId=volunteer.driveid Group BY drive.driveId
     `;
-        connection.query(driveQuery, [did], (err, result) => {
-            if (err) {
-                console.error('Error querying payment details:', err);
-                res.status(500).send({ message: 'Internal Server Error' });
-            }
-            else{
-                connection.query(volunteerQuery, [did], (err1, result1) => {
-                    if (err1) {
-                        console.error('Error querying drive details:', err1);
-                        res.status(500).send({ message: 'Internal Server Error' });
-                    } else {
-                        res.json({
-                            message: 'Success',
-                            info: result,
-                            number: result1,
-                        });
-                    }
-                })
-            }
-        });
-    
+    connection.query(driveQuery, [did], (err, result) => {
+        if (err) {
+            console.error('Error querying payment details:', err);
+            res.status(500).send({ message: 'Internal Server Error' });
+        }
+        else {
+            connection.query(volunteerQuery, [did], (err1, result1) => {
+                if (err1) {
+                    console.error('Error querying drive details:', err1);
+                    res.status(500).send({ message: 'Internal Server Error' });
+                } else {
+                    res.json({
+                        message: 'Success',
+                        info: result,
+                        number: result1,
+                    });
+                }
+            })
+        }
+    });
 }
 const enrollVolunteer = (req, res) => {
     const { id, did } = req.body;

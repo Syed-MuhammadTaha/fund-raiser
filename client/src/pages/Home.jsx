@@ -20,10 +20,10 @@ export default function Home() {
       <Navbar
         links={[
           { href: "/", name: "Home" },
-          { href: "/", name: "Donate Now" },
-          { href: "/", name: "Past Campaigns" },
-          { href: "/", name: "Volunteer" },
-          { href: "/", name: "Start a fundraiser" },
+          { href: "#donate", name: "Donate Now" },
+          { href: "#past", name: "Past Campaigns" },
+          { href: "#volunteer", name: "Volunteer" },
+          { href: "#start", name: "Start a fundraiser" },
           {button: true, path: "/login", btn_name: "Login"}
         ]} getLoggedIn={setIsLoggedIn}
       />

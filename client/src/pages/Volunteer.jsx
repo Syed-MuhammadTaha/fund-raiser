@@ -15,7 +15,7 @@ const Volunteer = ({loginDetail}) => {
   }
   return (
     <div>
-      <section className="py-4 py-xl-5">
+      <section className="py-4 py-xl-5" id="volunteer">
         <div className="container">
           <div className="bg-primary border rounded border-0 border-primary overflow-hidden">
             <div className="row g-0">

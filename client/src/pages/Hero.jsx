@@ -1,6 +1,14 @@
 import React from "react";
 import hero from "../assets/hero.png";
 export default function Hero() {
+  const handleClick = () => {
+    // Scroll to the element with the ID "donate"
+    const donateElement = document.getElementById("donate");
+
+    if (donateElement) {
+      donateElement.scrollIntoView({ behavior: "smooth" });
+    }
+  };
   return (
     <header className="pt-5">
       <div className="container pt-4 pt-xl-5">
@@ -14,11 +22,15 @@ export default function Hero() {
               <p className="fs-5 text-muted mb-5">
                 Transform Compassion into Action: Donate Now to Fuel Change!
               </p>
-                <div className="mb-3">
-                  <button className="btn btn-primary" type="submit">
-                    Donate Now
-                  </button>
-                </div>
+              <div className="mb-3">
+                <button
+                  className="btn btn-primary"
+                  type="submit"
+                  onClick={handleClick}
+                >
+                  Donate Now
+                </button>
+              </div>
             </div>
           </div>
           <div className="col-12 col-lg-10 mx-auto">

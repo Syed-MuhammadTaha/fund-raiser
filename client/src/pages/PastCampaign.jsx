@@ -50,7 +50,7 @@ const PastCampaign = () => {
     }
   }
   return (
-    <div className="container py-4 py-xl-5">
+    <div className="container py-4 py-xl-5" id ="past">
       <div className="row mb-5">
         <div className="mx-auto">
           <h3>
