@@ -66,7 +66,7 @@ export default function Navbar({links,getLoggedIn  }) {
 
             {isLoggedIn ? (
               <li className="nav-item ">
-                <a className="nav-link active" href="features.html">
+                <a className="nav-link active" href="/profile">
                   Hello {name}!
                 </a>
               </li>
