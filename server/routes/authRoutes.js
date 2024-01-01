@@ -2,7 +2,7 @@ const express = require("express")
 const router = express.Router()
 const cors = require('cors')
 const connection = require('../models/db')
-const {test,loginUser,getProfile,registerUser,verifyMail, createCampaign,PasswordReset,NewPassword, stripeIntegration,logsout,fetchFundraise,donatePage,filterCards,createDrive,fetchDrive, drivePage, enrollVolunteer,filterdriveCards} = require('../controllers/authControllers')
+const {test,loginUser,getProfile,registerUser,verifyMail, createCampaign,PasswordReset,NewPassword, stripeIntegration,logsout,fetchFundraise,donatePage,filterCards,createDrive,fetchDrive, drivePage, enrollVolunteer,filterdriveCards,getDetails} = require('../controllers/authControllers')
 
 const {hashPassword,comparePassword} = require('../helpers/auth')
 const jwt = require('jsonwebtoken')
@@ -24,7 +24,7 @@ router.post('/register', registerUser)
 router.post('/login', loginUser)
 router.get('/profile',getProfile,(req,res)=>{
     return res.json({Status:"Success",name: req.name,
-    id: req.id})
+    id: req.id,email: req.email})
 })
 router.get('/verify/:id/:expirationTimestamp', verifyMail)
 router.get('/logout',logsout)
@@ -40,5 +40,6 @@ router.get('/donate/:fid', donatePage)
 router.post('/drive', createDrive)
 router.get('/drive/did/:did', drivePage)
 router.post('/drive/volunteer', enrollVolunteer)
+router.get('/getUserInfo/type/:id', getDetails)
 
 module.exports = router
