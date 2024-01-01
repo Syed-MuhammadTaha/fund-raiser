@@ -15,10 +15,21 @@ const ActiveCampaign = () => {
         console.error("Error fetching data:", error);
       }
     };
-
     fetchData();
   }, []);
-
+  const handleClick = (type) => {
+    console.log(type +"this is fetched")
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`fundraise/type/${type}`);
+        setFundraisers(response.data.data);
+        console.log(response.data.data)
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+  };
+  fetchData();
+  }
   return (
     <div className="container py-4 py-xl-5">
       <div className="row mb-5">
@@ -37,14 +48,14 @@ const ActiveCampaign = () => {
             Filter By{" "}
           </button>
           <div className="dropdown-menu">
-            <a className="dropdown-item" href="#">
+            <a className="dropdown-item" onClick={()=>{handleClick("Personal")}}>
               Personal
             </a>
-            <a className="dropdown-item" href="#">
+            <a className="dropdown-item" onClick={()=>{handleClick("Research")}}>
               Research Funding
             </a>
-            <a className="dropdown-item" href="#">
-              Sholarship Funding
+            <a className="dropdown-item" onClick={()=>{handleClick("Scholarship")}}>
+              Scholarship Funding
             </a>
           </div>
         </div>

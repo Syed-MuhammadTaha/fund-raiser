@@ -14,6 +14,7 @@ const VolunteerPage = () => {
     const [id, setID] = useState();
     const { did } = useParams();
     const navigate = useNavigate();
+    const [active, setActive] = useState(false);
     const [volunteerInfo, setVolunteerInfo] = useState();
     //logic for sign in
     axios.defaults.withCredentials = true;
@@ -25,6 +26,8 @@ const VolunteerPage = () => {
                 const response = await axios.get("drive/did/" + did);
                 setVolunteerInfo(response.data.data);
                 console.log(response.data.data);
+                setActive(response.data.data.active)
+                console.log(response.data.data.active+" my active")
             } catch (error) {
                 console.error("Error fetching data:", error);
             }
@@ -119,13 +122,24 @@ const VolunteerPage = () => {
                                             </span>
                                         </div>
                                         <div className="mb-2">
-                                            <button
+                                        {active ? (
+                                                <button
                                                 className="btn btn-primary shadow w-100"
                                                 type="submit"
                                                 onClick={handleVolunteer}
-                                            >
+                                                >
                                                 Volunteer Now
-                                            </button>
+                                                </button>
+                                            ) : (
+                                                <button
+                                                className="btn btn-primary shadow w-100"
+                                                type="submit"
+                                                onClick={handleVolunteer}
+                                                disabled
+                                                >
+                                                Volunteering Ended
+                                                </button>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
