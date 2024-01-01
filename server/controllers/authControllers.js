@@ -347,12 +347,7 @@ const donatePage = async (req, res) => {
     const { fid } = req.params;
   
     // Query to fetch fundraise details
-    const fundraiseQuery = `
-      SELECT *
-      FROM user
-      JOIN fundraise ON user.id = fundraise.createdBY
-      WHERE fundraise.fundraiseid = ?;
-    `;
+    const fundraiseQuery = `select * from user,fundraise where user.id=fundraise.createdBY and fundraise.fundraiseid=?; `;
   
     // Query to count donations for the specified fundraise id
     const donationCountQuery = `
