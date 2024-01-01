@@ -1,6 +1,18 @@
 import React from 'react'
 import volunteer from '../assets/volunteer.png'
-const Volunteer = () => {
+import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-hot-toast'
+const Volunteer = ({loginDetail}) => {
+  const navigate =useNavigate()
+  const handleClick= ()=>{
+    if(loginDetail){
+        navigate("/createvolunteer")
+    }
+    else{
+      toast.error('Please Log in')
+      navigate('/login')
+    }
+  }
   return (
     <div>
       <section className="py-4 py-xl-5" id="volunteer">
@@ -21,7 +33,7 @@ const Volunteer = () => {
                     and be the change!
                   </p>
                   <div className="my-3">
-                    <a className="btn btn-secondary mt-2 rounded-pill" role="button" href="/createvolunteer">
+                    <a className="btn btn-secondary mt-2 rounded-pill" role="button" onClick={handleClick}>
                       Create a Drive
                     </a>
                   </div>

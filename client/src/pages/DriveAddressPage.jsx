@@ -56,7 +56,7 @@ const DriveAddressPage = ({ onNext, onPrev }) => {
              type="button"
              onClick={() => {
                address === ""
-                 ? toast.error("Please enter an amount")
+                 ? toast.error("Please Enter Complete Details ")
                  : onNext(
                      ["location", address],
                      [

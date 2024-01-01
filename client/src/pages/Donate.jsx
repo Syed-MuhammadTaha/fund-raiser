@@ -19,7 +19,7 @@ export default function Donate() {
   //logic for sign in 
   axios.defaults.withCredentials=true
   console.log(isLoggedIn)
-    console.log(fid)
+    console.log(fid+" this is")
     
     useEffect(() => {
       const fetchData = async () => {
@@ -28,7 +28,6 @@ export default function Donate() {
             setDonateInfo(response.data.data);
           console.log(response.data.data)
           setActive(response.data.data.active)
-          console.log(response.data.data.active+ "status")
         } catch (error) {
           console.error("Error fetching data:", error);
         }
@@ -72,7 +71,7 @@ export default function Donate() {
               <h2 className="display-6 fw-bold mb-4">{donateInfo?.title}</h2>
               <div className="row d-flex">
                 <div className="col-md-7 text-center">
-                  <img
+                <img
                     className="img-fluid w-100 mb-4"
                     src={donateInfo?.imgUrl}
                     style={{ maxHeight: "350px", objectFit: "cover" }}

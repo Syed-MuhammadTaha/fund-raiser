@@ -18,7 +18,19 @@ const ActiveDrive = () => {
 
     fetchData();
   }, []);
-
+  const handleClick = (type) => {
+    console.log(type +"this is fetched")
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`drive/type/${type}`);
+        setDrives(response.data.data);
+        console.log(response.data.data)
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+  };
+  fetchData();
+  }
   return (
     <div className="container py-4 py-xl-5">
       <div className="row mb-5">
@@ -41,13 +53,13 @@ const ActiveDrive = () => {
             Filter By{" "}
           </button>
           <div className="dropdown-menu">
-            <a className="dropdown-item" href="#">
+            <a className="dropdown-item" onClick={()=>{handleClick("Blood")}} style={{ cursor: 'pointer' }}>
               Blood Drives
             </a>
-            <a className="dropdown-item" href="#">
+            <a className="dropdown-item" onClick={()=>{handleClick("Clothing")}} style={{ cursor: 'pointer' }}>
               Clothing Drives
             </a>
-            <a className="dropdown-item" href="#">
+            <a className="dropdown-item" onClick={()=>{handleClick("Plantation")}} style={{ cursor: 'pointer' }}>
               Plantation Drives
             </a>
           </div>

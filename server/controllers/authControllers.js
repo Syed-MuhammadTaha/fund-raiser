@@ -355,7 +355,7 @@ const donatePage = async (req, res) => {
             console.error('Error fetching fundraise:', err);
             res.status(500).send({ message: 'Internal Server Error' });
         } else {
-            console.log(fid);
+            console.log("data is :"+result);
             if (result.length > 0) {
                 const fundraiseData = result[0];
                 const paymentCount = fundraiseData.donationCount;
@@ -375,7 +375,7 @@ const createDrive = async (req, res) => {
     // Process the received data as needed
     console.log(receivedData);
     res.json({ message: 'Data received successfully' });
-    connection.query('INSERT INTO drive SET ?;', { title: receivedData.title, description: receivedData.description, location: receivedData.location,  imgUrl: receivedData.imgUrl, type: receivedData.type, endDate: receivedData.endDate},(error,re)=>{
+    connection.query('INSERT INTO drive SET ?;', { title: receivedData.title, description: receivedData.description, location: receivedData.location,  imgUrl: receivedData.imgUrl, endDate: receivedData.endDate,createdBy:receivedData.id, type: receivedData.type},(error,re)=>{
         if(error) throw error;
         console.log(re)
     });
@@ -396,7 +396,19 @@ const fetchDrive = async (req, res) => {
 }
 const filterCards = (req,res) =>{
     const {type} = req.params
-    const sqlquery = 'SELECT * FROM fundraise WHERE type = ?;'
+    const sqlquery = 'SELECT * FROM fundraise WHERE type = ? and active=1;'
+    connection.query(sqlquery,[type],(error,result)=>{
+        if (error) {
+            console.error('Error fetching fundraise:', err);
+            res.status(500).send({ message: 'Internal Server Error' });
+        } else {
+            res.status(200).send({ message: 'Fundraise Type fetched successfully', data: result });
+        }
+    })
+}
+const filterdriveCards = (req,res) =>{
+    const {type} = req.params
+    const sqlquery = 'SELECT * FROM drive WHERE type = ? and active=1;'
     connection.query(sqlquery,[type],(error,result)=>{
         if (error) {
             console.error('Error fetching fundraise:', err);
@@ -458,7 +470,7 @@ const enrollVolunteer = (req, res) => {
     });
 }
 
-module.exports = { test, registerUser, loginUser, getProfile, verifyMail, PasswordReset, NewPassword, createCampaign, stripeIntegration,logsout, fetchFundraise,filterCards,donatePage,PaymentDetails, createDrive, fetchDrive,drivePage, enrollVolunteer}
+module.exports = { test, registerUser, loginUser, getProfile, verifyMail, PasswordReset, NewPassword, createCampaign, stripeIntegration,logsout, fetchFundraise,filterCards,donatePage,PaymentDetails, createDrive, fetchDrive,drivePage, enrollVolunteer,filterdriveCards}
 
 
 

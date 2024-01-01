@@ -21,6 +21,34 @@ const PastCampaign = () => {
 
     fetchData();
   }, []); 
+  const handleClick = (type) => {
+    console.log(type +"this is fetched")
+    if(type==="Fundraiser"){
+      const fetchData = async () => {
+        try {
+          const response = await axios.get(`fundraise/false`);
+          setFundraisers(response.data.data);
+          setDrives(null)
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+    };
+    fetchData();
+    }  
+    else if(type==="Drives"){
+      
+      const fetchData = async () => {
+        try {
+          const response = await axios.get(`drive/false`);
+          setDrives(response.data.data);
+          setFundraisers(null)
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+    };
+    fetchData();
+    }
+  }
   return (
     <div className="container py-4 py-xl-5" id ="past">
       <div className="row mb-5">
@@ -42,10 +70,10 @@ const PastCampaign = () => {
             Filter By{" "}
           </button>
           <div className="dropdown-menu">
-            <a className="dropdown-item" href="#">
+            <a className="dropdown-item" onClick={()=>{handleClick("Drives")}} style={{ cursor: 'pointer' }}>
               Drives
             </a>
-            <a className="dropdown-item" href="#">
+            <a className="dropdown-item" onClick={()=>{handleClick("Fundraiser")}} style={{ cursor: 'pointer' }}>
               Fundraiser
             </a>
           </div>
