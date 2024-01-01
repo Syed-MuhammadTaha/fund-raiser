@@ -14,38 +14,56 @@ import {
 } from 'mdb-react-ui-kit';
 import profilePhoto from '../assets/profile.png'
 import Navbar from '../components/Navbar';
-
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
 export default function Profile() {
+  const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [id, setID] = useState();
+  const [payment, setPayment] = useState();
+  const [fundraise, setfundraise] = useState();
+  const [drive, setdrive] = useState();
+  axios.defaults.withCredentials = true;
 
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [name,setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [userId, setUserId] = useState('');
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`/getUserInfo/type/${id}`);
+        setPayment(response.data.payment);
+        setfundraise(response.data.createdFundraise);
+        setdrive(response.data.createdDrive);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
 
-    //logic for sign in
-    axios.defaults.withCredentials=true
-    console.log(isLoggedIn)
-    console.log(email)
-    useEffect(() => {
-        axios.get('http://localhost:8000/profile')
-        .then(res => {
-        if(res.data.Status === "Success"){
-            setIsLoggedIn(true)
-            setName(res.data.name)
-            setEmail(res.data.email)
-            setUserId(res.data.userId)
-        }
-        else{
-            setIsLoggedIn(false)
-        }
-        })
-    }, [isLoggedIn]);
+    fetchData();
+  }, [id]);
+
+  useEffect(() => {
+    axios.get('http://localhost:8000/profile').then((res) => {
+      if (res.data.Status === 'Success') {
+        setIsLoggedIn(true);
+        setName(res.data.name);
+        setEmail(res.data.email);
+        setID(res.data.id);
+      } else {
+        setIsLoggedIn(false);
+      }
+    }).catch(error => {
+      toast.error("Login Please"); 
+      // Redirect to login page
+      navigate('/login'); // Adjust the route as per your application setup
+    });;
+  }, [isLoggedIn]);
 
   return (
     <>
     <Navbar links={[{ button: true, path: "/", btn_name: "Logout" }]}/>
     <section style={{ backgroundColor: '#eee' }}>
-      <MDBContainer className="py-5">
+      <MDBContainer className="py-5 ">
         <MDBRow>
           <MDBCol>
             <MDBBreadcrumb className="bg-light rounded-3 p-3 mb-4 mt-5">
@@ -62,19 +80,9 @@ export default function Profile() {
 
         <MDBRow>
           <MDBCol lg="4">
-            <MDBCard className="mb-2" style={{height: '50%'}}>
-              <MDBCardBody className="text-center">
-                <MDBCardImage
-                  src={profilePhoto}
-                  alt="avatar"
-                  className="rounded-circle"
-                  style={{ width: '200px', height: '200px', margin: '15px' }}
-                  fluid />
-                <p className="text-muted mb-1">Profile Picture</p>
-              </MDBCardBody>
-            </MDBCard>
+            
 
-            <MDBCard className="mb-4">
+            <MDBCard className="mb-4 sticky-top" style={{top:100}}>
               <MDBCardBody>
                 <MDBRow>
                   <MDBCol sm="4">
@@ -96,19 +104,10 @@ export default function Profile() {
                 <hr />
                 <MDBRow>
                   <MDBCol sm="4">
-                    <MDBCardText>Password</MDBCardText>
-                  </MDBCol>
-                  <MDBCol sm="8">
-                    <MDBCardText className="text-muted">(097) 234-5678</MDBCardText>
-                  </MDBCol>
-                </MDBRow>
-                <hr />
-                <MDBRow>
-                  <MDBCol sm="4">
                     <MDBCardText>User Id</MDBCardText>
                   </MDBCol>
                   <MDBCol sm="8">
-                    <MDBCardText className="text-muted">{userId}</MDBCardText>
+                    <MDBCardText className="text-muted">{id}</MDBCardText>
                   </MDBCol>
                 </MDBRow>
               </MDBCardBody>
@@ -116,15 +115,28 @@ export default function Profile() {
           </MDBCol>
 
           <MDBCol lg="8">
-            <MDBRow style={{marginBottom:'15px'}}>
+            <MDBRow style={{ marginBottom: '15px' }}>
               <MDBCol md="12">
                 <MDBCard className="mb-4 mb-md-0">
                   <MDBCardBody>
                     <MDBCardText className="mb-4">Payment History</MDBCardText>
-                    <MDBCardText className="mb-1" style={{ fontSize: '.77rem' }}>Web Design</MDBCardText>
+                    <MDBCardText className="mb-1" style={{ fontSize: '.77rem' }}>
+                      {payment &&
+                        payment.map((key, idx) => (
+                          <div key={idx}>
+                            <p className='fw-bold'>{key.title}</p>
+                            <p >Date : {new Date(key.paymentDate).toLocaleString("en-US", {
+                                                timeZoneName: "short",
+                                            })}</p>
+                            <p>Amount Paid : $ {key.amount}</p>
+                            <hr />
+                          </div>
+                        ))}
+                    </MDBCardText>
                   </MDBCardBody>
                 </MDBCard>
               </MDBCol>
+
 
             </MDBRow>
 
@@ -133,7 +145,37 @@ export default function Profile() {
                 <MDBCard className="mb-4 mb-md-0">
                   <MDBCardBody>
                     <MDBCardText className="mb-4">Campaigns Created</MDBCardText>
-                    <MDBCardText className="mb-1" style={{ fontSize: '.77rem' }}>Web Design</MDBCardText>
+                    <MDBCardText className="mb-1" style={{ fontSize: '.77rem' }}>{fundraise &&
+                        fundraise.map((key, idx) => (
+                          <div key={idx}>
+                            <p className='fw-bold'>{key.title}</p>
+                            <p >Start Date : {new Date(key.startDate).toLocaleString("en-US", {
+                                                timeZoneName: "short",
+                                            })}</p>
+                            <p>Goal Amount : $ {key.goalAmount}</p>
+                            <hr />
+                          </div>
+                        ))}</MDBCardText>
+                    </MDBCardBody>
+                </MDBCard>
+              </MDBCol>
+            </MDBRow>
+            <MDBRow>
+              <MDBCol md="12">
+                <MDBCard className="mb-4 mb-md-0">
+                  <MDBCardBody>
+                    <MDBCardText className="mb-4">Drives Volunteered</MDBCardText>
+                    <MDBCardText className="mb-1" style={{ fontSize: '.77rem' }}>{drive &&
+                        drive.map((key, idx) => (
+                          <div key={idx}>
+                            <p className='fw-bold'>{key.title}</p>
+                            <p >Start Date : {new Date(key.startDate).toLocaleString("en-US", {
+                                                timeZoneName: "short",
+                                            })}</p>
+                            <p>Location : {key.location}</p>
+                            <hr />
+                          </div>
+                        ))}</MDBCardText>
                     </MDBCardBody>
                 </MDBCard>
               </MDBCol>

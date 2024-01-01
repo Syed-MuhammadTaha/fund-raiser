@@ -11,6 +11,7 @@ import ForgotPassword from './pages/ForgotPassword'
 import NotFound from './pages/NotFound'
 import CreateVolunteer from './pages/CreateVolunteer'
 import VolunteerPage from './pages/VolunteerPage'
+import Profile from './pages/Profile'
 import axios from 'axios'
 import { UserContextProvider } from '../context/userContext'
 import Donate from './pages/Donate'
@@ -41,7 +42,7 @@ function App() {
             path="/ForgotPassword/:id/:token"
             element={<ForgotPassword />}
           />
-
+          <Route path='/profile' element={<Profile/>}/>
           <Route path="/fundraiser/donate/:fid" element={<Donate />} />
           
           <Route path="/checkout-success" element={<CheckoutSuccess />} />

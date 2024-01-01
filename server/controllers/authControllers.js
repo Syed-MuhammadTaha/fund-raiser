@@ -159,7 +159,7 @@ const loginUser = async (req,res)=>{
             // Extract the first name (assuming it's the first element after splitting)
             const firstName = fullNameArray[0];
                 //cookie token
-            const token = jwt.sign({users: { FullName: firstName, id: user_id }},process.env.JWT_SECRET,{expiresIn:process.env.JWT_EXPIRES})
+            const token = jwt.sign({users: { FullName: firstName, id: user_id,EmailAddress:email }},process.env.JWT_SECRET,{expiresIn:process.env.JWT_EXPIRES})
             const cookiesOptions = {
                 expiresIn: new Date(Date.now() + process.env.COOKIE_EXPIRES *24*60*60*1000),
                 httpOnly:true
@@ -196,7 +196,7 @@ const getProfile = (req,res,next)=>{
             } else{
                 req.name=user.users.FullName
                 req.id=user.users.id
-
+                req.email=user.users.EmailAddress
                 next()
             }
         })
@@ -470,7 +470,52 @@ const enrollVolunteer = (req, res) => {
     });
 }
 
-module.exports = { test, registerUser, loginUser, getProfile, verifyMail, PasswordReset, NewPassword, createCampaign, stripeIntegration,logsout, fetchFundraise,filterCards,donatePage,PaymentDetails, createDrive, fetchDrive,drivePage, enrollVolunteer,filterdriveCards}
+const getDetails = (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const query1Result = "SELECT title, type, amount, paymentDate FROM fundraise JOIN payment ON fundraise.fundraiseID = payment.fundraiseid JOIN user ON user.id = payment.id WHERE user.id = ?;";
+
+        const query2Result = "SELECT title, startDate, goalAmount FROM user JOIN fundraise ON user.id = fundraise.createdby WHERE user.id = ?;";
+
+        const query3Result = "SELECT title, startDate, location FROM user JOIN drive ON user.id = drive.createdby WHERE user.id = ?;";
+
+        connection.query(query1Result, [id], (err, result) => {
+            if (err) {
+                console.error('Error querying payment details:', err);
+                res.status(500).send({ message: 'Internal Server Error' });
+            } else {
+                connection.query(query2Result, [id], (err1, result1) => {
+                    if (err1) {
+                        console.error('Error querying fundraise details:', err1);
+                        res.status(500).send({ message: 'Internal Server Error' });
+                    } else {
+                        connection.query(query3Result, [id], (err2, result2) => {
+                            if (err2) {
+                                console.error('Error querying drive details:', err2);
+                                res.status(500).send({ message: 'Internal Server Error' });
+                            } else {
+                                res.json({
+                                    message: 'Success',
+                                    payment: result,
+                                    createdFundraise: result1,
+                                    createdDrive: result2
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+};
+
+
+module.exports = { test, registerUser, loginUser, getProfile, verifyMail, PasswordReset, NewPassword, createCampaign, stripeIntegration,logsout, fetchFundraise,filterCards,donatePage,PaymentDetails, createDrive, fetchDrive,drivePage, enrollVolunteer,filterdriveCards,getDetails}
 
 
 
