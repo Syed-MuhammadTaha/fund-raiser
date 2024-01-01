@@ -40,6 +40,6 @@ router.get('/donate/:fid', donatePage)
 router.post('/drive', createDrive)
 router.get('/drive/did/:did', drivePage)
 router.post('/drive/volunteer', enrollVolunteer)
-router.get('/getUserInfo/type/:id', getDetails)
+router.get('/getUserInfo/:id', getDetails)
 
 module.exports = router

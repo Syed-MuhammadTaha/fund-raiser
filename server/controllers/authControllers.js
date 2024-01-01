@@ -345,30 +345,45 @@ const stripeIntegration = async (req, res) => {
 }
 const donatePage = async (req, res) => {
     const { fid } = req.params;
-    const sqlQuery = 'SELECT fundraise.*, user.*, COUNT(*) AS count FROM fundraise ' +
-        'NATURAL JOIN payment INNER JOIN user ON createdBy = user.id ' +
-        'WHERE fundraiseId = ? GROUP BY fundraiseId, user.id';
-
-
-    connection.query(sqlQuery, [fid], (err, result) => {
-        if (err) {
-            console.error('Error fetching fundraise:', err);
-            res.status(500).send({ message: 'Internal Server Error' });
-        } else {
-            console.log("data is :"+result);
-            if (result.length > 0) {
-                const fundraiseData = result[0];
-                const paymentCount = fundraiseData.donationCount;
-                res.status(200).send({
-                    message: 'Fundraise fetched successfully',
-                    data: fundraiseData,
-                });
-            } else {
-                res.status(404).send({ message: 'Fundraise not found' });
+  
+    // Query to fetch fundraise details
+    const fundraiseQuery = `
+      SELECT *
+      FROM user
+      JOIN fundraise ON user.id = fundraise.createdBY
+      WHERE fundraise.fundraiseid = ?;
+    `;
+  
+    // Query to count donations for the specified fundraise id
+    const donationCountQuery = `
+      SELECT COUNT(*) AS count
+      FROM fundraise
+      JOIN payment ON fundraise.fundraiseid = payment.fundraiseid
+      WHERE fundraise.fundraiseid = ?;
+    `;
+        connection.query(fundraiseQuery, [fid], (err, result) => {
+            if (err) {
+                console.error('Error querying payment details:', err);
+                res.status(500).send({ message: 'Internal Server Error' });
             }
-        }
-    });
-}
+            else{
+                connection.query(donationCountQuery, [fid], (err1, result1) => {
+                    if (err1) {
+                        console.error('Error querying fundraise details:', err1);
+                        res.status(500).send({ message: 'Internal Server Error' });
+                    } else {
+                        res.json({
+                            message: 'Success',
+                            info: result,
+                            number: result1,
+                        });
+                    }
+                })
+            }
+        });
+    
+  };
+  
 const createDrive = async (req, res) => {
     console.log('Received data:', req.body);
     const receivedData = req.body;
