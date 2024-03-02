@@ -189,6 +189,7 @@ const logsout= (req,res) => {
 }
 const getProfile = (req,res,next)=>{
     const token =req.cookies.token
+    console.log("this is jwt "+token)
     if (token) {
         jwt.verify(token,process.env.JWT_SECRET,{},(err,user)=>{
             if(err){
