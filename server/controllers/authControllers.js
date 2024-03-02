@@ -1,6 +1,6 @@
 const {hashPassword,comparePassword} = require('../helpers/auth')
 const jwt = require('jsonwebtoken')
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs')
 const nodemailer=require('nodemailer')
 const connection = require('../models/db')
 const { renderToString } = require('react-dom/server');

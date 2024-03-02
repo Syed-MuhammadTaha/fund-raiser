@@ -7,7 +7,7 @@ const {test,loginUser,getProfile,registerUser,verifyMail, createCampaign,Passwor
 const {hashPassword,comparePassword} = require('../helpers/auth')
 const jwt = require('jsonwebtoken')
 const cookieParser = require('cookie-parser')
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs')
 const nodemailer=require('nodemailer')
 const Stripe = require('stripe')
 const stripe = Stripe('sk_test_51OT909JvFBCqm5cO3mOWVLKvR5cdT6eDnK05rYu0tGuuwfNa6xRHNsa0Mfny4NQPSe2Z0S57SXIqrNISCl7oDJ5M00b178UuU5')
