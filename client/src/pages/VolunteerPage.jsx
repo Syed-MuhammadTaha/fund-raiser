@@ -55,17 +55,22 @@ const VolunteerPage = () => {
             navigate("/login");
         }
     }
-        useEffect(() => {
-            axios.get(`https://fund-raiser-production.up.railway.app/profile`).then((res) => {
-                if (res.data.Status === "Success") {
-                    setIsLoggedIn(true);
-                    setName(res.data.name);
-                    setID(res.data.id);
-                } else {
-                    setIsLoggedIn(false);
-                }
-            });
-        }, [isLoggedIn]);
+    useEffect(() => {
+      axios.get(`https://fund-raiser-production.up.railway.app/profile`)
+      .then(res => {
+        
+        if(res.data)
+      {if(res.data.Status === "Success"){
+          setIsLoggedIn(true)
+          setName(res.data.name)
+          setID(res.data.id)
+          getLoggedIn(true)
+        }
+        else{
+          setIsLoggedIn(false)
+        }}
+      })
+    }, [isLoggedIn]);
   
         return (
           <>

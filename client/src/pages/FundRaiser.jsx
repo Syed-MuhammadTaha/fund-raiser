@@ -16,18 +16,19 @@ const FundRaiser = () => {
   useEffect(() => {
     axios.get(`https://fund-raiser-production.up.railway.app/profile`)
     .then(res => {
-      if(res.data.Status === "Success"){
+      
+      if(res.data)
+    {if(res.data.Status === "Success"){
         setIsLoggedIn(true)
+        setName(res.data.name)
+        setID(res.data.id)
+        getLoggedIn(true)
       }
       else{
         setIsLoggedIn(false)
-      }
-    }).catch(error => {
-      toast.error("Login Please"); 
-      // Redirect to login page
-      navigate('/login'); // Adjust the route as per your application setup
-    });
-}, [isLoggedIn]);
+      }}
+    })
+  }, [isLoggedIn]);
   const handleNext = (...keyValuePairs) => {
     setData((prevData) => ({
       ...prevData,
