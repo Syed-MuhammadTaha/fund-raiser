@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser')
 const connection = require("./models/db")
 const stripe = require ("./routes/stripe")
 const corsOptions ={
-    origin:'https://faryaad.netlify.app/', 
+    origin:'https://faryaad.netlify.app', 
     credentials:true,            //access-control-allow-credentials:true
     optionSuccessStatus:200
 }
