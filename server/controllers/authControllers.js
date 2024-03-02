@@ -32,7 +32,7 @@ const sendVerifyEmail = async (name, email, id) => {
             from: 'needaspeed639@gmail.com',
             to: email,
             subject: 'Email Verification',
-            html: `<p>Hii ${name} Please click the link below</p> <a href="http://localhost:5173/verify/${id}/${expirationTimestamp}">Verify</a>`,
+            html: `<p>Hii ${name} Please click the link below</p> <a href="https://faryaad.netlify.app/verify/${id}/${expirationTimestamp}">Verify</a>`,
         };
 
         const data = await transporter.sendMail(mailOptions);
@@ -197,6 +197,7 @@ const getProfile = (req,res,next)=>{
                 req.name=user.users.FullName
                 req.id=user.users.id
                 req.email=user.users.EmailAddress
+                console.log("This user is logged in "+req.name)
                 next()
             }
         })
