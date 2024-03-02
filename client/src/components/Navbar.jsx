@@ -15,7 +15,7 @@ export default function Navbar({links,getLoggedIn  }) {
   axios.defaults.withCredentials=true
   console.log(isLoggedIn)
   useEffect(() => {
-    axios.get(`https://fund-raiser-production.up.railway.app/profile`)
+    axios.get('https://fund-raiser-production.up.railway.app/profile')
     .then(res => {
       
       if(res.data)
@@ -36,7 +36,7 @@ export default function Navbar({links,getLoggedIn  }) {
     axios.get('https://fund-raiser-production.up.railway.app/logout').then(res=>{
     if(res.data)
     {if(res.data.Status === "Success"){
-      
+  
       location.reload(true)
       toast.success("Succesfully logged out");
       
