@@ -17,7 +17,7 @@ export default function Navbar({links,getLoggedIn  }) {
   useEffect(() => {
     axios.get('https://fund-raiser-production.up.railway.app/profile')
     .then(res => {
-      if(res.data.Status === "Success"){
+      if(res.data.Status!=null && res.data.Status === "Success"){
         setIsLoggedIn(true)
         setName(res.data.name)
         setID(res.data.id)
