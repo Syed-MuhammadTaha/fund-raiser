@@ -17,7 +17,7 @@ const DriveDesc = ({ onNext, onPrev, submitData }) => {
   
   axios.defaults.withCredentials=true
   useEffect(() => {
-    axios.get('http://localhost:8000/profile')
+    axios.get('https://fund-raiser-production.up.railway.app/profile')
     .then(res => {
       if(res.data.Status === "Success"){
         setIsLoggedIn(true)
