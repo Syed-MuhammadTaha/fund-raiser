@@ -401,7 +401,6 @@ const createDrive = async (req, res) => {
 
 const fetchDrive = async (req, res) => {
     const { isActive } = req.params;
-    console.log(receivedData.id+" this is id")
     const sqlQuery = 'SELECT * FROM drive WHERE active = ?;';
     connection.query(sqlQuery, [isActive == "true" ? 1 : 0], (err, result) => {
         if (err) {
