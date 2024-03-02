@@ -9,7 +9,7 @@ const CheckoutSuccess = () => {
     // Set a delay of 3000 milliseconds (3 seconds) before navigating to "/"
     const delay = setTimeout(() => {
       navigate("/");
-    }, 4000);
+    }, 3000);
 
     // Cleanup the timeout on component unmount
     return () => clearTimeout(delay);

@@ -41,7 +41,7 @@ const Impact = () => {
                   <div className="col">
                     <div>
                       <span className="fs-2 fw-bold text-primary bg-secondary">
-                        20+
+                        5+
                       </span>
                       <p className="fw-normal text-muted">
                         Researchers assisted
@@ -51,7 +51,7 @@ const Impact = () => {
                   <div className="col">
                     <div>
                       <span className="fs-2 fw-bold text-primary bg-secondary">
-                        123+
+                        100+
                       </span>
                       <p className="fw-normal text-muted">
                         Items donated

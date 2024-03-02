@@ -14,7 +14,8 @@ const FundRaiseTitle = ({ onNext, onPrev, submitData }) => {
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   axios.defaults.withCredentials=true
   useEffect(() => {
-    axios.get('https://fund-raiser-production.up.railway.app/profile')
+    axios.get(`https://fund-raiser-production.up.railway.app/profile`)
+
     .then(res => {
       if(res.data.Status === "Success"){
         setIsLoggedIn(true)
