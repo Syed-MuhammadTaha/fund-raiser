@@ -184,7 +184,7 @@ const loginUser = async (req,res)=>{
 }
 //
 const logsout= (req,res) => {
-    res.clearCookie('token')
+    res.clearCookie('token', { sameSite: 'None', secure: true });
     return res.json({Status:"Success"})
 }
 const getProfile = (req,res,next)=>{
