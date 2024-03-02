@@ -32,12 +32,13 @@ export default function Navbar({links,getLoggedIn  }) {
   
   const logout = () => {
     axios.get('https://fund-raiser-production.up.railway.app/logout').then(res=>{
-    if(res.data.Status === "Success"){
+    if(res.data)
+    {if(res.data.Status === "Success"){
       
       location.reload(true)
       toast.success("Succesfully logged out");
       
-    }
+    }}
     }).catch(err=> console.log(err))
   };
 
