@@ -201,7 +201,7 @@ const getProfile = (req,res,next)=>{
                 req.name=user.users.FullName
                 req.id=user.users.id
                 req.email=user.users.EmailAddress
-                console.log("This user is logged in "+req.name)
+                console.log("This user is logged in "+req.name+" "+req.id)
                 next()
             }
         })
@@ -227,7 +227,7 @@ const PasswordReset = (req, res) => {
     }})
 }
 const emailNewPass = async (id,token,email) =>{
-    url = `http://localhost:5173/ForgotPassword/${id}/${token}`
+    url = `https://faryaad.netlify.app/ForgotPassword/${id}/${token}`
             try {
                 const transporter = nodemailer.createTransport({
                     host: 'smtp.gmail.com',
