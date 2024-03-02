@@ -15,7 +15,7 @@ import Profile from './pages/Profile'
 import axios from 'axios'
 import { UserContextProvider } from '../context/userContext'
 import Donate from './pages/Donate'
-axios.defaults.baseURL = "http://localhost:8000";
+axios.defaults.baseURL =process.env.REACT_APP_BACKEND_URL;
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.js";
 import CheckoutSuccess from './pages/CheckoutSuccess'

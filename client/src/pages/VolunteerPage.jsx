@@ -56,7 +56,7 @@ const VolunteerPage = () => {
         }
     }
         useEffect(() => {
-            axios.get("http://localhost:8000/profile").then((res) => {
+            axios.get(`${process.env.REACT_APP_BACKEND_URL}/profile`).then((res) => {
                 if (res.data.Status === "Success") {
                     setIsLoggedIn(true);
                     setName(res.data.name);
