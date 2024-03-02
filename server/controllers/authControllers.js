@@ -161,10 +161,13 @@ const loginUser = async (req,res)=>{
                 //cookie token
             const token = jwt.sign({users: { FullName: firstName, id: user_id,EmailAddress:email }},process.env.JWT_SECRET,{expiresIn:process.env.JWT_EXPIRES})
             const cookiesOptions = {
-                expiresIn: new Date(Date.now() + process.env.COOKIE_EXPIRES *24*60*60*1000),
-                httpOnly:true
-            }
-            res.cookie('token', token, { sameSite: 'None', secure: true })
+                expiresIn: new Date(Date.now() + process.env.COOKIE_EXPIRES * 24 * 60 * 60 * 1000),
+                httpOnly: true,
+                sameSite: 'None',  // Set SameSite attribute to 'None' for cross-origin requests
+                secure: true,      // Set secure to true when served over HTTPS
+            };
+            
+            res.cookie('token', token, cookiesOptions);
             res.json({ success: 'Successfully Login' });
         }
     })
