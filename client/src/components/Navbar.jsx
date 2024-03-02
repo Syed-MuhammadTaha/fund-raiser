@@ -15,7 +15,7 @@ export default function Navbar({links,getLoggedIn  }) {
   axios.defaults.withCredentials=true
   console.log(isLoggedIn)
   useEffect(() => {
-    axios.get('http://localhost:8000/profile')
+    axios.get(`${process.env.REACT_APP_BACKEND_URL}/profile`)
     .then(res => {
       if(res.data.Status === "Success"){
         setIsLoggedIn(true)

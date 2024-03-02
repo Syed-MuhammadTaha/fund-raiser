@@ -13,7 +13,7 @@ const EmailVerify = () => {
   useEffect(() => {
     const verifyEmail = async () => {
       try {
-        const url=`http://localhost:8000/verify/${id}/${expirationTimestamp}`
+        const url=`${process.env.REACT_APP_BACKEND_URL}/verify/${id}/${expirationTimestamp}`
         const {data} = await axios.get(url)
         console.log(data)
         VerifyUrl(true)
