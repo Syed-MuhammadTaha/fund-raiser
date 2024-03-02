@@ -215,7 +215,7 @@ const PasswordReset = (req, res) => {
             })
         }
         else {
-            const token = jwt.sign({ id: result[0].id }, process.env.JWT_SECRET, { expiresIn: 60 })
+            const token = jwt.sign({ id: result[0].id }, process.env.JWT_SECRET, { expiresIn: 100 })
             const id = result[0].id
             emailNewPass(id,token,email)
             return res.json({success:'An email has been sent'})
@@ -255,6 +255,7 @@ const NewPassword = (req, res) => {
         if (err) {
             return res.json({
                 error: 'Session Expired'
+
             })
         }
         else {
