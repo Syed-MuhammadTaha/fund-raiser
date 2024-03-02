@@ -31,7 +31,7 @@ export default function Navbar({links,getLoggedIn  }) {
 
   
   const logout = () => {
-    axios.get('http://localhost:8000/logout').then(res=>{
+    axios.get('https://fund-raiser-production.up.railway.app/profile').then(res=>{
     if(res.data.Status === "Success"){
       
       location.reload(true)
