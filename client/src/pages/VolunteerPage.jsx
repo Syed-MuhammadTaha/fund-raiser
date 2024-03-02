@@ -62,7 +62,6 @@ const VolunteerPage = () => {
         if(res.data)
       {if(res.data.Status === "Success"){
           setIsLoggedIn(true)
-          setName(res.data.name)
           setID(res.data.id)
           getLoggedIn(true)
         }

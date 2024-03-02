@@ -19,11 +19,10 @@ const CreateVolunteer = () => {
   useEffect(() => {
     axios.get(`https://fund-raiser-production.up.railway.app/profile`)
     .then(res => {
-      
+      console.log(res.data)
       if(res.data)
     {if(res.data.Status === "Success"){
         setIsLoggedIn(true)
-        setName(res.data.name)
         setID(res.data.id)
         getLoggedIn(true)
       }
