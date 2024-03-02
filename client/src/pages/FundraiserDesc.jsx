@@ -19,9 +19,9 @@ const FundRaiseTitle = ({ onNext, onPrev, submitData }) => {
     .then(res => {
       
       if(res.data)
-    {if(res.data.Status === "Success"){
+    { 
+      if(res.data.Status === "Success"){
         setIsLoggedIn(true)
-        setName(res.data.name)
         setID(res.data.id)
         getLoggedIn(true)
       }
