@@ -15,8 +15,7 @@ const CreateVolunteer = () => {
   const navigate = useNavigate();
   axios.defaults.withCredentials=true
   useEffect(() => {
-    axios.get(`https://fund-raiser-production.up.railway.app/profile`)
-    .then(res => {
+    axios.get('https://fund-raiser-production.up.railway.app/profile'){
       if(res.data.Status === "Success"){
         setIsLoggedIn(true)
       }

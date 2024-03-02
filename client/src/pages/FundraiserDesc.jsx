@@ -15,6 +15,7 @@ const FundRaiseTitle = ({ onNext, onPrev, submitData }) => {
   axios.defaults.withCredentials=true
   useEffect(() => {
     axios.get(`https://fund-raiser-production.up.railway.app/profile`)
+
     .then(res => {
       if(res.data.Status === "Success"){
         setIsLoggedIn(true)
