@@ -164,7 +164,7 @@ const loginUser = async (req,res)=>{
                 expiresIn: new Date(Date.now() + process.env.COOKIE_EXPIRES *24*60*60*1000),
                 httpOnly:true
             }
-            res.cookie('token', token, { sameSite: 'None', secure: true }))
+            res.cookie('token', token, { sameSite: 'None', secure: true })
             res.json({ success: 'Successfully Login' });
         }
     })
