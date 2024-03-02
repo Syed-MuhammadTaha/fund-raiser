@@ -1,6 +1,6 @@
 const mysql = require('mysql')
 require("dotenv").config()
-const urlDB=`mysql://${process.env.MYSQLDATABASE}:${process.env.MYSQLPASSWORD}@${process.env.MYSQLHOST}:${process.env.PORT}/${process.env.MYSQLUSER}`
+const urlDB=`mysql://root:5Ef3Gefb3f2--CGa4HGgEf4Cddhe5ebD@monorail.proxy.rlwy.net:50643/railway`
 const connection = mysql.createConnection(urlDB)
 // moeez
 // host:'localhost',
